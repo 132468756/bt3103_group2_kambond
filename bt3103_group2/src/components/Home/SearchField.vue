@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-      <h3> KamBond Search </h3>
+      <br>
+      <h3 id='searchtitle'> KamBond Search </h3>
       <div class="inputbox">
           <br>
           <input type="text" id="search" required="" Placeholder="Search">
@@ -28,5 +29,21 @@ methods: {
 </script>
 
 <style>
+  .container {
+    /* The image used */
+    background-image: url('~@/assets/search-bg.jpg');
 
+    /* Control the height of the image */
+    min-height: 380px;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  #searchtitle {
+    color: floralwhite;
+  }
 </style>
