@@ -1,29 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
   <Homepage/>
+  <borrower/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import Homepage from './components/Homepage.vue'
+import Borrow from "./components/Borrow.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld,
-    Homepage
+    Homepage,
+    Borrow
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
