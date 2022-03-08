@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.13"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
@@ -38,5 +39,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.esm.js"
+  }
 }
