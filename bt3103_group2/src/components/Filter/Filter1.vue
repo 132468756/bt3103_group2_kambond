@@ -23,6 +23,7 @@ export default {
         value="Beauty & Personal Care"
         v-model="checkedNames"
       />
+
       <label for="BP">Beauty & Personal Care</label>
 
       <input
@@ -161,7 +162,7 @@ export default {
 #checkboxes {
   background-color: rgba(210, 179, 240, 0.911);
   padding: 10px;
-  width:2000px
+  width: 2000px;
 }
 
 .whole {
@@ -170,7 +171,7 @@ export default {
 
 #checked {
   background-color: rgb(187, 189, 188);
-  padding:5px;
+  padding: 5px;
   border-radius: 15px;
 }
 </style>
