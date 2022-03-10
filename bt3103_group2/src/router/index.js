@@ -5,7 +5,7 @@ import Lend from '../components/Lend.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Profile from '../views/Profile.vue'
-
+import CreatePost from '../components/CreatePost.vue'
 const routes = [
     {
         path: '/',
@@ -41,7 +41,12 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile
-    }
+    },
+     {
+         path: '/createpost',
+         name: 'CreatePost',
+         component: CreatePost
+     }
 ];
 
 const router = new createRouter({
