@@ -6,19 +6,19 @@
     <router-link to="/login">Login</router-link> |
     <router-link to="/signup">Sign Up</router-link> |
     <router-link to="/profile">Profile</router-link> |
-    <router-link to ="/createpost"> CreatePost </router-link>
-    <hr>
+    <router-link to="/createpost"> CreatePost </router-link>
+    <hr />
   </div>
-  <router-view/>
+  <router-view />
+
 </template>
 
 <script>
 
 export default {
   name: "App",
-  components: {
-  }
-}
+  components: {},
+};
 </script>
 
 <style>

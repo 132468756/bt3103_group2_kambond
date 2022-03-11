@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="createPost" method="post">
+  <form @submit.prevent="createPost" method="post" id="createpostform">
     <label> Title </label>
     <input type="title" required v-model="post.title" />
 
@@ -91,7 +91,7 @@ methods: {
 </script>
 
 <style scoped>
-form {
+#createpostform {
   max-width: 420px;
   margin: 30px auto;
   background: rgb(205, 243, 213);
