@@ -3,7 +3,7 @@
       
     <div class="flex-box">
       <h2>title:{{ title }}</h2>
-      <button @click="toDetail">Borrow</button>
+      <button @click="toDetail" id = "borrowbutton">Borrow</button>
     </div>
     <hr />
     <div id="owner">
@@ -36,12 +36,15 @@ export default {
 </script>
 
 <style>
+h2 {
+  margin:0px;
+}
 .flex-box {
   display: flex;
   justify-content: space-between;
 }
 
-button {
+#borrowbutton {
   background-color: black;
   color: white;
   text-align: center;
