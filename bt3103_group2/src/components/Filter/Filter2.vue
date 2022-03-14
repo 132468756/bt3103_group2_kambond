@@ -63,7 +63,7 @@ export default {
       value="Raffles Hall"
       v-model="checkedNames"
     />
-    <label for="raffles">Photography</label>
+    <label for="raffles">Raffles Hall</label>
 
     <input
       type="checkbox"

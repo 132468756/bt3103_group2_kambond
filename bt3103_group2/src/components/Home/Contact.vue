@@ -1,5 +1,5 @@
 <template>
-  <p>Contact Us: KamBond@gmail.com</p>
+  <h5>Contact Us: KamBond@gmail.com</h5>
   <br>
 
 </template>
@@ -12,4 +12,8 @@ name: "Contact"
 
 <style>
 
+h5{
+  text-align: center;
+  background-color: aliceblue;
+}
 </style>

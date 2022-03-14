@@ -1,10 +1,10 @@
 <template>
-  <h1>Navigator</h1>
+  <h1>This is the sample sign-up page</h1>
 </template>
 
 <script>
 export default {
-name: "Navigator"
+  name: "Profile"
 }
 </script>
 

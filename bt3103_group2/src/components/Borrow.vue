@@ -5,13 +5,16 @@
     <Filter2 />
 
     <Filter3 />
+
   </div>
+  <Post />
 </template>
 
 <script>
-import Filter1 from "./Filter1.vue";
-import Filter2 from "./Filter2.vue";
-import Filter3 from "./Filter3.vue";
+import Filter1 from "./Filter/Filter1.vue";
+import Filter2 from "./Filter/Filter2.vue";
+import Filter3 from "./Filter/Filter3.vue";
+import Post from "./Post.vue"
 export default {
   name: "Borrow",
   data() {
@@ -23,6 +26,7 @@ export default {
     Filter1,
     Filter2,
     Filter3,
+    Post,
   },
 };
 </script>
