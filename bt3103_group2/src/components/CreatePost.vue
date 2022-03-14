@@ -1,17 +1,24 @@
 <template>
   <form @submit.prevent="createPost" method="post" id="createpostform">
+      <div className ="row">
     <label> Title </label>
     <input type="title" required v-model="post.title" id = "post.title"/>
+    </div>
 
+    <div className ="row">
     <label> Purpose </label>
     <select required v-model="post.purpose" id = "post.purpose">
       <option>Borrowing</option>
       <option>Lending</option>
     </select>
+    </div>
 
+    <div className ="row">
     <label> Description </label>
     <input type="desription" required v-model="post.description" id = "post.description"/>
+    </div>
 
+    <div className ="row">
     <label> Category </label>
     <select required v-model="post.category" id = "post.category">
       <option>Beauty & Personal Care</option>
@@ -31,7 +38,9 @@
       <option>Musical Instrument</option>
       <option>Others</option>
     </select>
+    </div>
 
+    <div className ="row">
     <label> Location </label>
     <select required v-model="post.location" id = "post.location">
       <option>PGP / PGPR</option>
@@ -45,9 +54,10 @@
       <option>Kent Ridge Hall</option>
       <option>Others</option>
     </select>
+    </div>
 
-    <div class="submit">
-    <button v-on:click = "createPost()"> Create Post </button>
+    <div className = "submitRow">
+    <button className="submit" v-on:click = "createPost()"> Create Post </button>
   </div>
   </form>
   
@@ -103,23 +113,25 @@ methods: {
 
 <style scoped>
 #createpostform {
-  max-width: 420px;
-  margin: 30px auto;
   background: rgb(205, 243, 213);
-  text-align: left;
-  padding: 40px;
+  padding-bottom: 80px;
   border-radius: 10px;
+  justify-content:center;
 }
 label {
   color: rgb(31, 34, 34);
-  display: inline-block;
-  margin: 25px 0 15px;
+  display: flex;
+  justify-content:center;
+  margin-top:2%;
+  margin-bottom:2%;
+  width:100%;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
 }
 input,select {
-  display: block;
+  display: flex;
+  justify-content:center;
   padding: 10px 6px;
   width: 100%;
   box-sizing: border-box;
@@ -127,15 +139,28 @@ input,select {
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-button {
-  background-color: blue;
-  border:0;
-  padding:10px 20px;
-  margin-top:20px;
-  color:aliceblue;
-  border-radius: 20px;
+
+.row{
+    display:flex;
+    flex-direction:column;
+    width:40%;
+    margin-left:30%;
 }
+
+.submitRow{
+    margin-left:60%;
+}
+
 .submit {
-  text-align: center;
+    position:absolute;
+    text-align: center;
+    background-color: blue;
+    border:0;
+    padding:10px 20px;
+    margin-top:20px;
+    color:aliceblue;
+    border-radius: 20px;
+    width:10%;
+    height:5%;
 }
 </style>
