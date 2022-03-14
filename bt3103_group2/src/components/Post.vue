@@ -7,7 +7,7 @@
     </div>
     <hr />
     <div id="owner">
-      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" />
+      <img id="profilePhoto" src="@/assets/profilephoto.jpeg" alt="cannotfind" />
       <h3>owner:{{ owner }}</h3>
     </div>
     
@@ -66,7 +66,7 @@ button {
   padding: 10px;
 }
 
-img {
+.profilePhoto {
   width: 50px;
   height: 50px;
 }
