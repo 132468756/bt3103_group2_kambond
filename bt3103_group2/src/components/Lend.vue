@@ -1,7 +1,7 @@
 <template>
-  <filter1 />
-  <filter2 />
-  <filter4 />
+  <Filter1 />
+  <Filter2 />
+  <Filter4 />
 </template>
 
 <script>

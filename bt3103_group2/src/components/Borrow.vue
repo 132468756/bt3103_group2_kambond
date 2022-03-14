@@ -1,10 +1,10 @@
 <template>
   <div id="filter">
-    <filter1 />
+    <Filter1 />
 
-    <filter2 />
+    <Filter2 />
 
-    <filter3 />
+    <Filter3 />
   </div>
 </template>
 
