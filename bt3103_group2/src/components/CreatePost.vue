@@ -58,6 +58,7 @@
 
     <div className = "submitRow">
     <button className="submit" v-on:click = "createPost()"> Create Post </button>
+
   </div>
   </form>
   
@@ -149,6 +150,7 @@ input,select {
 
 .submitRow{
     margin-left:60%;
+
 }
 
 .submit {
