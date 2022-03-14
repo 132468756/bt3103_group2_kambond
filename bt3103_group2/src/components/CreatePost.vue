@@ -1,19 +1,19 @@
 <template>
   <form @submit.prevent="createPost" method="post" id="createpostform">
     <label> Title </label>
-    <input type="title" required v-model="post.title" />
+    <input type="title" required v-model="post.title" id = "post.title"/>
 
     <label> Purpose </label>
-    <select required v-model="post.purpose">
+    <select required v-model="post.purpose" id = "post.purpose">
       <option>Borrowing</option>
       <option>Lending</option>
     </select>
 
     <label> Description </label>
-    <input type="desription" required v-model="post.desription" />
+    <input type="desription" required v-model="post.description" id = "post.description"/>
 
     <label> Category </label>
-    <select required v-model="post.category">
+    <select required v-model="post.category" id = "post.category">
       <option>Beauty & Personal Care</option>
       <option>Bulletin Board</option>
       <option>Computers & Tech</option>
@@ -33,7 +33,7 @@
     </select>
 
     <label> Location </label>
-    <select required v-model="post.location">
+    <select required v-model="post.location" id = "post.location">
       <option>PGP / PGPR</option>
       <option>Utown</option>
       <option>RVRC</option>
@@ -47,20 +47,17 @@
     </select>
 
     <div class="submit">
-    <button> Create Post </button>
+    <button v-on:click = "createPost()"> Create Post </button>
   </div>
   </form>
-  <p>Title {{ title }}</p>
-  <p>Purpose {{ purpose }}</p>
-  <p>Description {{ desription }}</p>
-  <p>Category {{ category }}</p>
-  <p>Location {{ location }}</p>
-
   
 </template>
 
 <script>
-import axios from 'axios'
+import firebaseApp from "../firebase.js";
+import {getFirestore} from "firebase/firestore";
+import { doc, setDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
 export default {
   name: "CreatePost",
   data() {
@@ -75,16 +72,30 @@ export default {
     };
   },
 methods: {
-  createPost(e) {
-    axios.post("/createpost",this.post)
-    .then((result) => {
-      console.warn(result)
-    })
-    .catch(function (error) {
-      console.log(error)
-      console.warn("Create Post error")
-    })
-    e.preventDefault()
+  async createPost() {
+    var a = document.getElementById("post.title").value
+    var b = document.getElementById("post.purpose").value
+    var c = document.getElementById("post.description").value
+    var d = document.getElementById("post.category").value
+    var f = document.getElementById("post.location").value
+
+    alert("creating post : " + a)
+    try{
+        const docRef = await setDoc(doc(db, "Posts", a),
+        {
+            title:a,
+            purpose:b,
+            description:c,
+            category:d,
+            location:f
+        }
+        )
+        console.log(docRef);
+    }
+    catch(error){
+                console.error("Error adding document:", error);
+            }
+
   }
 }
 };
@@ -99,7 +110,6 @@ methods: {
   padding: 40px;
   border-radius: 10px;
 }
-
 label {
   color: rgb(31, 34, 34);
   display: inline-block;
@@ -108,7 +118,6 @@ label {
   letter-spacing: 1px;
   font-weight: bold;
 }
-
 input,select {
   display: block;
   padding: 10px 6px;
@@ -118,7 +127,6 @@ input,select {
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-
 button {
   background-color: blue;
   border:0;
@@ -127,7 +135,6 @@ button {
   color:aliceblue;
   border-radius: 20px;
 }
-
 .submit {
   text-align: center;
 }
