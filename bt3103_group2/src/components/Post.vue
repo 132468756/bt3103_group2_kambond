@@ -2,8 +2,11 @@
   <form id="post">
       
     <div class="flex-box">
-      <h2>title:{{ title }}</h2>
-      <button @click="toDetail" id = "borrowbutton">Borrow</button>
+
+      <div id = "title">title:{{ title }}</div>
+      <div id = "statusbar">{{status}}</div>
+      <button @click="toDetail">Borrow</button>
+
     </div>
     <hr />
     <div id="owner">
@@ -12,20 +15,16 @@
     </div>
     
   </form>
-  <Status />
+  
 </template>
 
 <script>
-import Status from "./Status.vue";
+
 export default {
-  component: {
-    Status,
-  },
-  data() {
-    return {
-      title: "Charger",
-      owner: "someone",
-    };
+  props:{
+      title: String,
+      owner: String,
+      status:String,
   },
   methods: {
     toDetail() {
@@ -42,6 +41,8 @@ h2 {
 .flex-box {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height:40%;
 }
 
 #borrowbutton {
@@ -55,6 +56,12 @@ h2 {
   position: relative;
   float: right;
 }
+
+#title{
+  margin:0px;
+  font-size: 36px;
+}
+
 #owner {
   display: inline-flex;
 }
@@ -63,10 +70,18 @@ h2 {
   display: inline-block;
   border: 2px solid rgb(243, 20, 20);
   border-radius: 10px;
-  background-color: blue;
   width: 400px;
   height: 150px;
   padding: 10px;
+  margin: 10px;
+}
+#statusbar {
+  text-align:center;
+  background-color:#FFB7BB;
+  border-radius:10px;
+  border:2px solid;
+  height:50px;
+  width: 100px;
 }
 
 img {

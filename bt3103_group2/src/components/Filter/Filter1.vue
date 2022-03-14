@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "Filter1",
+  name: "filter1",
   data() {
     return {
       checkedNames: [],
