@@ -7,12 +7,14 @@
     <Filter3 />
 
   </div>
-  <Post v-for= "post in postcontent"
+  <Post v-for= "post in posts"
   :key = "post.id"
-   :owner = "post.owner"
-  :title = "post.title"/>
+  :owner = "post.owner"
+  :title = "post.title"
+  :status = "post.status"/>
   <div className = "Postlist">
   </div>
+
 </template>
 
 <script>
@@ -37,11 +39,14 @@ export default {
       postcontent:[
         { id: 1,
           title:"handphone",
-        owner:"person1"},
+        owner:"person1",
+        status:"want to borrow"},
         { id:2,
           title:"egg", 
-        owner:"person2"}
-      ]
+        owner:"person2",
+        status:"want to borrow"}
+      ],
+      posts:[],
     };
   },
   components: {
@@ -50,13 +55,18 @@ export default {
     Filter3,
     Post,
   },
-  methods:{
-    async collectData(){
+  mounted(){
+    async function collectData(posts){
       let z = await getDocs(collection(db,"Posts"))
-      return z;
+      z.forEach((doc)=> 
+      posts.push(doc.data()))
+      console.log(posts)
+      return posts;
     }
+    collectData(this.posts)
   }
 };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
