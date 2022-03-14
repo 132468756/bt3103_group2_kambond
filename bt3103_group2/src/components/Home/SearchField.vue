@@ -1,16 +1,12 @@
 <template>
   <div class="search-area">
-      <h3 id='searchtitle'> KamBond Search </h3>
+      <h1 id='searchtitle'> KamBond Search </h1>
       <div class="icon">
         <img src="@/assets/search.jpg" width="" height="">
       </div>
       <div class="search-bar">
-        <div class="inputbox">
-          <input type="text" id="search" v-model="searchText" required="" Placeholder="Search">
-        </div>
-        <div class="button">
+          <input type="text" id="inputbox" v-model="searchText" required="" Placeholder="Search">
           <button id="searchbutton" type="button" v-on:click="search()">Search</button>
-        </div>
       </div>
   </div>
 
@@ -45,9 +41,10 @@ methods: {
     position: relative;
   }
 
-  #searchtitle {
-    color: floralwhite; /* floralwhite */
+  h1 {
+    color: aliceblue; /* black */
     text-align: center;
+    text-shadow: 1px 1px black;
   }
 
   .icon {
@@ -57,33 +54,27 @@ methods: {
   }
 
   .search-bar {
-    display:inline-block;
+    display: inline-block;
     text-align: center;
+    align-items: center;
     width:100%;
   }
-
-  .inputbox {
-    text-align: center;
-    /* background-color: aqua; */
-    padding: 5%;
-  }
-  #search {
-    width: 80%;
+  #inputbox{
+    margin: 10px;
+    width: 60%;
     height:30px;
   }
 
-  .button {
-    /* background-color: blue; */
-    text-align: justify;
-    padding:5%;
+  #searchbutton{
+    margin: 15px 100px 10px 0px;
+    background-color:aliceblue;
+    color:black;
+    height:30px;
   }
 
-  #searchbutton {
-    background-color: floralwhite;
-    color: black;
-    height: 100%;
-  }
 
-  .button:hover {
+  #searchbutton:hover{
+    background-color:lightblue;
+    box-shadow: 1px 1px black;
   }
 </style>

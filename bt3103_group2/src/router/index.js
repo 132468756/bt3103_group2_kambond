@@ -8,7 +8,7 @@ import Profile from '../views/Profile.vue'
 import CreatePost from '../components/CreatePost.vue'
 const routes = [
     {
-        path: '/',
+        path: '/home',
         name: 'Homepage',
         component: Homepage
     },

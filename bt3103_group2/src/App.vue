@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
+    <router-link to="/home">Home</router-link> |
     <router-link to="/borrow">Borrow</router-link> |
     <router-link to="/lend">Lend</router-link> |
     <router-link to="/login">Login</router-link> |
@@ -9,15 +9,17 @@
     <router-link to="/createpost"> CreatePost </router-link>
     <hr />
   </div>
-  <router-view />
-
+    <router-view />
+  <Contact/>
 </template>
 
 <script>
-
+import Contact from "./components/Home/Contact.vue"
 export default {
   name: "App",
-  components: {},
+  components: {
+    Contact
+  },
 };
 </script>
 
