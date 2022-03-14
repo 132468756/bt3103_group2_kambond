@@ -17,15 +17,14 @@
 
 <script>
 import Status from "./Status.vue";
+
 export default {
   component: {
     Status,
   },
-  data() {
-    return {
-      title: "Charger",
-      owner: "someone",
-    };
+  props:{
+      title: String,
+      owner: String
   },
   methods: {
     toDetail() {
