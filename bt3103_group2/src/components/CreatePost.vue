@@ -47,7 +47,7 @@
     </select>
 
     <div class="submit">
-    <button> Create Post </button>
+    <button id ="submitbutton"> Create Post </button>
   </div>
   </form>
   <p>Title {{ title }}</p>
@@ -119,7 +119,7 @@ input,select {
   color: #555;
 }
 
-button {
+#submitbutton{
   background-color: blue;
   border:0;
   padding:10px 20px;
