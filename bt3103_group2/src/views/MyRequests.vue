@@ -21,7 +21,7 @@
                 <th class="MyRequestTitle">Post Date</th>
                 <th class="MyRequestTitle">Status</th>
                 <th class="MyRequestTitle">Post ID</th>
-                <th class="MyRequestTitle">Request</th>
+                <th class="MyRequestTitle">Action</th>
             </tr>
             <tr class="MyRequestRow">
                 <td class="MyRequestCol">1</td>

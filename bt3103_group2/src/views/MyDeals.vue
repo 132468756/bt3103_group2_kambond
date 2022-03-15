@@ -21,7 +21,7 @@
                 <th class="MyDealTitle">Post Date</th>
                 <th class="MyDealTitle">Status</th>
                 <th class="MyDealTitle">Post ID</th>
-                <th class="MyDealTitle">Request</th>
+                <th class="MyDealTitle">Action</th>
             </tr>
             <tr class="MyDealRow">
                 <td class="MyDealCol">1</td>
