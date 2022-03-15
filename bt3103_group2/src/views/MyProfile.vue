@@ -18,7 +18,7 @@
         <span id="TopRight">
             <div id="RightFunction">
                 <div id="Settings">
-                    <a href="">
+                    <a href="/settings">
                         <button class="MyBtn" id="SettingsBtn" onmouseover="cursor:hand">
                             <h2 class="InnerText">Settings</h2>
                         </button>
@@ -26,7 +26,7 @@
                 </div>
                 <br><br>
                 <div id="Chats">
-                    <a href="">
+                    <a href="/chats">
                         <button class="MyBtn" id="ChatsBtn">
                             <h2 class="InnerText">Chats</h2>
                         </button>
@@ -41,7 +41,7 @@
     <div id="BottomElement">
         <div id="OtherPages">
             <div id="MyPost">
-                <a href="">
+                <a href="/mypost">
                     <button class="MyBtn">
                         <h2 class="InnerText">My Posts</h2>
                     </button>
@@ -49,7 +49,7 @@
             </div>
 
             <div id="MyRequest">
-                <a href="">
+                <a href="/myrequest">
                     <button class="MyBtn">
                         <h2 class="InnerText">My Requests</h2>
                     </button>
@@ -57,7 +57,7 @@
             </div>
 
             <div id="MyDeal">
-                <a href="">
+                <a href="/mydeal">
                     <button class="MyBtn">
                         <h2 class="InnerText">My Deals</h2>
                     </button>
