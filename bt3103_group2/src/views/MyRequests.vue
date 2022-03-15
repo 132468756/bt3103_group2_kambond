@@ -1,5 +1,8 @@
 <template> 
     <!-- <h1>This is a sample page for My Request</h1> -->
+    <div id="Back">
+        <input type="button" id="BackBtn" value="Back" onclick="window.history.back()">
+    </div>
 
     <div class="profilePicDiv">
         <img src="@/assets/profilephoto.jpeg" id="profilePic">
@@ -107,5 +110,16 @@ export default {
 
     .RequestAction:active {
         background-color: lightgreen;
+    }
+
+    #BackBtn {
+        width: 60px;
+        height: 40px;
+        background-color: rgb(39, 46, 65);
+        color: white;
+        cursor: pointer;
+        border-radius: 12px;
+        border: none;
+        margin-left: 10%;
     }
 </style>
