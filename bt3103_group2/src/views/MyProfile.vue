@@ -18,11 +18,19 @@
         <span id="TopRight">
             <div id="RightFunction">
                 <div id="Settings">
-                    <h2><a href="" class="InnerText">Settings</a></h2>
+                    <a href="">
+                        <button class="MyBtn" id="SettingsBtn" onmouseover="cursor:hand">
+                            <h2 class="InnerText">Settings</h2>
+                        </button>
+                    </a>
                 </div>
                 <br><br>
                 <div id="Chats">
-                    <h2><a href="" class="InnerText">Chats</a></h2>
+                    <a href="">
+                        <button class="MyBtn" id="ChatsBtn">
+                            <h2 class="InnerText">Chats</h2>
+                        </button>
+                    </a>
                 </div>
             </div>
         </span>
@@ -33,23 +41,36 @@
     <div id="BottomElement">
         <div id="OtherPages">
             <div id="MyPost">
-                <!-- <h2><a href="" class="InnerText">My Posts</a></h2> -->
-                <!-- <button class="MyBtn"> -->
-                    <h2><a href="" class="InnerText">My Posts</a></h2>
-                <!-- </button> -->
+                <a href="">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Posts</h2>
+                    </button>
+                </a>
             </div>
 
             <div id="MyRequest">
-                <h2><a href="" class="InnerText">My Requests</a></h2>
+                <a href="">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Requests</h2>
+                    </button>
+                </a>
             </div>
 
             <div id="MyDeal">
-                <h2><a href="" class="InnerText">My Deals</a></h2>
+                <a href="">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Deals</h2>
+                    </button>
+                </a>
             </div>
         </div>
         <br><br>
         <div id="Create">
-            <h2><a href="/createpost" class="InnerText">Create</a></h2>
+            <a href="/createpost">
+                <button class="MyBtn" id="CreateBtn">
+                    <h2 class="InnerText">Create</h2>
+                </button>
+            </a>
         </div>
     </div>
 </template>
@@ -107,6 +128,46 @@ export default {
         width: 100%;
         height: 100%;
         background-color: aquamarine;
+        cursor: pointer;
+        border-radius: 12px;
+        border: none;
+    }
+
+    .MyBtn:hover {
+        outline-color: transparent;
+        outline-style: solid;
+        box-shadow: 0 0 0 3px lightblue;
+        transition: 0.5s;
+    }
+
+    .MyBtn:active {
+        background-color: lightblue;
+    }
+
+    #CreateBtn {
+        background-color: plum;
+    }
+
+    #CreateBtn:hover {
+        box-shadow: 0 0 0 3px rgb(240, 145, 240);
+        transition: 0.5s;
+    }
+
+    #CreateBtn:active {
+        background-color: rgb(240, 145, 240);
+    }
+
+    #SettingsBtn, #ChatsBtn {
+        background-color: orange;
+    }
+
+    #SettingsBtn:hover, #ChatsBtn:hover {
+        box-shadow: 0 0 0 3px lightcoral;
+        transition: 0.5s;
+    }
+
+    #SettingsBtn:active, #ChatsBtn:active {
+        background-color: lightcoral;
     }
 
     #MyPost {

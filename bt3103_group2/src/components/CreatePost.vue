@@ -1,19 +1,19 @@
 <template>
   <form @submit.prevent="createPost" method="post" id="createpostform">
     <label> Title </label>
-    <input type="title" required v-model="post.title" />
+    <input type="title" class="PostInput" required v-model="post.title" />
 
     <label> Purpose </label>
-    <select required v-model="post.purpose">
+    <select required v-model="post.purpose" class="PostInput">
       <option>Borrowing</option>
       <option>Lending</option>
     </select>
 
     <label> Description </label>
-    <input type="desription" required v-model="post.desription" />
+    <input type="desription" class="PostInput" required v-model="post.desription" />
 
     <label> Category </label>
-    <select required v-model="post.category">
+    <select required v-model="post.category" class="PostInput">
       <option>Beauty & Personal Care</option>
       <option>Bulletin Board</option>
       <option>Computers & Tech</option>
@@ -32,8 +32,8 @@
       <option>Others</option>
     </select>
 
-    <label> Location </label>
-    <select required v-model="post.location">
+    <label id="LabelLoc"> Location </label>
+    <select required v-model="post.location" class="PostInput">
       <option>PGP / PGPR</option>
       <option>Utown</option>
       <option>RVRC</option>
@@ -47,7 +47,7 @@
     </select>
 
     <div class="submit">
-    <button> Create Post </button>
+    <button id="CreatePostBtn"> Create Post </button>
   </div>
   </form>
   <p>Title {{ title }}</p>
@@ -100,7 +100,7 @@ methods: {
   border-radius: 10px;
 }
 
-label {
+#LabelLoc {
   color: rgb(31, 34, 34);
   display: inline-block;
   margin: 25px 0 15px;
@@ -109,7 +109,7 @@ label {
   font-weight: bold;
 }
 
-input,select {
+.PostInput {
   display: block;
   padding: 10px 6px;
   width: 100%;
@@ -119,7 +119,7 @@ input,select {
   color: #555;
 }
 
-button {
+#CreatePostBtn {
   background-color: blue;
   border:0;
   padding:10px 20px;

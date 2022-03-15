@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Homepage from "../views/Homepage.vue";
 import Borrow from "../components/Borrow.vue";
 import Lend from "../components/Lend.vue";
-import Login from "../views/Login.vue";
+// import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import Profile from "../views/MyProfile.vue";
 import CreatePost from "../components/CreatePost.vue";
@@ -25,11 +25,11 @@ const routes = [
     component: Lend,
   },
 
-  {
-    path: "/login",
-    name: "Login",
-    component: Login,
-  },
+  // {
+  //   path: "/login",
+  //   name: "Login",
+  //   component: Login,
+  // },
 
   {
     path: "/signup",
