@@ -13,17 +13,41 @@
 
     <div class="table">
       <table id="userPosts">
-        <tr>
-          <th>Post ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Purpose</th>
-          <th>Catogory</th>
-          <th>Location</th>
-          <th>Post Date</th>
-          <th>Status</th>
-          <th>Post ID</th>
-          <th>Request</th>
+        <tr class="UserPostRow">
+          <th class="UserPostTitle">Post ID</th>
+          <th class="UserPostTitle">Title</th>
+          <th class="UserPostTitle">Description</th>
+          <th class="UserPostTitle">Purpose</th>
+          <th class="UserPostTitle">Catogory</th>
+          <th class="UserPostTitle">Location</th>
+          <th class="UserPostTitle">Post Date</th>
+          <th class="UserPostTitle">Status</th>
+          <th class="UserPostTitle">Post ID</th>
+          <th class="UserPostTitle">Request</th>
+        </tr>
+        <tr class="UserPostRow">
+          <td class="UserPostCol">1</td>
+          <td class="UserPostCol">Charger</td>
+          <td class="UserPostCol">Windows laptop charger</td>
+          <td class="UserPostCol">Charge your laptop</td>
+          <td class="UserPostCol">Electronics</td>
+          <td class="UserPostCol">PGP</td>
+          <td class="UserPostCol">15/03/2022</td>
+          <td class="UserPostCol">Available</td>
+          <td class="UserPostCol">3216546</td>
+          <td class="UserPostCol">Request</td>
+        </tr>
+        <tr class="UserPostRow">
+          <td class="UserPostCol">2</td>
+          <td class="UserPostCol">Charger</td>
+          <td class="UserPostCol">Windows laptop charger</td>
+          <td class="UserPostCol">Charge your laptop</td>
+          <td class="UserPostCol">Electronics</td>
+          <td class="UserPostCol">PGP</td>
+          <td class="UserPostCol">15/03/2022</td>
+          <td class="UserPostCol">Available</td>
+          <td class="UserPostCol">3216546</td>
+          <td class="UserPostCol">Request</td>
         </tr>
       </table>
     </div>
@@ -66,12 +90,23 @@ export default {
     height: 100px;
   }
 
-  table, tr, th {
-    border: 5px pink solid;
-    border-collapse: collapse;
+  #userPosts {
+    text-align: center;
+    width: 80%;
+    margin-left: 10%;
   }
 
-  #userPosts {
-    width: 100%;
+  #userPosts,.UserPostTitle,.UserPostCol {
+    border: 3px rgb(255, 165, 179) solid;
+    border-collapse: collapse;
+    height: 30px;
+  }
+
+  .UserPostRow:nth-child(odd) {
+    background-color: rgb(255, 242, 244);
+  }
+
+  .UserPostTitle {
+    background-color: lightpink;
   }
 </style>
