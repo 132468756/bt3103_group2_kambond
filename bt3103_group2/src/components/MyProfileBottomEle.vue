@@ -108,4 +108,19 @@ export default {
         display:flex;
         flex-direction:row;
     }
+
+    #CreateBtn {
+        background-color: plum;
+    }
+
+    #CreateBtn:hover {
+        outline-color: transparent;
+        outline-style: solid;
+        box-shadow: 0 0 0 3px rgb(214, 130, 214);
+        transition: 0.5s;
+    }
+
+    #CreateBtn:active {
+        background-color: rgb(214, 130, 214);
+    }
 </style>

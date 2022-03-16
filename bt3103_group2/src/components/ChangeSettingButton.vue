@@ -1,17 +1,17 @@
 <template>
-    <button id="changeSettingBtn">
+    <button class="changeSettingBtn">
         change
     </button>
 </template>
 
 <script>
 export default {
-
+    name:"changeSettingButton"
 }
 </script>
 
 <style>
-#changeSettingBtn {
+.changeSettingBtn {
     border-radius: 12px;
     width: 80%;
     height: 40px;
@@ -21,13 +21,13 @@ export default {
     color: blue;
 }
 
-#changeSettingBtn:hover {
+.changeSettingBtn:hover {
     font-weight: bold;
     background-color: rgb(15, 252, 220);
     transition: 0.5s;
 }
 
-#changeSettingBtn:active {
+.changeSettingBtn:active {
     background-color: rgb(15, 179, 157);
 }
 </style>
