@@ -29,7 +29,7 @@
           <td class="UserPostCol">1</td>
           <td class="UserPostCol">Charger</td>
           <td class="UserPostCol">Windows laptop charger</td>
-          <td class="UserPostCol">Charge your laptop</td>
+          <td class="UserPostCol">Borrowing</td>
           <td class="UserPostCol">Electronics</td>
           <td class="UserPostCol">PGP</td>
           <td class="UserPostCol">15/03/2022</td>
@@ -41,7 +41,7 @@
           <td class="UserPostCol">2</td>
           <td class="UserPostCol">Charger</td>
           <td class="UserPostCol">Windows laptop charger</td>
-          <td class="UserPostCol">Charge your laptop</td>
+          <td class="UserPostCol">Lending</td>
           <td class="UserPostCol">Electronics</td>
           <td class="UserPostCol">PGP</td>
           <td class="UserPostCol">15/03/2022</td>
