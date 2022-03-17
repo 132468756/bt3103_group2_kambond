@@ -1,15 +1,15 @@
 <template>
-  <div id="nav">
-    <router-link to="/home">Home</router-link> |
-    <router-link to="/borrow">Borrow</router-link> |
-    <router-link to="/lend">Lend</router-link> |
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/signup">Sign Up</router-link> |
-    <router-link to="/profile">Profile</router-link> |
-    <router-link to="/createpost"> CreatePost </router-link>
-    <hr />
-  </div>
-    <router-view />
+    <div id="nav">
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/borrow">Borrow</router-link> |
+      <router-link to="/lend">Lend</router-link> |
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/signup">Sign Up</router-link> |
+      <router-link to="/profile">Profile</router-link> |
+      <router-link to="/createpost"> CreatePost </router-link>
+      <hr />
+    </div>
+  <router-view />
   <Contact/>
 </template>
 

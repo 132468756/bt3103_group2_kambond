@@ -1,4 +1,5 @@
 <template>
+<<<<<<< Updated upstream
   <div id="profile">
     <!-- <h1>This is a sample user_name's profile</h1> -->
     <!-- <Logout/> -->
