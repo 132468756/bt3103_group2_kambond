@@ -2,9 +2,9 @@
   <form id="post">
       
     <div class="flex-box">
-      <div id = "title">title:{{ title }}</div>
+      <div id = "title">{{ title }}</div>
       <div id = "statusbar">{{status}}</div>
-      <button @click="toDetail">Borrow</button>
+      <button @click="toDetail" id= "borrowBtn">Borrow</button>
     </div>
     <hr />
     <div id="owner">
@@ -40,7 +40,7 @@ export default {
   height:40%;
 }
 
-button {
+#borrowBtn {
   background-color: black;
   color: white;
   text-align: center;
