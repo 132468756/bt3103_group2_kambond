@@ -5,43 +5,98 @@
             <th class="MyRequestTitle">Title</th>
             <th class="MyRequestTitle">Description</th>
             <th class="MyRequestTitle">Purpose</th>
-            <th class="MyRequestTitle">Catogory</th>
+            <th class="MyRequestTitle">Category</th>
             <th class="MyRequestTitle">Location</th>
             <th class="MyRequestTitle">Post Date</th>
             <th class="MyRequestTitle">Status</th>
-            <th class="MyRequestTitle">Post ID</th>
             <th class="MyRequestTitle">Action</th>
-        </tr>
-        <tr class="MyRequestRow">
-            <td class="MyRequestCol">1</td>
-            <td class="MyRequestCol">Charger</td>
-            <td class="MyRequestCol">Windows laptop charger</td>
-            <td class="MyRequestCol">Borrowing</td>
-            <td class="MyRequestCol">Electronics</td>
-            <td class="MyRequestCol">PGP</td>
-            <td class="MyRequestCol">15/03/2022</td>
-            <td class="MyRequestCol">Available</td>
-            <td class="MyRequestCol">3216546</td>
-            <td class="MyRequestCol"><button class="RequestAction">Complete</button></td>
-        </tr>
-        <tr class="MyRequestRow">
-            <td class="MyRequestCol">2</td>
-            <td class="MyRequestCol">Charger</td>
-            <td class="MyRequestCol">Windows laptop charger</td>
-            <td class="MyRequestCol">Lending</td>
-            <td class="MyRequestCol">Electronics</td>
-            <td class="MyRequestCol">PGP</td>
-            <td class="MyRequestCol">15/03/2022</td>
-            <td class="MyRequestCol">Available</td>
-            <td class="MyRequestCol">3216546</td>
-            <td class="MyRequestCol"><button class="RequestAction">Complete</button></td>
         </tr>
     </table>
 </template>
 
 <script>
-export default {
+import  firebaseApp from "../firebase.js"
+import {getFirestore} from "firebase/firestore"
+import{getDoc, doc, deleteDoc} from "firebase/firestore"
 
+const db = getFirestore(firebaseApp)
+
+export default {
+    mounted(){
+        async function display(){
+            let user = await getDoc(doc(db, "users", "PeterParker"))
+            let ind = 1
+            let records = user.data().requests
+            // console.log(user.data())
+            // console.log(records)
+            
+            records.forEach(async (record) => {
+                var table = document.getElementById("MyRequests")
+                var row = table.insertRow(ind)
+                row.className="MyRequestRow"
+
+                let requestInfo = await findRequestInfo(record)
+                // console.log("requestInfo", requestInfo) 
+                var cell1 = row.insertCell(0)
+                cell1.className="MyRequestCol"
+                var cell2 = row.insertCell(1)
+                var cell3 = row.insertCell(2)
+                var cell4 = row.insertCell(3)
+                var cell5 = row.insertCell(4)
+                var cell6 = row.insertCell(5)
+                var cell7 = row.insertCell(6)
+                var cell8 = row.insertCell(7)
+                var cell9 = row.insertCell(8)
+
+                cell1.innerHTML = requestInfo[0]
+                cell2.innerHTML = requestInfo[1]
+                cell3.innerHTML = requestInfo[2]
+                cell4.innerHTML = requestInfo[3]
+                cell5.innerHTML = requestInfo[4]
+                cell6.innerHTML = requestInfo[5]
+                cell7.innerHTML = requestInfo[6]
+                cell8.innerHTML = requestInfo[7]
+                
+                var deleteBtn = document.createElement("button")
+                deleteBtn.className = "completeRequestBtn"
+                deleteBtn.id = String(requestInfo[0])
+                deleteBtn.innerHTML="Complete"
+                deleteBtn.onclick=function(){
+                    deletePost(record)
+                }
+                cell9.appendChild(deleteBtn)
+            })
+        }
+        display()
+
+        async function findRequestInfo(record){
+            let thisPost = await getDoc(doc(db, "Requests", record))
+            let postID = thisPost.data().postID
+            let title = thisPost.data().title
+            let description = thisPost.data().description
+            let purpose = thisPost.data().purpose
+            let category = thisPost.data().category
+            let location = thisPost.data().location
+            let postDate = thisPost.data().postDate
+            let status = thisPost.data().status
+
+            let requestInfo = [postID,title,description,purpose,category,location,postDate,status]
+            console.log(requestInfo)
+            return requestInfo
+        }
+
+        async function deletePost(record){
+            alert("Please confirm that " + record + " is completed." )
+            // console.log(doc(db, "Users", "PeterParker", "posts"))
+            await deleteDoc(doc(db, "Requests", record))
+            console.log(record, " successfully deleted!")
+            let tb = document.getElementById("MyRequests")
+            while(tb.rows.length > 1){
+                tb.deleteRow(1)
+            }
+            display()
+        }
+    }
 }
 </script>
 
@@ -52,9 +107,13 @@ export default {
         margin-left: 10%;
     }
 
-    #MyRequests,.MyRequestTitle,.MyRequestCol {
+    #MyRequests,.MyRequestTitle{
         border: 3px rgb(161, 255, 161) solid;
         border-collapse: collapse;
+        height: 30px;
+    }
+
+    .MyRequestCol {
         height: 30px;
     }
 
@@ -66,23 +125,24 @@ export default {
         background-color: rgb(183, 255, 183);
     }
 
-    .RequestAction {
-        width: 60%;
+    .completeRequestBtn {
+        width: 80%;
         height: 80%;
         background-color: rgb(111, 255, 111);
         cursor: pointer;
         border-radius: 12px;
         border: none;
+        margin-right: 10%;
     }
 
-    .RequestAction:hover {
+    .completeRequestBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px lightgreen;
         transition: 0.5s;
     }
 
-    .RequestAction:active {
+    .completeRequestBtn:active {
         background-color: lightgreen;
     }
 </style>
