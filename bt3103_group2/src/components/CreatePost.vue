@@ -88,6 +88,14 @@ methods: {
     var c = document.getElementById("post.description").value
     var d = document.getElementById("post.category").value
     var f = document.getElementById("post.location").value
+    var status = b
+
+    if(b == "Borrowing"){
+        status = "Wants to borrow"
+    }
+    else{
+        status = "Wants to lend"
+    }
 
     alert("creating post : " + a)
     try{
@@ -97,7 +105,8 @@ methods: {
             purpose:b,
             description:c,
             category:d,
-            location:f
+            location:f,
+            status: status
         }
         )
         console.log(docRef);
