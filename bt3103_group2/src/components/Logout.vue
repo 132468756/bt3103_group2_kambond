@@ -26,7 +26,7 @@ export default {
     methods:{
         signOut() {
             const auth = getAuth();
-            const user = suth.currentUser;
+            const user = auth.currentUser;
             signOut(auth, user);
             this.$router.push({name:'Login'});
         }
