@@ -34,7 +34,7 @@
 
         <footer class="modal-footer">
           <slot name="footer">
-            time: {{time}}
+            owner: {{owner}}
           </slot>
           <button
             type="button"
@@ -54,13 +54,11 @@
 <script>
   export default {
     name: 'Modal',
-    data(){
-        return {
-            title:"bottle",
-            description: "I hope to borrow a waterbottle that is blue and have the words I love Singapore printed on it",
-            time: "3 March"
-        }
-    },
+    props:{
+            title:String,
+            description: String,
+            owner: String
+        },
     methods: {
       close() {
         this.$emit('close');

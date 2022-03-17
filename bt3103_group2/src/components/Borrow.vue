@@ -13,7 +13,7 @@
           @click="showModal">
       <Post v-for= "post in posts"
       :key = "post.id"
-      :owner = "post.user"
+      :owner = "post.userName"
       :title = "post.title"
       :status = "post.status"/>
       
@@ -21,6 +21,11 @@
     <Modal
         v-show="isModalVisible"
         @close="closeModal"
+        v-for= "post in posts"
+        :key = "post.id"
+        :owner = "post.userName"
+        :title = "post.title"
+        :description = "post.description"
       />
     
   </div>
@@ -47,8 +52,6 @@ export default {
   data() {
     return {
       checkedNames: [],
-      title:"charger",
-      owner:"someone",
       isModalVisible:false,
       posts:[],
     };
@@ -66,20 +69,14 @@ export default {
       z.forEach((doc)=> 
       posts.push(doc.data()))
       console.log(posts)
-      let docRef = doc(db, "Users", posts[1].user);
-      let docSnap = await getDoc(docRef);
+      let docRef = await getDoc(doc(db, "Users", "12345"));
+      console.log(docRef.data().userName)
 
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-      } else {
-  // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-
-      posts.forEach((post)=>{
-        docRef = doc(db, "Users", post.user);
-        docSnap = getDoc(docRef);
-        console.log(docSnap.data())
+      posts.forEach(async (post)=>{
+        docRef = await getDoc(doc(db, "Users", post.user));
+        console.log(docRef.data().userName)
+        post.userName = docRef.data().userName
+       
       })
       return posts;
     }
