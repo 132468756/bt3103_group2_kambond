@@ -2,11 +2,9 @@
   <form id="post">
       
     <div class="flex-box">
-
       <div id = "title">title:{{ title }}</div>
       <div id = "statusbar">{{status}}</div>
       <button @click="toDetail">Borrow</button>
-
     </div>
     <hr />
     <div id="owner">
@@ -35,9 +33,6 @@ export default {
 </script>
 
 <style>
-h2 {
-  margin:0px;
-}
 .flex-box {
   display: flex;
   justify-content: space-between;
@@ -45,7 +40,7 @@ h2 {
   height:40%;
 }
 
-#borrowbutton {
+button {
   background-color: black;
   color: white;
   text-align: center;
