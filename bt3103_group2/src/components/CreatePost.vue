@@ -1,19 +1,26 @@
 <template>
   <form @submit.prevent="createPost" method="post" id="createpostform">
+      <div className ="row">
     <label> Title </label>
-    <input type="title" class="PostInput" required v-model="post.title" />
+    <input type="title" required v-model="post.title" id = "post.title"/>
+    </div>
 
+    <div className ="row">
     <label> Purpose </label>
-    <select required v-model="post.purpose" class="PostInput">
+    <select required v-model="post.purpose" id = "post.purpose">
       <option>Borrowing</option>
       <option>Lending</option>
     </select>
+    </div>
 
+    <div className ="row">
     <label> Description </label>
-    <input type="desription" class="PostInput" required v-model="post.desription" />
+    <input type="desription" required v-model="post.description" id = "post.description"/>
+    </div>
 
+    <div className ="row">
     <label> Category </label>
-    <select required v-model="post.category" class="PostInput">
+    <select required v-model="post.category" id = "post.category">
       <option>Beauty & Personal Care</option>
       <option>Bulletin Board</option>
       <option>Computers & Tech</option>
@@ -31,9 +38,11 @@
       <option>Musical Instrument</option>
       <option>Others</option>
     </select>
+    </div>
 
-    <label id="LabelLoc"> Location </label>
-    <select required v-model="post.location" class="PostInput">
+    <div className ="row">
+    <label> Location </label>
+    <select required v-model="post.location" id = "post.location">
       <option>PGP / PGPR</option>
       <option>Utown</option>
       <option>RVRC</option>
@@ -45,22 +54,20 @@
       <option>Kent Ridge Hall</option>
       <option>Others</option>
     </select>
+    </div>
 
-    <div class="submit">
-    <button id="CreatePostBtn"> Create Post </button>
+    <div className = "submitRow">
+    <button className="submit" v-on:click = "createPost()"> Create Post </button>
   </div>
   </form>
-  <p>Title {{ title }}</p>
-  <p>Purpose {{ purpose }}</p>
-  <p>Description {{ desription }}</p>
-  <p>Category {{ category }}</p>
-  <p>Location {{ location }}</p>
-
   
 </template>
 
 <script>
-import axios from 'axios'
+import firebaseApp from "../firebase.js";
+import {getFirestore} from "firebase/firestore";
+import { doc, setDoc} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
 export default {
   name: "CreatePost",
   data() {
@@ -75,16 +82,39 @@ export default {
     };
   },
 methods: {
-  createPost(e) {
-    axios.post("/createpost",this.post)
-    .then((result) => {
-      console.warn(result)
-    })
-    .catch(function (error) {
-      console.log(error)
-      console.warn("Create Post error")
-    })
-    e.preventDefault()
+  async createPost() {
+    var a = document.getElementById("post.title").value
+    var b = document.getElementById("post.purpose").value
+    var c = document.getElementById("post.description").value
+    var d = document.getElementById("post.category").value
+    var f = document.getElementById("post.location").value
+    var status = b
+
+    if(b == "Borrowing"){
+        status = "Wants to borrow"
+    }
+    else{
+        status = "Wants to lend"
+    }
+
+    alert("creating post : " + a)
+    try{
+        const docRef = await setDoc(doc(db, "Posts", a),
+        {
+            title:a,
+            purpose:b,
+            description:c,
+            category:d,
+            location:f,
+            status: status
+        }
+        )
+        console.log(docRef);
+    }
+    catch(error){
+                console.error("Error adding document:", error);
+            }
+
   }
 }
 };
@@ -92,25 +122,25 @@ methods: {
 
 <style scoped>
 #createpostform {
-  max-width: 420px;
-  margin: 30px auto;
   background: rgb(205, 243, 213);
-  text-align: left;
-  padding: 40px;
+  padding-bottom: 80px;
   border-radius: 10px;
+  justify-content:center;
 }
-
-#LabelLoc {
+label {
   color: rgb(31, 34, 34);
-  display: inline-block;
-  margin: 25px 0 15px;
+  display: flex;
+  justify-content:center;
+  margin-top:2%;
+  margin-bottom:2%;
+  width:100%;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
 }
-
-.PostInput {
-  display: block;
+input,select {
+  display: flex;
+  justify-content:center;
   padding: 10px 6px;
   width: 100%;
   box-sizing: border-box;
@@ -119,16 +149,27 @@ methods: {
   color: #555;
 }
 
-#CreatePostBtn {
-  background-color: blue;
-  border:0;
-  padding:10px 20px;
-  margin-top:20px;
-  color:aliceblue;
-  border-radius: 20px;
+.row{
+    display:flex;
+    flex-direction:column;
+    width:40%;
+    margin-left:30%;
+}
+
+.submitRow{
+    margin-left:60%;
 }
 
 .submit {
-  text-align: center;
+    position:absolute;
+    text-align: center;
+    background-color: blue;
+    border:0;
+    padding:10px 20px;
+    margin-top:20px;
+    color:aliceblue;
+    border-radius: 20px;
+    width:10%;
+    height:5%;
 }
 </style>
