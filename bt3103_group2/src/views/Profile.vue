@@ -62,6 +62,18 @@ export default {
   name: "Profile",
   components : {
     // Logout,
+=======
+  <h1>This is the sample user profile</h1>
+  <Logout/>
+</template>
+
+<script>
+import Logout from "../components/Logout.vue"
+export default {
+  name: "Profile",
+  components:{
+    Logout
+>>>>>>> Stashed changes
   }
 }
 </script>
