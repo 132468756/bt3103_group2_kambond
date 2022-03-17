@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
-import postTable from "../components/MyPostsTable.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import postTable from "../components/profile/MyPostsTable.vue"
 
 export default {
     name:"MyPosts",

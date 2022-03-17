@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
-import userInfo from "../components/UserInfoDisplay.vue"
-import settingTable from "../components/SettingsTable.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import userInfo from "../components/profile/UserInfoDisplay.vue"
+import settingTable from "../components/profile/SettingsTable.vue"
 
 export default {
     name:"Settings",

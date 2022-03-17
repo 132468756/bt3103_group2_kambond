@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import userInfo from "../components/UserInfoDisplay.vue"
-import settingChat from "../components/SettingsChatsButton.vue"
-import bottomEle from "../components/MyProfileBottomEle.vue"
+import userInfo from "../components/profile/UserInfoDisplay.vue"
+import settingChat from "../components/profile/SettingsChatsButton.vue"
+import bottomEle from "../components/profile/MyProfileBottomEle.vue"
 
 export default {
     name:"MyProfile",

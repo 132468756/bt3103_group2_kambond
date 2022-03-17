@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import changeBtn from "../components/ChangeSettingButton.vue"
+import changeBtn from "./ChangeSettingButton.vue"
 
 export default {
     names:"SettingsTable",

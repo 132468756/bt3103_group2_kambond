@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
-import dealTable from "../components/MyDealsTable.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import dealTable from "../components/profile/MyDealsTable.vue"
 
 export default {
     name: "MyDeals",

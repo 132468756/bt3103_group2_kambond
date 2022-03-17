@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
-import requestTable from "../components/MyRequestsTable.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import requestTable from "../components/profile/MyRequestsTable.vue"
 
 export default {
     name:"MyRequests",
