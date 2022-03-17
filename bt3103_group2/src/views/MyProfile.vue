@@ -1,18 +1,18 @@
 <template>
     <!-- <h1>This is a sample of My_Profile</h1> -->
     <div id="TopElement">
-        <span id="TopLeft">
+        <div id = "emptyDiv">        
+        </div>
+        <div id="TopLeft">
             <userInfo id="MyInfo"/>
-        </span>
+        </div>
 
-        <span id="TopRight">
+        <div id="TopRight">
             <div id="RightFunction">
                 <settingChat/>
             </div>
-        </span>
-    </div>
-
-    <br><br><br>    
+        </div>
+    </div>  
 
     <div id="BottomElement">
         <bottomEle/>
@@ -35,25 +35,37 @@ export default {
 </script>
 
 <style>
-    #TopLeft {
-        display: inline-block;
-        width: 63.625%;
+    #TopElement{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-around;
+        width:100%;
     }
 
-    #MyInfo {
-        margin-left: 57.5%;
+    #emptyDiv{
+        width:20vw;
     }
 
-    #TopRight {
-        display: inline-block;
-        width: 34.375%;
+    #Topleft{
+        width:20vw;
     }
+
 
     #RightFunction {
-        margin-left: 18%;
+        width:20vw;
+        margin-right:1.9vw;
     }
 
     .InnerText {
         color: gray;
+    }
+
+    #BottomElement{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+        margin-top:3%;
     }
 </style>

@@ -57,8 +57,8 @@
     </div>
 
     <div className = "submitRow">
-    <button className="submit" v-on:click = "createPost()"> Create Post </button>
-  </div>
+      <button className="submit" v-on:click = "createPost()"> Create Post </button>
+    </div>
   
   </form>
   
@@ -130,10 +130,11 @@ methods: {
   border-radius: 10px;
   justify-content:center;
 }
-.postLabel {
+
+.postlabel {
   color: rgb(31, 34, 34);
   display: flex;
-  justify-content:center;
+  justify-content:left;
   margin-top:2%;
   margin-bottom:2%;
   width:100%;
@@ -141,6 +142,7 @@ methods: {
   letter-spacing: 1px;
   font-weight: bold;
 }
+
 input,select {
   display: flex;
   justify-content:center;
@@ -161,6 +163,7 @@ input,select {
 
 .submitRow{
     margin-left:60%;
+    padding:1%;
 }
 
 .submit {
@@ -173,6 +176,6 @@ input,select {
     color:aliceblue;
     border-radius: 20px;
     width:10%;
-    height:5%;
+    height:7%;
 }
 </style>

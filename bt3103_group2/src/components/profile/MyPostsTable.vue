@@ -36,7 +36,7 @@ export default {
                 row.className="MyPostRow"
 
                 let postInfo = await findPostInfo(record)
-                console.log("postInfo", postInfo) 
+                // console.log("postInfo", postInfo) 
                 var cell1 = row.insertCell(0)
                 cell1.className="MyPostCol"
                 var cell2 = row.insertCell(1)
