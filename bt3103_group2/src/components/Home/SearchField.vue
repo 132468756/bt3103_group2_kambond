@@ -41,7 +41,7 @@ methods: {
     position: relative;
   }
 
-  h1 {
+  #searchtitle {
     color: aliceblue; /* black */
     text-align: center;
     text-shadow: 1px 1px black;
