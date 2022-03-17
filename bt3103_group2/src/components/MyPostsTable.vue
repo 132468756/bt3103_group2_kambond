@@ -5,43 +5,77 @@
             <th class="MyPostTitle">Title</th>
             <th class="MyPostTitle">Description</th>
             <th class="MyPostTitle">Purpose</th>
-            <th class="MyPostTitle">Catogory</th>
+            <th class="MyPostTitle">Category</th>
             <th class="MyPostTitle">Location</th>
             <th class="MyPostTitle">Post Date</th>
             <th class="MyPostTitle">Status</th>
-            <th class="MyPostTitle">Post ID</th>
             <th class="MyPostTitle">Action</th>
-        </tr>
-        <tr class="MyPostRow">
-            <td class="MyPostCol">1</td>
-            <td class="MyPostCol">Charger</td>
-            <td class="MyPostCol">Windows laptop charger</td>
-            <td class="MyPostCol">Borrowing</td>
-            <td class="MyPostCol">Electronics</td>
-            <td class="MyPostCol">PGP</td>
-            <td class="MyPostCol">15/03/2022</td>
-            <td class="MyPostCol">Available</td>
-            <td class="MyPostCol">3216546</td>
-            <td class="MyPostCol"><button class="DeletePost">Delete</button></td>
-        </tr>
-        <tr class="MyPostRow">
-            <td class="MyPostCol">2</td>
-            <td class="MyPostCol">Charger</td>
-            <td class="MyPostCol">Windows laptop charger</td>
-            <td class="MyPostCol">Lending</td>
-            <td class="MyPostCol">Electronics</td>
-            <td class="MyPostCol">PGP</td>
-            <td class="MyPostCol">15/03/2022</td>
-            <td class="MyPostCol">Available</td>
-            <td class="MyPostCol">3216546</td>
-            <td class="MyPostCol"><button class="DeletePost">Delete</button></td>
         </tr>
     </table>
 </template>
 
 <script>
-export default {
+// import  firebaseApp from "../firebase.js"
+// import {getFirestore} from "firebase/fireStore"
+// import{collection, getDocs, doc, deleteDoc} from "firebase/fireStore"
 
+// const db = getFirestore(firebaseApp)
+
+export default {
+    // mounted(){
+    //     async function display(){
+    //         let records = await getDocs(collection(db, "username"))
+    //         let ind = 1
+            
+    //         records.forEach((docs) => {
+    //             let record = docs.data()
+    //             var table = document.getElementById("MyPosts")
+    //             var row = table.insertRow(ind)
+
+    //             var postID = record.postID
+    //             var title = record.title
+    //             var description = record.description
+    //             var purpose = record.purpose
+    //             var category = record.category
+    //             var location = record.location
+    //             var postDate = record.postDate
+    //             var status = record.status
+
+    //             var cell1 = row.insertCell(0)
+    //             var cell2 = row.insertCell(1)
+    //             var cell3 = row.insertCell(2)
+    //             var cell4 = row.insertCell(3)
+    //             var cell5 = row.insertCell(4)
+    //             var cell6 = row.insertCell(5)
+    //             var cell7 = row.insertCell(6)
+    //             var cell8 = row.insertCell(7)
+    //             var cell9 = row.insertCell(8)
+
+    //             cell1.innerHTML = postID
+    //             cell2.innerHTML = title
+    //             cell3.innerHTML = description
+    //             cell4.innerHTML = purpose
+    //             cell5.innerHTML = category
+    //             cell6.innerHTML = location
+    //             cell7.innerHTML = postDate
+    //             cell8.innerHTML = status
+    //             cell9.innerHTML = "Delete Button"
+
+    //         })
+    //     }
+    //     display()
+
+    //     async function deletePost(postID){
+    //         alert("You are going to delete PostID " + postID)
+    //         await deleteDoc(doc(db, "username", postID))
+    //         console.log("Document successfully deleted!" + postID)
+    //         let tb = document.getElementById("MyPosts")
+    //         while(tb.rows.length > 1){
+    //             tb.deleteRow(1)
+    //         }
+    //         display()
+    //     }
+    // }
 }
 </script>
 
