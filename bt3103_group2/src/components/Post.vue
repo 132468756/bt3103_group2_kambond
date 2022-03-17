@@ -2,14 +2,15 @@
   <form id="post">
       
     <div class="flex-box">
-      <div id = "title">title:{{ title }}</div>
-      <div id = "statusbar">{{status}}</div>
-      <button @click="toDetail">Borrow</button>
+      <div id = "title">{{ title }}</div>
+      <div id = "statusbar">{{ status }}</div>
+      <button class="borrow-button" @click="toDetail">Borrow</button>
     </div>
+    <div id = "description"> {{ description }} </div>
     <hr />
     <div id="owner">
       <img src="@/assets/profilephoto.jpeg" alt="cannotfind" />
-      <h3>owner:{{ owner }}</h3>
+      <h4>owner:{{ owner }}</h4>
     </div>
     
   </form>
@@ -23,6 +24,7 @@ export default {
       title: String,
       owner: String,
       status:String,
+      description: String,
   },
   methods: {
     toDetail() {
@@ -40,21 +42,23 @@ export default {
   height:40%;
 }
 
-button {
+.borrow-button {
   background-color: black;
   color: white;
   text-align: center;
+  font-size: 11px;
   border: 10px;
   border-radius: 10px;
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 20px;
   position: relative;
   float: right;
 }
 
 #title{
   margin:0px;
-  font-size: 36px;
+  font-size: 30px;
+  font-weight: 700;
 }
 
 #owner {
@@ -63,19 +67,19 @@ button {
 
 #post {
   display: inline-block;
-  border: 2px solid rgb(243, 20, 20);
-  border-radius: 10px;
-  width: 400px;
+  border: 2px solid rgb(0, 0, 0);
+  width: 45%;
   height: 150px;
   padding: 10px;
   margin: 10px;
 }
 #statusbar {
   text-align:center;
-  background-color:#FFB7BB;
-  border-radius:10px;
+  font-size: 10px;
+  background-color:#ffecda;
+  border-radius:3px;
   border:2px solid;
-  height:50px;
+  height:15px;
   width: 100px;
 }
 

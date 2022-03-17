@@ -1,9 +1,6 @@
 <template>
   <div class="search-area">
-      <h1 id='searchtitle'> KamBond Search </h1>
-      <div class="icon">
-        <img src="@/assets/search.jpg" width="" height="">
-      </div>
+      <h1 id='search-title'> KamBond Search </h1>
       <div class="search-bar">
           <input type="text" id="inputbox" v-model="searchText" required="" Placeholder="Search">
           <button id="searchbutton" type="button" v-on:click="search()">Search</button>
@@ -27,30 +24,11 @@ methods: {
 </script>
 
 <style>
-  .search-area {
-    /* The image used */
-    background-image: url('~@/assets/search-bg.jpg');
 
-    /* Control the height of the image */
-    min-height: 380px;
-
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-  }
-
-  #searchtitle {
+  #search-title {
     color: aliceblue; /* black */
     text-align: center;
     text-shadow: 1px 1px black;
-  }
-
-  .icon {
-    width: 100%;
-    /* background-color: aquamarine; */
-    text-align: center;
   }
 
   .search-bar {
@@ -67,9 +45,12 @@ methods: {
 
   #searchbutton{
     margin: 15px 100px 10px 0px;
+    border: 1.5px solid black;
     background-color:aliceblue;
     color:black;
-    height:30px;
+    height:37px;
+    width: 80px;
+    border-radius: 3px;
   }
 
 

@@ -108,7 +108,7 @@ export default {
     }
 
     #MyRequests,.MyRequestTitle{
-        border: 3px rgb(161, 255, 161) solid;
+        border: 3px rgba(124, 199, 124, 0.699) solid;
         border-collapse: collapse;
         height: 30px;
     }
@@ -122,7 +122,7 @@ export default {
     }
 
     .MyRequestTitle {
-        background-color: rgb(183, 255, 183);
+        background-color: rgb(212, 240, 212);
     }
 
     .completeRequestBtn {

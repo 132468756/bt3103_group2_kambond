@@ -1,15 +1,14 @@
 <template>
-<<<<<<< Updated upstream
   <div id="profile">
     <!-- <h1>This is a sample user_name's profile</h1> -->
     <!-- <Logout/> -->
     <div class="profilePicDiv">
       <img src="@/assets/profilephoto.jpeg" id="profilePic">
     </div>
-    <h1 id="username">User Name</h1>
+    <h2 id="username">User Name</h2>
     <div class="userInfo">
-      <h2 id="Kambond">I like Kambond</h2>
-      <h3 id="creditPoint">Credbility Point: 10</h3>
+      <h3 id="Kambond">I like Kambond</h3>
+      <h4 id="creditPoint">Credbility Point: 10</h4>
     </div>
 
     <div class="table">
@@ -62,19 +61,6 @@ export default {
   name: "Profile",
   components : {
     // Logout,
-=======
-  <h1>This is the sample user profile</h1>
-  <Logout/>
-</template>
-
-<script>
-import Logout from "../components/Logout.vue"
-export default {
-  name: "Profile",
-  components:{
-    Logout
->>>>>>> Stashed changes
-  }
 }
 </script>
 
@@ -86,7 +72,8 @@ export default {
 
   #Kambond {
     text-align: center;
-    color: aqua;
+    color: rgb(130, 169, 172);
+    text-style: italic;
   }
 
   #creditPoint {

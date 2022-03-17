@@ -108,7 +108,7 @@ export default {
     }
 
     #MyDeals,.MyDealTitle {
-        border: 3px rgb(255, 160, 255) solid;
+        border: 3px rgba(223, 169, 198, 0.767) solid;
         border-collapse: collapse;
         height: 30px;
     }
@@ -122,7 +122,7 @@ export default {
     }
 
     .MyDealTitle {
-        background-color: rgb(255, 143, 255);
+        background-color: rgba(241, 205, 225, 0.767);
     }
 
     .completeDealBtn {
