@@ -44,7 +44,7 @@ export default {
     .MyBtn {
         width: 100%;
         height: 100%;
-        background-color: aquamarine;
+        background-color: rgb(186, 218, 224);
         cursor: pointer;
         border-radius: 12px;
         border: none;
@@ -53,16 +53,15 @@ export default {
     .MyBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 3px lightblue;
+        box-shadow: 0 0 0 3px rgb(139, 193, 218);
         transition: 0.5s;
     }
 
     .MyBtn:active {
-        background-color: lightblue;
+        background-color: rgb(139, 193, 218);
     }
 
     #MyPost {
-        background-color: aquamarine;
         border-radius: 25px;
         text-align: center;
         width: 25%;
@@ -73,7 +72,6 @@ export default {
     }
 
     #MyRequest {
-        background-color: aquamarine;
         border-radius: 25px;
         text-align: center;
         width: 25%;
@@ -84,7 +82,6 @@ export default {
     }
 
     #MyDeal {
-        background-color: aquamarine;
         border-radius: 25px;
         text-align: center;
         width: 25%;
@@ -95,7 +92,6 @@ export default {
     }
 
     #Create {
-        background-color: plum;
         border-radius: 25px;
         text-align: center;
         width: 20%;
@@ -110,13 +106,13 @@ export default {
     }
 
     #CreateBtn {
-        background-color: plum;
+        background-color: rgb(231, 201, 231);
     }
 
     #CreateBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 3px rgb(214, 130, 214);
+        box-shadow: 0 0 0 3px rgb(241, 133, 174);
         transition: 0.5s;
     }
 

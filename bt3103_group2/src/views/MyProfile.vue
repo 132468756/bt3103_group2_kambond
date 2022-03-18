@@ -54,6 +54,7 @@ export default {
     }
 
     .InnerText {
-        color: gray;
+        color: rgb(0, 0, 0);
+        font-size: 13px;
     }
 </style>

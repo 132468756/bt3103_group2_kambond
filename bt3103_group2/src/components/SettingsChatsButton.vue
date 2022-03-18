@@ -24,7 +24,7 @@ export default {
 
 <style>
     #SettingsBtn, #ChatsBtn {
-        background-color: orange;
+        background-color: rgb(255, 231, 188);
     }
 
     #SettingsBtn:hover, #ChatsBtn:hover {
@@ -37,7 +37,6 @@ export default {
     }
 
     #Settings, #Chats {
-        background-color: orange;
         border-radius: 25px;
         text-align: center;
         width: 72.73%;
