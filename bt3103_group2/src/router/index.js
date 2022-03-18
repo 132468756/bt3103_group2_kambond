@@ -6,11 +6,12 @@ import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import Profile from "../views/MyProfile.vue";
 import CreatePost from "../components/CreatePost.vue";
-import MyPost from "../views/MyPosts";
-import MyRequest from "../views/MyRequests";
-import MyDeal from "../views/MyDeals";
-import Settings from "../views/Settings";
-import Chats from "../views/Chats";
+import MyPost from "../views/MyPosts.vue";
+import MyRequest from "../views/MyRequests.vue";
+import MyDeal from "../views/MyDeals.vue";
+import Settings from "../views/Settings.vue";
+import Chats from "../views/Chats.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
   {
@@ -83,6 +84,12 @@ const routes = [
     name: "Chats",
     component: Chats,
   },
+
+  {
+    path: "/:catchAll(.*)",
+    name: 'NotFound',
+    component: NotFound,
+  }
 ];
 
 const router = new createRouter({
