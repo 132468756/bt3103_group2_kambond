@@ -24,7 +24,7 @@ const db = getFirestore(firebaseApp)
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "users", "PeterParker"))
+            let user = await getDoc(doc(db, "Users", "10086"))
             let ind = 1
             let records = user.data().deals
             // console.log(user.data())
@@ -71,7 +71,7 @@ export default {
 
         async function findDealInfo(record){
             let thisPost = await getDoc(doc(db, "Deals", record))
-            let postID = thisPost.data().postID
+            let postID = thisPost.data().dealID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose

@@ -24,7 +24,7 @@ const db = getFirestore(firebaseApp)
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "users", "PeterParker"))
+            let user = await getDoc(doc(db, "Users", "10086"))
             let ind = 1
             let records = user.data().posts
             // console.log(user.data())
