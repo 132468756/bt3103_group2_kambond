@@ -86,15 +86,16 @@ export default {
         }
 
         async function deletePost(record){
-            alert("Please confirm that " + record + " is completed." )
-            // console.log(doc(db, "Users", "PeterParker", "posts"))
-            await deleteDoc(doc(db, "Requests", record))
-            console.log(record, " successfully deleted!")
-            let tb = document.getElementById("MyRequests")
-            while(tb.rows.length > 1){
-                tb.deleteRow(1)
+            if(confirm("Please confirm that " + record + " is completed." )){
+                await deleteDoc(doc(db, "Requests", record))
+                console.log(record, " successfully deleted!")
+                let tb = document.getElementById("MyRequests")
+                while(tb.rows.length > 1){
+                    tb.deleteRow(1)
+                }
+                display()
+                //Still need to delete from the user table
             }
-            display()
         }
     }
 }
@@ -128,11 +129,10 @@ export default {
     .completeRequestBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(111, 255, 111);
+        background-color: rgba(117, 255, 117, 0.822);
         cursor: pointer;
         border-radius: 12px;
         border: none;
-        margin-right: 10%;
     }
 
     .completeRequestBtn:hover {
