@@ -17,7 +17,7 @@
 <script>
 import  firebaseApp from "../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc, deleteDoc} from "firebase/firestore"
+import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
 
 const db = getFirestore(firebaseApp)
 
@@ -87,14 +87,20 @@ export default {
 
         async function deletePost(record){
             if(confirm("Please confirm that " + record + " is completed." )){
+                // Delete from request table
                 await deleteDoc(doc(db, "Requests", record))
                 console.log(record, " successfully deleted!")
+                // Still need to delete from the user table
+                const docRef = doc(db, "Users", "10086")
+                await updateDoc(docRef, {
+                    requests: arrayRemove(record)
+                })
+
                 let tb = document.getElementById("MyRequests")
                 while(tb.rows.length > 1){
                     tb.deleteRow(1)
                 }
                 display()
-                //Still need to delete from the user table
             }
         }
     }
