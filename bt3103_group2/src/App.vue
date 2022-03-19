@@ -1,26 +1,14 @@
 <template>
 <div class="app">
-    <div id="nav">
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/borrow">Borrow</router-link> |
-      <router-link to="/lend">Lend</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/signup">Sign Up</router-link> |
-      <router-link to="/profile">Profile</router-link> |
-      <router-link to="/createpost"> CreatePost </router-link>
-      <hr />
-    </div>
-  <router-view />
-  <Contact/>
+  <router-view /> 
 </div> 
 </template>
 
 <script>
-import Contact from "./components/Home/Contact.vue"
+
 export default {
   name: "App",
   components: {
-    Contact
   },
 };
 </script>
