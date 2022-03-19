@@ -86,15 +86,16 @@ export default {
         }
 
         async function deletePost(record){
-            alert("Please confirm that " + record + " is completed." )
-            // console.log(doc(db, "Users", "PeterParker", "posts"))
-            await deleteDoc(doc(db, "Deals", record))
-            console.log(record, " successfully deleted!")
-            let tb = document.getElementById("MyDeals")
-            while(tb.rows.length > 1){
-                tb.deleteRow(1)
+            if(confirm("Please confirm that " + record + " is completed." )){
+                await deleteDoc(doc(db, "Deals", record))
+                console.log(record, " successfully deleted!")
+                let tb = document.getElementById("MyDeals")
+                while(tb.rows.length > 1){
+                    tb.deleteRow(1)
+                }
+                display()
+                //Still need to delete from the user table
             }
-            display()
         }
     }
 }
@@ -128,17 +129,16 @@ export default {
     .completeDealBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(216, 8, 216);
+        background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;
         border-radius: 12px;
         border: none;
-        margin-right: 10%;
     }
 
     .completeDealBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 1px rgb(141, 26, 141);
+        box-shadow: 0 0 0 1px rgb(185, 32, 185);
         transition: 0.5s;
     }
 
