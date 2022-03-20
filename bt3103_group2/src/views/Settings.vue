@@ -1,4 +1,6 @@
 <template>
+<div style="text-align:center;" v-if="user">
+    <NavBar/>
     <!-- <h1>This is a sample page for settings</h1> -->
     <backBtn/>
     <br><br>
@@ -10,19 +12,40 @@
         <settingTable/>
     </span>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <LogOut/>
+</div>
 </template>
 
 <script>
 import backBtn from "../components/BackButton.vue"
 import userInfo from "../components/UserInfoDisplay.vue"
 import settingTable from "../components/SettingsTable.vue"
-
+import NavBar from "../components/NavBar.vue"
+import LogOut from "../components/Logout.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default {
-    name:"Settings",
-    components:{
-        backBtn,
-        userInfo,
-        settingTable
+  name: "Settings",
+  components: {
+    NavBar,
+    LogOut,
+    backBtn,
+    userInfo,
+    settingTable
+  },
+
+  data(){
+        return{
+            user:false,
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
     }
 }
 </script>

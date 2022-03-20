@@ -1,18 +1,39 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="user">
+    <NavBar/>
     <br><br>
     <SearchField/>
+    <LogOut/>
   </div>
 </template>
 
 <script>
 import SearchField from "../components/Home/SearchField.vue"
-
+import NavBar from "../components/NavBar.vue"
+import LogOut from "../components/Logout.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default {
   name: "Homepage",
   components: {
+    NavBar,
+    LogOut,
     SearchField,
-  }
+  },
+
+  data(){
+        return{
+            user:false,
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
+    }
 }
 </script>
 

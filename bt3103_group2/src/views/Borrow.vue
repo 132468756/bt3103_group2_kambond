@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import Filter1 from "./Filter/Filter1.vue";
-import Filter2 from "./Filter/Filter2.vue";
-import Filter3 from "./Filter/Filter3.vue";
-import Post from "./Post.vue"
+import Filter1 from "@/components/Filter/Filter1.vue";
+import Filter2 from "@/components/Filter/Filter2.vue";
+import Filter3 from "@/components/Filter/Filter3.vue";
+import Post from "@/components/Post.vue"
 
-import firebaseApp from '../firebase.js';
+import firebaseApp from "@/firebase.js";
 import {getFirestore} from "firebase/firestore";
 import {collection, getDocs} from "firebase/firestore";
 const db = getFirestore(firebaseApp);

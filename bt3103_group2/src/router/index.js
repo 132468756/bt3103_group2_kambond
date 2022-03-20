@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Homepage from "../views/Homepage.vue";
-import Borrow from "../components/Borrow.vue";
-import Lend from "../components/Lend.vue";
+import Borrow from "../views/Borrow.vue";
+import Lend from "../views/Lend.vue";
 import Login from "../views/Login.vue";
-import Signup from "../views/Signup.vue";
-import Profile from "../views/MyProfile.vue";
-import CreatePost from "../components/CreatePost.vue";
-import MyPost from "../views/MyPosts";
-import MyRequest from "../views/MyRequests";
-import MyDeal from "../views/MyDeals";
+import CreatePost from "../views/CreatePost.vue";
+import MyPost from "../views/MyPosts.vue";
+import MyRequest from "../views/MyRequests.vue";
+import MyDeal from "../views/MyDeals.vue";
+import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
 import Chats from "../views/Chats";
 
@@ -32,21 +31,15 @@ const routes = [
   },
 
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: Login,
   },
 
   {
-    path: "/signup",
-    name: "Signup",
-    component: Signup,
-  },
-
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
+    path: "/myprofile",
+    name: "MyProfile",
+    component: MyProfile,
   },
   {
     path: "/createpost",

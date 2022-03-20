@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import Filter1 from "./Filter/Filter1.vue";
-import Filter2 from "./Filter/Filter2.vue";
-import Filter4 from "./Filter/Filter4.vue";
+import Filter1 from "@/components/Filter/Filter1.vue";
+import Filter2 from "@/components/Filter/Filter2.vue";
+import Filter4 from "@/components/Filter/Filter4.vue";
 export default {
   name: "Lend",
   data() {
