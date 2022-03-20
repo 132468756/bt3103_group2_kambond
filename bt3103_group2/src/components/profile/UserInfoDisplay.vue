@@ -5,7 +5,7 @@
         </div>
         <h1 id="username">User Name</h1>
         <div class="userInfoDetail">
-            <h2 id="Kambond">I like Kambond</h2>
+            <h4 id="Kambond">I like Kambond</h4>
             <h4 id="myCreditPoint">Credbility Point: 10</h4>
             <h4 id="likes">Likes: 66</h4>
         </div>
@@ -26,12 +26,13 @@ export default {
 
     #Kambond {
     text-align: center;
-    color: aqua;
+    color: rgb(0, 0, 0);
+    font-style: italic;
     }
 
     #myCreditPoint, #likes {
     text-align: center;
-    color: mediumseagreen;
+    color: rgb(106, 202, 170);
     }
 
     .profilePicDiv {

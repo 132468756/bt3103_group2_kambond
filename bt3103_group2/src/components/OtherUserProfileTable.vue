@@ -1,44 +1,45 @@
 <template>
-    <table id="MyPosts">
-        <tr class="MyPostRow">
-            <th class="MyPostTitle">Post ID</th>
-            <th class="MyPostTitle">Title</th>
-            <th class="MyPostTitle">Description</th>
-            <th class="MyPostTitle">Purpose</th>
-            <th class="MyPostTitle">Category</th>
-            <th class="MyPostTitle">Location</th>
-            <th class="MyPostTitle">Post Date</th>
-            <th class="MyPostTitle">Status</th>
-            <th class="MyPostTitle">Action</th>
+  <!-- This is the table you see when you look at other people's profile -->
+  <table id="OtherPosts">
+        <tr class="OtherPostRow">
+            <th class="OtherPostTitle">Post ID</th>
+            <th class="OtherPostTitle">Title</th>
+            <th class="OtherPostTitle">Description</th>
+            <th class="OtherPostTitle">Purpose</th>
+            <th class="OtherPostTitle">Category</th>
+            <th class="OtherPostTitle">Location</th>
+            <th class="OtherPostTitle">Post Date</th>
+            <th class="OtherPostTitle">Status</th>
+            <th class="OtherPostTitle">Action</th>
         </tr>
     </table>
 </template>
 
 <script>
-import  firebaseApp from "../../firebase.js"
+import  firebaseApp from "../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc,  updateDoc, deleteDoc, arrayRemove} from "firebase/firestore"
+import{getDoc, doc, deleteDoc} from "firebase/firestore"
 
 const db = getFirestore(firebaseApp)
 
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "Users", "10086"))
+            let user = await getDoc(doc(db, "Users", "12345"))
             let ind = 1
             let records = user.data().posts
             // console.log(user.data())
             // console.log(records)
             
             records.forEach(async (record) => {
-                var table = document.getElementById("MyPosts")
+                var table = document.getElementById("OtherPosts")
                 var row = table.insertRow(ind)
-                row.className="MyPostRow"
+                row.className="OtherPostRow"
 
                 let postInfo = await findPostInfo(record)
                 // console.log("postInfo", postInfo) 
                 var cell1 = row.insertCell(0)
-                cell1.className="MyPostCol"
+                cell1.className="OtherPostCol"
                 var cell2 = row.insertCell(1)
                 var cell3 = row.insertCell(2)
                 var cell4 = row.insertCell(3)
@@ -58,14 +59,18 @@ export default {
                 cell8.innerHTML = postInfo[7]
                 
                 var deleteBtn = document.createElement("button")
-                deleteBtn.className = "deletePostBtn"
+                deleteBtn.className = "requestFromOtherBtn"
                 deleteBtn.id = String(postInfo[0])
-                deleteBtn.innerHTML="Delete"
+                deleteBtn.innerHTML="Request"
                 deleteBtn.onclick=function(){
                     deletePost(record)
                 }
                 cell9.appendChild(deleteBtn)
             })
+        }
+        let tb = document.getElementById("OtherPosts")
+        while(tb.rows.length > 1){
+            tb.deleteRow(1)
         }
         display()
 
@@ -86,69 +91,63 @@ export default {
         }
 
         async function deletePost(record){
-            if(confirm("You are going to delete " + record)){
-                // Delete from Posts table
-                await deleteDoc(doc(db, "Posts", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
-                const docRef = doc(db, "Users", "10086")
-                await updateDoc(docRef, {
-                    posts: arrayRemove(record)
-                })
-                
-                let tb = document.getElementById("MyPosts")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display()
-            }
+            alert("You are going to request for " + record)
+            deleteDoc()
+            // // console.log(doc(db, "Users", "PeterParker", "posts"))
+            // await deleteDoc(doc(db, "Posts", record))
+            // console.log(record, " successfully deleted!")
+            // let tb = document.getElementById("OtherPosts")
+            // while(tb.rows.length > 1){
+            //     tb.deleteRow(1)
+            // }
+            // display()
         }
     }
 }
 </script>
 
 <style>
-    #MyPosts {
+    #OtherPosts {
         text-align: center;
         width: 80%;
         margin-left: 10%;
     }
 
-    #MyPosts,.MyPostTitle {
-        border: 3px rgb(164, 219, 238) solid;
+    #OtherPosts,.OtherPostTitle {
+        border: 3px rgb(255, 165, 179) solid;
         border-collapse: collapse;
         height: 30px;
     }
 
-    .MyPostCol {
+    .OtherPostCol {
         height:30px
     }
 
-    .MyPostRow:nth-child(odd) {
-        background-color: rgb(227, 247, 253);
+    .OtherPostRow:nth-child(odd) {
+        background-color: rgb(255, 242, 244);
     }
 
-    .MyPostTitle {
-        background-color: rgb(194, 240, 255);
+    .OtherPostTitle {
+        background-color: lightpink;
     }
 
-    .deletePostBtn {
+    .requestFromOtherBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(136, 223, 252);
+        background-color: rgb(255, 121, 141);
         cursor: pointer;
         border-radius: 12px;
         border: none;
     }
 
-    .deletePostBtn:hover {
+    .requestFromOtherBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 1px lightblue;
+        box-shadow: 0 0 0 1px rgb(194, 95, 109);
         transition: 0.5s;
     }
 
-    .deletePostBtn:active {
-        background-color: lightblue;
+    .requestFromOtherBtn:active {
+        background-color: rgb(194, 95, 109);
     }
 </style>

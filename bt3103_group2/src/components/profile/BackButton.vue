@@ -14,8 +14,8 @@ export default {
 <style>
     #BackBtn {
         width: 60px;
-        height: 40px;
-        background-color: rgb(39, 46, 65);
+        height: 30px;
+        background-color: rgb(0, 0, 0);
         color: white;
         cursor: pointer;
         border-radius: 12px;

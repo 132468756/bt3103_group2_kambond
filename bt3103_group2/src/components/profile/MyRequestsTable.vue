@@ -17,14 +17,14 @@
 <script>
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc, deleteDoc} from "firebase/firestore"
+import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
 
 const db = getFirestore(firebaseApp)
 
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "users", "PeterParker"))
+            let user = await getDoc(doc(db, "Users", "10086"))
             let ind = 1
             let records = user.data().requests
             // console.log(user.data())
@@ -71,7 +71,7 @@ export default {
 
         async function findRequestInfo(record){
             let thisPost = await getDoc(doc(db, "Requests", record))
-            let postID = thisPost.data().postID
+            let postID = thisPost.data().requestID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -86,15 +86,22 @@ export default {
         }
 
         async function deletePost(record){
-            alert("Please confirm that " + record + " is completed." )
-            // console.log(doc(db, "Users", "PeterParker", "posts"))
-            await deleteDoc(doc(db, "Requests", record))
-            console.log(record, " successfully deleted!")
-            let tb = document.getElementById("MyRequests")
-            while(tb.rows.length > 1){
-                tb.deleteRow(1)
+            if(confirm("Please confirm that " + record + " is completed." )){
+                // Delete from request table
+                await deleteDoc(doc(db, "Requests", record))
+                console.log(record, " successfully deleted!")
+                // Still need to delete from the user table
+                const docRef = doc(db, "Users", "10086")
+                await updateDoc(docRef, {
+                    requests: arrayRemove(record)
+                })
+
+                let tb = document.getElementById("MyRequests")
+                while(tb.rows.length > 1){
+                    tb.deleteRow(1)
+                }
+                display()
             }
-            display()
         }
     }
 }
@@ -108,7 +115,7 @@ export default {
     }
 
     #MyRequests,.MyRequestTitle{
-        border: 3px rgb(161, 255, 161) solid;
+        border: 3px rgba(124, 199, 124, 0.699) solid;
         border-collapse: collapse;
         height: 30px;
     }
@@ -122,17 +129,16 @@ export default {
     }
 
     .MyRequestTitle {
-        background-color: rgb(183, 255, 183);
+        background-color: rgb(212, 240, 212);
     }
 
     .completeRequestBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(111, 255, 111);
+        background-color: rgba(117, 255, 117, 0.822);
         cursor: pointer;
         border-radius: 12px;
         border: none;
-        margin-right: 10%;
     }
 
     .completeRequestBtn:hover {

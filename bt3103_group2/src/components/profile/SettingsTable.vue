@@ -36,39 +36,70 @@
 
 <script>
 import changeBtn from "./ChangeSettingButton.vue"
+import firebaseApp from '../../firebase.js'
+import {getFirestore} from "firebase/firestore"
+import{getDoc, doc, updateDoc} from "firebase/firestore"
 
+const db = getFirestore(firebaseApp)
+
+// const auth = getAuth()
 export default {
     names:"SettingsTable",
     components:{
         changeBtn
     },
+
+    // No database connection testing code
     data(){
         return{
-            username:"Peter Parker",
+            username:'',
             usernameStatus:"static",
-            email:"peterparkerisnotspiderman@gmail.com",
+            email:'',
             emailStatus:"static",
-            password:"peterparker123",
+            password:'',
             passwordStatus:"static",
-            bio:"I am not your friendly neighborhood spiderman",
+            bio:'',
             bioStatus:"static",
-            contactNumber:"88888888",
+            contactNumber:'',
             contactStatus:"static"
         }
     },
 
+    mounted(){
+        async function displayUserInfo(self){
+            let user = await getDoc(doc(db, "Users", "10086"))
+            // console.log(typeof(user))
+            // console.log(user.data())
+            self.username = user.data().username
+            self.email = user.data().email
+            self.password = user.data().password
+            self.bio = user.data().bio
+            self.contactNumber = user.data().contactNumber
+        }
+        displayUserInfo(this)
+    },
+
     methods:{
         changeUsername: function(){
-            document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername'>"
+            document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername' ref='newUsername'>"
             this.usernameStatus="changing"
         },
 
-        confirmChangeUsername: function(){
+        confirmChangeUsername: async function(){
             var newUsername = document.getElementById("newUsername").value
             if (newUsername != '') {
                 this.username = newUsername
                 document.getElementById("usernameContent").innerHTML="'{{username}}'"
                 this.usernameStatus="static"
+                try{
+                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                        username: newUsername
+                    })
+                    console.log(docRef)
+                }
+                catch(error){
+                    console.log("Failed updating username")
+                }
             } else {
                 alert("Username Cannot Be Empty!")
             }
@@ -79,7 +110,7 @@ export default {
             this.emailStatus="changing"
         },
 
-        confirmChangeEmail: function(){
+        confirmChangeEmail: async function(){
             var newEmail = document.getElementById("newEmail").value
             var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
             var ok = regExp.test(newEmail)
@@ -87,6 +118,16 @@ export default {
                 this.email = newEmail
                 document.getElementById("emailContent").innerHTML="'{{email}}'"
                 this.emailStatus="static"
+
+                try{
+                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                        email: newEmail
+                    })
+                    console.log(docRef)
+                }
+                catch(error){
+                    console.log("Failed updating email")
+                }
             } else {
                 alert("Invalid Email Format!")
             }
@@ -97,7 +138,7 @@ export default {
             this.passwordStatus="changing"
         },
 
-        confirmChangePassword: function(){
+        confirmChangePassword: async function(){
             var newPassword = document.getElementById("newPassword").value
             var regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
             var ok = regExp.test(newPassword)
@@ -105,6 +146,17 @@ export default {
                 this.password = newPassword
                 document.getElementById("passwordContent").innerHTML="'{{password}}'"
                 this.passwordStatus="static"
+
+                try{
+                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                        password: newPassword
+                    })
+                    console.log(docRef)
+                }
+                catch(error){
+                    console.log("Failed updating password")
+                }
+
             } else {
                 alert("Invalid Password Format! \nMinimum eight characters, at least one letter and one number.")
             }
@@ -115,7 +167,7 @@ export default {
             this.bioStatus="changing"
         },
 
-        confirmChangeBio: function(){
+        confirmChangeBio: async function(){
             var newBio = document.getElementById("newBio").value
             if (newBio != '') {
                 this.bio = newBio
@@ -124,6 +176,16 @@ export default {
             }
             document.getElementById("bioContent").innerHTML="'{{bio}}'"
             this.bioStatus="static"
+
+            try{
+                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                        bio: newBio
+                    })
+                    console.log(docRef)
+                }
+                catch(error){
+                    console.log("Failed updating bio")
+                }
         },
 
         changeContact: function(){
@@ -131,7 +193,7 @@ export default {
             this.contactStatus="changing"
         },
 
-        confirmChangeContact: function(){
+        confirmChangeContact: async function(){
             var newContact = document.getElementById("newContact").value
             var regExp = /[0-9]{8}$/
             var ok = regExp.test(newContact)
@@ -139,6 +201,16 @@ export default {
                 this.contactNumber = newContact
                 document.getElementById("contactContent").innerHTML="'{{contactNumber}}'"
                 this.contactStatus="static"
+
+                try{
+                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                        contactNumber: newContact
+                    })
+                    console.log(docRef)
+                }
+                catch(error){
+                    console.log("Failed updating contactNumber")
+                }
             } else {
                 alert("Invalid Contact Number! Please use a Singapore phone number.")
             }

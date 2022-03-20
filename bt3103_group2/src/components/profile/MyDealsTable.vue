@@ -17,14 +17,14 @@
 <script>
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc, deleteDoc} from "firebase/firestore"
+import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
 
 const db = getFirestore(firebaseApp)
 
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "users", "PeterParker"))
+            let user = await getDoc(doc(db, "Users", "10086"))
             let ind = 1
             let records = user.data().deals
             // console.log(user.data())
@@ -71,7 +71,7 @@ export default {
 
         async function findDealInfo(record){
             let thisPost = await getDoc(doc(db, "Deals", record))
-            let postID = thisPost.data().postID
+            let postID = thisPost.data().dealID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -86,15 +86,21 @@ export default {
         }
 
         async function deletePost(record){
-            alert("Please confirm that " + record + " is completed." )
-            // console.log(doc(db, "Users", "PeterParker", "posts"))
-            await deleteDoc(doc(db, "Deals", record))
-            console.log(record, " successfully deleted!")
-            let tb = document.getElementById("MyDeals")
-            while(tb.rows.length > 1){
-                tb.deleteRow(1)
+            if(confirm("Please confirm that " + record + " is completed." )){
+                // Delete from deals table
+                await deleteDoc(doc(db, "Deals", record))
+                console.log(record, " successfully deleted!")
+                // Still need to delete from user table
+                const docRef = doc(db, "Users", "10086")
+                await updateDoc(docRef, {
+                    deals: arrayRemove(record)
+                })
+                let tb = document.getElementById("MyDeals")
+                while(tb.rows.length > 1){
+                    tb.deleteRow(1)
+                }
+                display()
             }
-            display()
         }
     }
 }
@@ -108,7 +114,7 @@ export default {
     }
 
     #MyDeals,.MyDealTitle {
-        border: 3px rgb(255, 160, 255) solid;
+        border: 3px rgba(223, 169, 198, 0.767) solid;
         border-collapse: collapse;
         height: 30px;
     }
@@ -122,23 +128,22 @@ export default {
     }
 
     .MyDealTitle {
-        background-color: rgb(255, 143, 255);
+        background-color: rgba(241, 205, 225, 0.767);
     }
 
     .completeDealBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(216, 8, 216);
+        background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;
         border-radius: 12px;
         border: none;
-        margin-right: 10%;
     }
 
     .completeDealBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 1px rgb(141, 26, 141);
+        box-shadow: 0 0 0 1px rgb(185, 32, 185);
         transition: 0.5s;
     }
 
