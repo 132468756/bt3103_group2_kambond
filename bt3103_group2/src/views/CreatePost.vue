@@ -1,4 +1,7 @@
 <template>
+<div style="text-align:center;" v-if="user"> 
+  <NavBar/>
+  <backBtn/>
   <form @submit.prevent="createPost" method="post" id="createpostform">
       <div className ="row">
     <label> Title </label>
@@ -60,18 +63,28 @@
     <button className="submit" v-on:click = "createPost()"> Create Post </button>
   </div>
   </form>
-  
+</div>
 </template>
 
 <script>
 import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, setDoc} from "firebase/firestore";
+import NavBar from "../components/NavBar.vue"
+import backBtn from "../components/BackButton.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
 const db = getFirestore(firebaseApp);
 export default {
   name: "CreatePost",
+  components:{
+    NavBar,
+    backBtn,
+  },
+
   data() {
     return {
+      user: false,
       post:{
       title: "",
       purpose: "",
@@ -81,6 +94,16 @@ export default {
       }
     };
   },
+
+  mounted() {
+    const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+        }
+      })
+  },
+
 methods: {
   async createPost() {
     var a = document.getElementById("post.title").value
