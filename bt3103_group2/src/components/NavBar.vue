@@ -3,7 +3,7 @@
       <router-link to="/home">Home</router-link> |
       <router-link to="/borrow">Borrow</router-link> |
       <router-link to="/lend">Lend</router-link> |
-      <router-link to="/profile">Profile</router-link> |
+      <router-link to="/myprofile">Profile</router-link> |
       <router-link to="/createpost"> CreatePost </router-link>
       <hr />
     </div>
