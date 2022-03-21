@@ -76,7 +76,7 @@ export default {
 #post {
   display: inline-block;
   border: 2px solid rgb(0, 0, 0);
-  width: 45%;
+  width: 30%;
   height: 150px;
   padding: 10px;
   margin: 10px;

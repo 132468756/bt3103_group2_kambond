@@ -1,4 +1,6 @@
 <template>
+<div style="text-align:center;" v-if="user">
+    <NavBar/>
     <!-- <h1>This is a sample of My_Profile</h1> -->
     <div id="TopElement">
         <div id = "emptyDiv">        
@@ -17,20 +19,42 @@
     <div id="BottomElement">
         <bottomEle/>
     </div>
+    <LogOut/>
+</div>
 </template>
 
 <script>
 import userInfo from "../components/profile/UserInfoDisplay.vue"
 import settingChat from "../components/profile/SettingsChatsButton.vue"
 import bottomEle from "../components/profile/MyProfileBottomEle.vue"
+import NavBar from "../components/NavBar.vue"
+import LogOut from "../components/Logout.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 export default {
     name:"MyProfile",
     components:{
+        NavBar,
+        LogOut,
         userInfo,
         settingChat,
         bottomEle
-    }
+    },
+
+    data(){
+        return{
+            user:false,
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
+    },
 }
 </script>
 

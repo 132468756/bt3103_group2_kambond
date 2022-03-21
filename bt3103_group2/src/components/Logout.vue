@@ -1,4 +1,6 @@
 <template>
+    <br>
+    <br>
   <button id="btn" type="button" @click="signOut()" v-if="user">Logout</button>
 </template>
 
