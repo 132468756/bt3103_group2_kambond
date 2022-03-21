@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
-import userInfo from "../components/UserInfoDisplay.vue"
-import settingTable from "../components/SettingsTable.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import userInfo from "../components/profile/UserInfoDisplay.vue"
+import settingTable from "../components/profile/SettingsTable.vue"
 import NavBar from "../components/NavBar.vue"
 import LogOut from "../components/Logout.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"

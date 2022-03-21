@@ -39,7 +39,7 @@ export default {
     #Settings, #Chats {
         border-radius: 25px;
         text-align: center;
-        width: 72.73%;
+        width: 100%;
         height: 100px;
         line-height: 100px;
     }

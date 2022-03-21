@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import changeBtn from "../components/ChangeSettingButton.vue"
-import firebaseApp from '../firebase.js'
+import changeBtn from "./ChangeSettingButton.vue"
+import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
 

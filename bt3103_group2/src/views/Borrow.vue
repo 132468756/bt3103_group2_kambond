@@ -9,12 +9,31 @@
     <Filter3 />
 
   </div>
-  <Post v-for= "post in posts"
-  :key = "post.id"
-  :owner = "post.owner"
-  :title = "post.title"
-  :status = "post.status"/>
-  <div className = "Postlist">
+  <div className = "postList">
+    <button type="button"
+          id = "postModal"
+          @click="showModal">
+      <Post className = "posts"
+      v-for= "post in posts"
+      :key = "post.id"
+      :owner = "post.userName"
+      :title = "post.title"
+      :status = "post.status"/>
+      
+    </button>
+    <Modal
+        v-show="isModalVisible"
+        @close="closeModal"
+        v-for= "post in posts"
+        :key = "post.id"
+        :owner = "post.userName"
+        :title = "post.title"
+        :description = "post.description"
+      />
+    
+  </div>
+  <div>
+    
   </div>
 </div>
 </template>
@@ -29,7 +48,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 import firebaseApp from "@/firebase.js";
 import {getFirestore} from "firebase/firestore";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, getDoc, doc} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 
@@ -39,18 +58,7 @@ export default {
     return {
       user: false,
       checkedNames: [],
-      title:"charger",
-      owner:"someone",
-      postcontent:[
-        { id: 1,
-          title:"handphone",
-        owner:"person1",
-        status:"want to borrow"},
-        { id:2,
-          title:"egg", 
-        owner:"person2",
-        status:"want to borrow"}
-      ],
+      isModalVisible:false,
       posts:[],
     };
   },
@@ -74,9 +82,29 @@ export default {
       z.forEach((doc)=> 
       posts.push(doc.data()))
       console.log(posts)
+      let docRef = await getDoc(doc(db, "Users", "12345"));
+      console.log(docRef.data().username)
+
+      posts.forEach(async (post)=>{
+        docRef = await getDoc(doc(db, "Users", post.user));
+        console.log(docRef.data().username)
+        post.userName = docRef.data().username
+       
+      })
       return posts;
     }
     collectData(this.posts)
+
+    
+  },
+  methods:{
+     showModal() {
+        this.isModalVisible = true;
+      },
+  closeModal() {
+        this.isModalVisible = false;
+      },
+      
   }
 };
 
@@ -84,4 +112,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#postModal{
+  justify-content:center;
+}
+
+
 </style>

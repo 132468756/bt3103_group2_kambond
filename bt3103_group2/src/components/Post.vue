@@ -10,7 +10,7 @@
     <hr />
     <div id="owner">
       <img src="@/assets/profilephoto.jpeg" alt="cannotfind" />
-      <h4>owner:{{ owner }}</h4>
+      <div id = "user">{{ owner }}</div>
     </div>
     
   </form>
@@ -27,7 +27,7 @@ export default {
       description: String,
   },
   methods: {
-    toDetail() {
+    toBorrow() {
       console.log("Go to post detail page");
     },
   },
@@ -37,7 +37,7 @@ export default {
 <style>
 .flex-box {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   height:40%;
 }
@@ -63,12 +63,20 @@ export default {
 
 #owner {
   display: inline-flex;
+  justify-content:left;
+  align-items:center;
+  margin-top: 2%;
+}
+
+#user{
+  margin-left: 3%;
+  font-size:3vw;
 }
 
 #post {
   display: inline-block;
   border: 2px solid rgb(0, 0, 0);
-  width: 45%;
+  width: 30%;
   height: 150px;
   padding: 10px;
   margin: 10px;

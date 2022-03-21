@@ -4,12 +4,12 @@
   <backBtn/>
   <form @submit.prevent="createPost" method="post" id="createpostform">
       <div className ="row">
-    <label> Title </label>
+    <label className = "postlabel"> Title </label>
     <input type="title" required v-model="post.title" id = "post.title"/>
     </div>
 
     <div className ="row">
-    <label> Purpose </label>
+    <label className = "postlabel"> Purpose </label>
     <select required v-model="post.purpose" id = "post.purpose">
       <option>Borrowing</option>
       <option>Lending</option>
@@ -17,12 +17,12 @@
     </div>
 
     <div className ="row">
-    <label> Description </label>
+    <label className = "postlabel"> Description </label>
     <input type="desription" required v-model="post.description" id = "post.description"/>
     </div>
 
     <div className ="row">
-    <label> Category </label>
+    <label className = "postlabel"> Category </label>
     <select required v-model="post.category" id = "post.category">
       <option>Beauty & Personal Care</option>
       <option>Bulletin Board</option>
@@ -44,7 +44,7 @@
     </div>
 
     <div className ="row">
-    <label> Location </label>
+    <label className = "postlabel"> Location </label>
     <select required v-model="post.location" id = "post.location">
       <option>PGP / PGPR</option>
       <option>Utown</option>
@@ -60,8 +60,9 @@
     </div>
 
     <div className = "submitRow">
-    <button className="submit" v-on:click = "createPost()"> Create Post </button>
-  </div>
+      <button className="submit" v-on:click = "createPost()"> Create Post </button>
+    </div>
+  
   </form>
 </div>
 </template>
@@ -71,10 +72,11 @@ import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, setDoc} from "firebase/firestore";
 import NavBar from "../components/NavBar.vue"
-import backBtn from "../components/BackButton.vue"
+import backBtn from "../components/profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 const db = getFirestore(firebaseApp);
+
 export default {
   name: "CreatePost",
   components:{
@@ -91,7 +93,7 @@ export default {
       desription: "",
       category: "",
       location: "",
-      }
+      },
     };
   },
 
@@ -129,7 +131,8 @@ methods: {
             description:c,
             category:d,
             location:f,
-            status: status
+            status: status,
+            user:"10086",
         }
         )
         console.log(docRef);
@@ -150,10 +153,11 @@ methods: {
   border-radius: 10px;
   justify-content:center;
 }
-label {
+
+.postlabel {
   color: rgb(31, 34, 34);
   display: flex;
-  justify-content:center;
+  justify-content:left;
   margin-top:2%;
   margin-bottom:2%;
   width:100%;
@@ -161,6 +165,7 @@ label {
   letter-spacing: 1px;
   font-weight: bold;
 }
+
 input,select {
   display: flex;
   justify-content:center;
@@ -181,6 +186,7 @@ input,select {
 
 .submitRow{
     margin-left:60%;
+    padding:1%;
 }
 
 .submit {
@@ -193,6 +199,6 @@ input,select {
     color:aliceblue;
     border-radius: 20px;
     width:10%;
-    height:5%;
+    height:7%;
 }
 </style>

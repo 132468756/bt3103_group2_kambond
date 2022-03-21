@@ -1,37 +1,42 @@
 <template>
     <div id="OtherPages">
-        <div id="MyPost">
-            <a href="/mypost">
-                <button class="MyBtn">
-                    <h2 class="InnerText">My Posts</h2>
-                </button>
-            </a>
-        </div>
+        <div className = "row">
+            <div id="MyPost">
+                <a href="/mypost">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Posts</h2>
+                    </button>
+                </a>
+            </div>
 
-        <div id="MyRequest">
-            <a href="/myrequest">
-                <button class="MyBtn">
-                    <h2 class="InnerText">My Requests</h2>
-                </button>
-            </a>
-        </div>
+            <div id="MyRequest">
+                <a href="/myrequest">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Requests</h2>
+                    </button>
+                </a>
+            </div>
 
-        <div id="MyDeal">
-            <a href="/mydeal">
-                <button class="MyBtn">
-                    <h2 class="InnerText">My Deals</h2>
-                </button>
-            </a>
+            <div id="MyDeal">
+                <a href="/mydeal">
+                    <button class="MyBtn">
+                        <h2 class="InnerText">My Deals</h2>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <div className = "row">
+            <div id="Create">
+                <a href="/createpost">
+                    <button class="MyBtn" id="CreateBtn">
+                        <h2 class="InnerText">Create</h2>
+                    </button>
+                </a>
+            </div>
         </div>
     </div>
-    <br><br>
-    <div id="Create">
-        <a href="/createpost">
-            <button class="MyBtn" id="CreateBtn">
-                <h2 class="InnerText">Create</h2>
-            </button>
-        </a>
-    </div>
+    
+    
 </template>
 
 <script>
@@ -84,7 +89,7 @@ export default {
     #MyDeal {
         border-radius: 25px;
         text-align: center;
-        width: 25%;
+        width: 25vw;
         height: 100px;
         margin-left: 5%;
         margin-right: 10%;
@@ -96,13 +101,21 @@ export default {
         text-align: center;
         width: 20%;
         height: 100px;
-        margin-left: 40%;
         line-height: 100px;
+        margin-top:3%;
     }
 
     #OtherPages{
         display:flex;
+        flex-direction:column;
+        width:100%;
+    }
+
+    .row{
+        display: flex;
         flex-direction:row;
+        justify-content:space-around;
+
     }
 
     #CreateBtn {

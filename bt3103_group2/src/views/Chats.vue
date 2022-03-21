@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import backBtn from "../components/BackButton.vue"
+import backBtn from "../components/profile/BackButton.vue"
 
 export default {
     name:"Chats",

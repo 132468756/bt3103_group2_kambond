@@ -1,21 +1,21 @@
 <template>
-    <table id="MyRequests">
-        <tr class="MyRequestRow">
-            <th class="MyRequestTitle">Post ID</th>
-            <th class="MyRequestTitle">Title</th>
-            <th class="MyRequestTitle">Description</th>
-            <th class="MyRequestTitle">Purpose</th>
-            <th class="MyRequestTitle">Category</th>
-            <th class="MyRequestTitle">Location</th>
-            <th class="MyRequestTitle">Post Date</th>
-            <th class="MyRequestTitle">Status</th>
-            <th class="MyRequestTitle">Action</th>
+    <table id="MyDeals">
+        <tr class="MyDealRow">
+            <th class="MyDealTitle">Post ID</th>
+            <th class="MyDealTitle">Title</th>
+            <th class="MyDealTitle">Description</th>
+            <th class="MyDealTitle">Purpose</th>
+            <th class="MyDealTitle">Category</th>
+            <th class="MyDealTitle">Location</th>
+            <th class="MyDealTitle">Post Date</th>
+            <th class="MyDealTitle">Status</th>
+            <th class="MyDealTitle">Action</th>
         </tr>
     </table>
 </template>
 
 <script>
-import  firebaseApp from "../firebase.js"
+import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
 
@@ -26,19 +26,19 @@ export default {
         async function display(){
             let user = await getDoc(doc(db, "Users", "10086"))
             let ind = 1
-            let records = user.data().requests
+            let records = user.data().deals
             // console.log(user.data())
             // console.log(records)
             
             records.forEach(async (record) => {
-                var table = document.getElementById("MyRequests")
+                var table = document.getElementById("MyDeals")
                 var row = table.insertRow(ind)
-                row.className="MyRequestRow"
+                row.className="MyDealRow"
 
-                let requestInfo = await findRequestInfo(record)
-                // console.log("requestInfo", requestInfo) 
+                let dealInfo = await findDealInfo(record)
+                // console.log("dealInfo", dealInfo) 
                 var cell1 = row.insertCell(0)
-                cell1.className="MyRequestCol"
+                cell1.className="MyDealCol"
                 var cell2 = row.insertCell(1)
                 var cell3 = row.insertCell(2)
                 var cell4 = row.insertCell(3)
@@ -48,18 +48,18 @@ export default {
                 var cell8 = row.insertCell(7)
                 var cell9 = row.insertCell(8)
 
-                cell1.innerHTML = requestInfo[0]
-                cell2.innerHTML = requestInfo[1]
-                cell3.innerHTML = requestInfo[2]
-                cell4.innerHTML = requestInfo[3]
-                cell5.innerHTML = requestInfo[4]
-                cell6.innerHTML = requestInfo[5]
-                cell7.innerHTML = requestInfo[6]
-                cell8.innerHTML = requestInfo[7]
+                cell1.innerHTML = dealInfo[0]
+                cell2.innerHTML = dealInfo[1]
+                cell3.innerHTML = dealInfo[2]
+                cell4.innerHTML = dealInfo[3]
+                cell5.innerHTML = dealInfo[4]
+                cell6.innerHTML = dealInfo[5]
+                cell7.innerHTML = dealInfo[6]
+                cell8.innerHTML = dealInfo[7]
                 
                 var deleteBtn = document.createElement("button")
-                deleteBtn.className = "completeRequestBtn"
-                deleteBtn.id = String(requestInfo[0])
+                deleteBtn.className = "completeDealBtn"
+                deleteBtn.id = String(dealInfo[0])
                 deleteBtn.innerHTML="Complete"
                 deleteBtn.onclick=function(){
                     deletePost(record)
@@ -69,9 +69,9 @@ export default {
         }
         display()
 
-        async function findRequestInfo(record){
-            let thisPost = await getDoc(doc(db, "Requests", record))
-            let postID = thisPost.data().requestID
+        async function findDealInfo(record){
+            let thisPost = await getDoc(doc(db, "Deals", record))
+            let postID = thisPost.data().dealID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -80,23 +80,22 @@ export default {
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
 
-            let requestInfo = [postID,title,description,purpose,category,location,postDate,status]
-            console.log(requestInfo)
-            return requestInfo
+            let dealInfo = [postID,title,description,purpose,category,location,postDate,status]
+            console.log(dealInfo)
+            return dealInfo
         }
 
         async function deletePost(record){
             if(confirm("Please confirm that " + record + " is completed." )){
-                // Delete from request table
-                await deleteDoc(doc(db, "Requests", record))
+                // Delete from deals table
+                await deleteDoc(doc(db, "Deals", record))
                 console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
+                // Still need to delete from user table
                 const docRef = doc(db, "Users", "10086")
                 await updateDoc(docRef, {
-                    requests: arrayRemove(record)
+                    deals: arrayRemove(record)
                 })
-
-                let tb = document.getElementById("MyRequests")
+                let tb = document.getElementById("MyDeals")
                 while(tb.rows.length > 1){
                     tb.deleteRow(1)
                 }
@@ -108,47 +107,47 @@ export default {
 </script>
 
 <style>
-    #MyRequests {
+    #MyDeals {
         text-align: center;
         width: 80%;
         margin-left: 10%;
     }
 
-    #MyRequests,.MyRequestTitle{
-        border: 3px rgba(124, 199, 124, 0.699) solid;
+    #MyDeals,.MyDealTitle {
+        border: 3px rgba(223, 169, 198, 0.767) solid;
         border-collapse: collapse;
         height: 30px;
     }
 
-    .MyRequestCol {
+    .MyDealCol {
         height: 30px;
     }
 
-    .MyRequestRow:nth-child(odd) {
-        background-color: rgb(223, 255, 223);
+    .MyDealRow:nth-child(odd) {
+        background-color: rgb(255, 219, 255);
     }
 
-    .MyRequestTitle {
-        background-color: rgb(212, 240, 212);
+    .MyDealTitle {
+        background-color: rgba(241, 205, 225, 0.767);
     }
 
-    .completeRequestBtn {
+    .completeDealBtn {
         width: 80%;
         height: 80%;
-        background-color: rgba(117, 255, 117, 0.822);
+        background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;
         border-radius: 12px;
         border: none;
     }
 
-    .completeRequestBtn:hover {
+    .completeDealBtn:hover {
         outline-color: transparent;
         outline-style: solid;
-        box-shadow: 0 0 0 1px lightgreen;
+        box-shadow: 0 0 0 1px rgb(185, 32, 185);
         transition: 0.5s;
     }
 
-    .completeRequestBtn:active {
-        background-color: lightgreen;
+    .completeDealBtn:active {
+        background-color: rgb(141, 26, 141);
     }
 </style>
