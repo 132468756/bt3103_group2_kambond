@@ -18,54 +18,61 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc,  updateDoc, deleteDoc, arrayRemove} from "firebase/firestore"
+import {getAuth} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
+const auth = getAuth()
 
 export default {
     mounted(){
         async function display(){
-            let user = await getDoc(doc(db, "Users", "10086"))
-            let ind = 1
-            let records = user.data().posts
-            // console.log(user.data())
-            // console.log(records)
-            
-            records.forEach(async (record) => {
-                var table = document.getElementById("MyPosts")
-                var row = table.insertRow(ind)
-                row.className="MyPostRow"
-
-                let postInfo = await findPostInfo(record)
-                // console.log("postInfo", postInfo) 
-                var cell1 = row.insertCell(0)
-                cell1.className="MyPostCol"
-                var cell2 = row.insertCell(1)
-                var cell3 = row.insertCell(2)
-                var cell4 = row.insertCell(3)
-                var cell5 = row.insertCell(4)
-                var cell6 = row.insertCell(5)
-                var cell7 = row.insertCell(6)
-                var cell8 = row.insertCell(7)
-                var cell9 = row.insertCell(8)
-
-                cell1.innerHTML = postInfo[0]
-                cell2.innerHTML = postInfo[1]
-                cell3.innerHTML = postInfo[2]
-                cell4.innerHTML = postInfo[3]
-                cell5.innerHTML = postInfo[4]
-                cell6.innerHTML = postInfo[5]
-                cell7.innerHTML = postInfo[6]
-                cell8.innerHTML = postInfo[7]
+            if (auth != null) {
+                console.log(auth)
+                let user = await getDoc(doc(db, "Users", "10086"))
+                let ind = 1
+                let records = user.data().posts
+                console.log(user.data())
+                console.log(records)
                 
-                var deleteBtn = document.createElement("button")
-                deleteBtn.className = "deletePostBtn"
-                deleteBtn.id = String(postInfo[0])
-                deleteBtn.innerHTML="Delete"
-                deleteBtn.onclick=function(){
-                    deletePost(record)
-                }
-                cell9.appendChild(deleteBtn)
-            })
+                records.forEach(async (record) => {
+                    var table = document.getElementById("MyPosts")
+                    var row = table.insertRow(ind)
+                    row.className="MyPostRow"
+
+                    let postInfo = await findPostInfo(record)
+                    // console.log("postInfo", postInfo) 
+                    var cell1 = row.insertCell(0)
+                    cell1.className="MyPostCol"
+                    var cell2 = row.insertCell(1)
+                    var cell3 = row.insertCell(2)
+                    var cell4 = row.insertCell(3)
+                    var cell5 = row.insertCell(4)
+                    var cell6 = row.insertCell(5)
+                    var cell7 = row.insertCell(6)
+                    var cell8 = row.insertCell(7)
+                    var cell9 = row.insertCell(8)
+
+                    cell1.innerHTML = postInfo[0]
+                    cell2.innerHTML = postInfo[1]
+                    cell3.innerHTML = postInfo[2]
+                    cell4.innerHTML = postInfo[3]
+                    cell5.innerHTML = postInfo[4]
+                    cell6.innerHTML = postInfo[5]
+                    cell7.innerHTML = postInfo[6]
+                    cell8.innerHTML = postInfo[7]
+                    
+                    var deleteBtn = document.createElement("button")
+                    deleteBtn.className = "deletePostBtn"
+                    deleteBtn.id = String(postInfo[0])
+                    deleteBtn.innerHTML="Delete"
+                    deleteBtn.onclick=function(){
+                        deletePost(record)
+                    }
+                    cell9.appendChild(deleteBtn)
+                })
+            } else {
+                console.log("User need to login")
+            }
         }
         display()
 

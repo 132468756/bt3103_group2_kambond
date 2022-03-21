@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Homepage from "../views/Homepage.vue";
 import Borrow from "../views/Borrow.vue";
 import Lend from "../views/Lend.vue";
-import Login from "../views/Login.vue";
+import Login from "../components/Login.vue";
 import CreatePost from "../views/CreatePost.vue";
 import MyPost from "../views/MyPosts.vue";
 import MyRequest from "../views/MyRequests.vue";
