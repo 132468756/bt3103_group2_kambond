@@ -69,8 +69,8 @@
 
 <script>
 import firebaseApp from "../firebase.js";
-import {getFirestore} from "firebase/firestore";
-import { doc, setDoc} from "firebase/firestore";
+import {arrayUnion, getFirestore} from "firebase/firestore";
+import { updateDoc, doc, setDoc} from "firebase/firestore";
 import NavBar from "../components/NavBar.vue"
 import backBtn from "../components/profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -131,6 +131,7 @@ methods: {
     if (confirm("creating post : " + a) == true){
       try{
           const docRef = await setDoc(doc(db, "Posts", postID), {
+              postID:String(postID),
               title:a,
               purpose:b,
               description:c,
@@ -138,8 +139,13 @@ methods: {
               location:f,
               status: status,
               user:email,
+              postDate:timeStamp,
+          })
+          const userRef = await updateDoc(doc(db, "Users",String(email)), {
+            posts: arrayUnion(String(postID)),    
           })
           console.log(docRef);
+          console.log(userRef);
       }
       catch(error){
         console.error("Error adding document:", error);

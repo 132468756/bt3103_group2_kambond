@@ -28,7 +28,10 @@ export default {
         async function display(){
             if (auth != null) {
                 console.log(auth)
-                let user = await getDoc(doc(db, "Users", "10086"))
+                //let email = auth.currentUser.email
+                console.log(auth.currentUser.email)
+                let user = await getDoc(doc(db, "Users", String(auth.currentUser.email)))
+                // let user = await getDoc(doc(db, "Users", "10086"))
                 let ind = 1
                 let records = user.data().posts
                 console.log(user.data())
@@ -52,7 +55,7 @@ export default {
                     var cell8 = row.insertCell(7)
                     var cell9 = row.insertCell(8)
 
-                    cell1.innerHTML = postInfo[0]
+                    cell1.innerHTML = String(postInfo[0]).slice(0,11)
                     cell2.innerHTML = postInfo[1]
                     cell3.innerHTML = postInfo[2]
                     cell4.innerHTML = postInfo[3]
