@@ -39,10 +39,11 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
-
+import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp)
 
-// const auth = getAuth()
+const auth = getAuth()
+const id = String(auth.currentUser.email)
 export default {
     names:"SettingsTable",
     components:{
@@ -67,7 +68,9 @@ export default {
 
     mounted(){
         async function displayUserInfo(self){
-            let user = await getDoc(doc(db, "Users", "10086"))
+            //let user = await getDoc(doc(db, "Users", "10086"))
+            
+            let user = await getDoc(doc(db, "Users", id))
             // console.log(typeof(user))
             // console.log(user.data())
             self.username = user.data().username
@@ -92,7 +95,7 @@ export default {
                 document.getElementById("usernameContent").innerHTML="'{{username}}'"
                 this.usernameStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",id), {
                         username: newUsername
                     })
                     console.log(docRef)
@@ -120,7 +123,7 @@ export default {
                 this.emailStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",id), {
                         email: newEmail
                     })
                     console.log(docRef)
@@ -148,7 +151,7 @@ export default {
                 this.passwordStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",id), {
                         password: newPassword
                     })
                     console.log(docRef)
@@ -178,7 +181,7 @@ export default {
             this.bioStatus="static"
 
             try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",id), {
                         bio: newBio
                     })
                     console.log(docRef)
@@ -203,7 +206,7 @@ export default {
                 this.contactStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",id), {
                         contactNumber: newContact
                     })
                     console.log(docRef)
