@@ -1,5 +1,6 @@
 <template> 
     <!-- <h1>This is a sample page for My Request</h1> -->
+    <nav-bar/>
     <backBtn/>
     <div class="profilePicDiv">
         <img src="@/assets/profilephoto.jpeg" id="profilePic">
@@ -14,12 +15,14 @@
 <script>
 import backBtn from "../components/profile/BackButton.vue"
 import requestTable from "../components/profile/MyRequestsTable.vue"
+import NavBar from "../components/NavBar.vue"
 
 export default {
     name:"MyRequests",
     components:{
         backBtn,
-        requestTable
+        requestTable,
+        NavBar
     }
 }
 </script>

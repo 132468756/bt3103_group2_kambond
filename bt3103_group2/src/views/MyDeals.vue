@@ -1,5 +1,6 @@
 <template>
     <!-- <h1>This is a sample page for My Deals</h1> -->
+    <nav-bar/>
     <backBtn/>
     <div class="profilePicDiv">
         <img src="@/assets/profilephoto.jpeg" id="profilePic">
@@ -14,12 +15,13 @@
 <script>
 import backBtn from "../components/profile/BackButton.vue"
 import dealTable from "../components/profile/MyDealsTable.vue"
-
+import NavBar from "../components/NavBar.vue"
 export default {
     name: "MyDeals",
     components : {
         backBtn,
-        dealTable
+        dealTable,
+        NavBar
     }
 
 }

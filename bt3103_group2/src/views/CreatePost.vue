@@ -2,7 +2,7 @@
 <div style="text-align:center;" v-if="user"> 
   <NavBar/>
   <backBtn/>
-  <form @submit.prevent="createPost" method="post" id="createpostform">
+  <form @submit.prevent="onSubmit" method="post" id="createpostform">
       <div className ="row">
     <label className = "postlabel"> Title </label>
     <input type="title" required v-model="post.title" id = "post.title"/>
@@ -60,7 +60,7 @@
     </div>
 
     <div className = "submitRow">
-      <button className="submit" v-on:click = "createPost()"> Create Post </button>
+      <button className="submit" @click = "createPost()"> Create Post </button>
     </div>
   
   </form>
@@ -76,6 +76,7 @@ import backBtn from "../components/profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 const db = getFirestore(firebaseApp);
+const auth = getAuth()
 
 export default {
   name: "CreatePost",
@@ -113,6 +114,7 @@ methods: {
     var c = document.getElementById("post.description").value
     var d = document.getElementById("post.category").value
     var f = document.getElementById("post.location").value
+    var email = auth.currentUser.email
     var status = b
 
     if(b == "Borrowing"){
@@ -122,24 +124,27 @@ methods: {
         status = "Wants to lend"
     }
 
-    alert("creating post : " + a)
-    try{
-        const docRef = await setDoc(doc(db, "Posts", a),
-        {
-            title:a,
-            purpose:b,
-            description:c,
-            category:d,
-            location:f,
-            status: status,
-            user:"10086",
+    var sysTime = new Date()
+    var timeStamp = sysTime.getTime()
+    var postID = email + a + timeStamp
+
+    if (confirm("creating post : " + a) == true){
+      try{
+          const docRef = await setDoc(doc(db, "Posts", postID), {
+              title:a,
+              purpose:b,
+              description:c,
+              category:d,
+              location:f,
+              status: status,
+              user:email,
+          })
+          console.log(docRef);
+      }
+      catch(error){
+        console.error("Error adding document:", error);
         }
-        )
-        console.log(docRef);
     }
-    catch(error){
-                console.error("Error adding document:", error);
-            }
 
   }
 }
@@ -200,5 +205,17 @@ input,select {
     border-radius: 20px;
     width:10%;
     height:7%;
+    cursor: pointer;
+}
+
+.submit:hover{
+  outline-color: transparent;
+  outline-style: solid;
+  box-shadow: 0 0 0 1px lightblue;
+  transition: 0.5s;
+}
+
+.submit:active{
+  background-color: lightblue;
 }
 </style>
