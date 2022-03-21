@@ -6,11 +6,10 @@
 </template>
 
 <script>
-import Contact from "./components/Home/Contact.vue"
+
 export default {
   name: "App",
   components: {
-    Contact
   },
 };
 </script>

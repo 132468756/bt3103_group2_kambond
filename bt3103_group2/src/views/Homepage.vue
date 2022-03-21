@@ -10,6 +10,7 @@
 import SearchField from "../components/Home/SearchField.vue"
 import NavBar from "../components/NavBar.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+
 export default {
   name: "Homepage",
   components: {
@@ -36,16 +37,16 @@ export default {
 
 <style>
 .home {
-    /* The image used */
-    background-image: url('~@/assets/search-bg.jpg');
+  /* The image used */
+  background-image: url("~@/assets/search-bg.jpg");
 
-    /* Control the height of the image */
-    min-height: 380px;
+  /* Control the height of the image */
+  min-height: 380px;
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-  }
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
 </style>
