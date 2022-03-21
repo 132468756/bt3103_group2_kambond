@@ -29,6 +29,8 @@
         :owner = "post.userName"
         :title = "post.title"
         :description = "post.description"
+        :postID = "post.postID"
+        :post = "post"
       />
     
   </div>
@@ -44,6 +46,7 @@ import Filter2 from "@/components/Filter/Filter2.vue";
 import Filter3 from "@/components/Filter/Filter3.vue";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
+import Modal from "../components/Modal.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 import firebaseApp from "@/firebase.js";
@@ -68,6 +71,7 @@ export default {
     Filter3,
     Post,
     NavBar,
+    Modal,
   },
   mounted(){
     const auth = getAuth();

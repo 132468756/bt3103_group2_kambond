@@ -44,7 +44,7 @@
           >
             Close
           </button>
-          <button> Borrow </button>
+          <button @click = "toBorrow(this)"> Borrow </button>
         </footer>
       </div>
     </div>
@@ -52,19 +52,97 @@
 </template>
 
 <script>
+import firebaseApp from "../firebase.js";
+import {getFirestore} from "firebase/firestore";
+import { doc, updateDoc, setDoc, getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
+const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
     props:{
-            title:String,
-            description: String,
-            owner: String
-        },
+      title:String,
+      description: String,
+      owner: String,
+      postID:String,
+      post:Object,
+      
+      },
+    mounted() {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+          }
+        })
+      },
     methods: {
       close() {
         this.$emit('close');
+        },
+
+      addDeal: async function(){
+        var a = this.post.postID
+        console.log(this.post)
+        try{
+          const docRef = await setDoc(doc(db, "Deals", a), {
+              dealID: a,
+              owner: this.post.user
+              })
+          console.log(docRef);
+          }
+        catch(error){
+          console.error("Error adding document:", error);
+          }
+        
+        try{
+          let docRe = await getDoc(doc(db, "Users", this.post.user));
+          let deals = []
+          if(docRe.data().deals != undefined){
+            deals = docRe.data().deals
+          }
+          console.log(deals)
+          deals.push(a)
+          console.log(this.post.user)
+          const docR = await updateDoc(doc(db, "Users", this.post.user),  {
+            deals:deals
+            })
+          console.log(docR);
+          }
+        catch(error){
+          console.error("Error updating document:", error);
+          }
+        },
+
+      addRequest: async function(){
+        var a = this.post.postID
+        console.log(a)
+        try{
+          let docRef = await getDoc(doc(db, "Users", this.user.email));
+          console.log(docRef.data())
+          let requests = []
+          if (docRef.data().requests!= undefined){
+            requests = docRef.data().requests
+          }
+          requests.push(a)
+          console.log(requests)
+          const docRe = await updateDoc(doc(db, "Users", this.user.email), {
+              requests:requests
+              })
+          console.log(docRe);
+        }
+        catch(error){
+          console.error("Error updating document:", error);
+          }
+          },
+
+      toBorrow: async function(self){
+            alert("borrowing item " + this.title)
+            await self.addRequest();
+            await self.addDeal();
+          },
       },
-    },
-  };
+}
 </script>
 
 <style>
