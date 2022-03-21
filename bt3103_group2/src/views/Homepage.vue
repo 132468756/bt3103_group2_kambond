@@ -1,24 +1,38 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="user">
     <NavBar/>
-    <br /><br />
-    <SearchField />
-    <Contact />
+    <br><br>
+    <SearchField/>
   </div>
 </template>
 
 <script>
-import SearchField from "../components/Home/SearchField.vue";
-import Contact from "../components/Home/Contact.vue";
-import NavBar from "../components/NavBar.vue";
+import SearchField from "../components/Home/SearchField.vue"
+import NavBar from "../components/NavBar.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
 export default {
   name: "Homepage",
   components: {
-    SearchField,
-    Contact,
     NavBar,
+    SearchField,
   },
-};
+
+  data(){
+        return{
+            user:false,
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
+    }
+}
 </script>
 
 <style>
