@@ -1,16 +1,43 @@
 <script>
+import firebaseApp from "../../firebase.js";
+import {
+  getFirestore,
+  collection,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
 export default {
   name: "filter1",
   data() {
     return {
       checkedNames: [],
+      postlist:[],
     };
+  },
+  watch: {
+    async checkedNames() {
+      const qTitle = query(
+        collection(db, "Posts"),
+        where("category", "in", this.checkedNames),where("status","not-in",["Want to lend","Has lent"]),where("purpost","==","Lending")
+      );
+      const queryTitle = await getDocs(qTitle);
+      console.log(queryTitle);
+      queryTitle.forEach((doc) => {
+        this.postlist.push(doc.data());
+        console.log(doc);
+      });
+      console.log(this.postlist);
+    }
   },
 };
 </script>
 
 <template>
   <div id="checked">Checked names: {{ checkedNames }}</div>
+   
   <div class="whole">
     <div id="name">
       <h3>Category</h3>

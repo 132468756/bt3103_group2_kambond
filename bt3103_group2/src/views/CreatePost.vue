@@ -118,10 +118,10 @@ methods: {
     var status = b
 
     if(b == "Borrowing"){
-        status = "Wants to borrow"
+        status = "Want to borrow"
     }
     else{
-        status = "Wants to lend"
+        status = "Want to lend"
     }
 
     var sysTime = new Date()
