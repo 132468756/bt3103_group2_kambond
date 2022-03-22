@@ -39,6 +39,7 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
 
@@ -61,22 +62,33 @@ export default {
             bio:'',
             bioStatus:"static",
             contactNumber:'',
-            contactStatus:"static"
+            contactStatus:"static",
+            userID:''
         }
     },
 
     mounted(){
-        async function displayUserInfo(self){
-            let user = await getDoc(doc(db, "Users", "10086"))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                displayUserInfo(this, user.email)
+            }else{
+                displayUserInfo(this,"10086")
+            }
+        })
+
+        async function displayUserInfo(self, userID){
+            // console.log(auth.currentUser.email)
+            let user_info = await getDoc(doc(db, "Users", userID))
             // console.log(typeof(user))
             // console.log(user.data())
-            self.username = user.data().username
-            self.email = user.data().email
-            self.password = user.data().password
-            self.bio = user.data().bio
-            self.contactNumber = user.data().contactNumber
+            self.userID = userID
+            self.username = user_info.data().username
+            self.email = user_info.data().email
+            self.password = user_info.data().password
+            self.bio = user_info.data().bio
+            self.contactNumber = user_info.data().contactNumber
         }
-        displayUserInfo(this)
     },
 
     methods:{
@@ -92,7 +104,7 @@ export default {
                 document.getElementById("usernameContent").innerHTML="'{{username}}'"
                 this.usernameStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users", this.userID), {
                         username: newUsername
                     })
                     console.log(docRef)
@@ -120,7 +132,7 @@ export default {
                 this.emailStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         email: newEmail
                     })
                     console.log(docRef)
@@ -148,7 +160,7 @@ export default {
                 this.passwordStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         password: newPassword
                     })
                     console.log(docRef)
@@ -178,7 +190,7 @@ export default {
             this.bioStatus="static"
 
             try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         bio: newBio
                     })
                     console.log(docRef)
@@ -203,7 +215,7 @@ export default {
                 this.contactStatus="static"
 
                 try{
-                    const docRef = await updateDoc(doc(db, "Users","10086"), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         contactNumber: newContact
                     })
                     console.log(docRef)

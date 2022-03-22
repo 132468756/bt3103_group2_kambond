@@ -18,13 +18,30 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
 
 export default {
+    data(){
+        return{
+            userID:''
+        }
+    },
+
     mounted(){
-        async function display(){
-            let user = await getDoc(doc(db, "Users", "10086"))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                this.userID=user.email
+            }else{
+                this.userID="10086"
+            }
+            display(this)
+        })
+
+        async function display(self){
+            let user = await getDoc(doc(db, "Users", self.userID))
             let ind = 1
             let records = user.data().deals
             // console.log(user.data())
@@ -57,17 +74,26 @@ export default {
                 cell7.innerHTML = dealInfo[6]
                 cell8.innerHTML = dealInfo[7]
                 
-                var deleteBtn = document.createElement("button")
-                deleteBtn.className = "completeDealBtn"
-                deleteBtn.id = String(dealInfo[0])
-                deleteBtn.innerHTML="Complete"
-                deleteBtn.onclick=function(){
-                    deletePost(record)
+                var dealBtn = document.createElement("button")
+                dealBtn.className = "dealActionBtn"
+                dealBtn.id = String(dealInfo[0])
+                if(dealInfo[6]=="Requested"){
+                    dealBtn.innerHTML="Complete"
+                    dealBtn.onclick=function(){
+                        confirmDeal(record)
+                    }
+                }else if(dealInfo[6]=="Sent Out"){
+                    dealBtn.innerHTML="Sent Out"
+                }else{
+                    dealBtn.innerHTML="Complete"
+                    dealBtn.onclick=function(){
+                        completeDeal(record)
+                    }
                 }
-                cell9.appendChild(deleteBtn)
+                cell9.appendChild(dealBtn)
             })
         }
-        display()
+        display(this)
 
         async function findDealInfo(record){
             let thisPost = await getDoc(doc(db, "Deals", record))
@@ -85,22 +111,51 @@ export default {
             return dealInfo
         }
 
-        async function deletePost(record){
-            if(confirm("Please confirm that " + record + " is completed." )){
-                // Delete from deals table
-                await deleteDoc(doc(db, "Deals", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from user table
-                const docRef = doc(db, "Users", "10086")
+        async function confirmDeal(record){
+            if(confirm("Please confirm that you want to lend the item in this post to the poster." )){
+                // Update status in both Deals and Posts tables
+                const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
-                    deals: arrayRemove(record)
+                    status: "Sent Out"
                 })
+                // Re-render the page
                 let tb = document.getElementById("MyDeals")
                 while(tb.rows.length > 1){
                     tb.deleteRow(1)
                 }
-                display()
+                display(this)
             }
+        }
+
+        async function completeDeal(record){
+            // Update the post status to completed
+            const docRef = doc(db, "Posts", record)
+            await updateDoc(docRef, {
+                status: "Completed"
+            })
+
+            // Delete record from own table
+            let myID = auth.currentUser.email
+            const myInfo = doc(db, "Users", myID)
+            await updateDoc(myInfo, {
+                deals: arrayRemove(record)
+            })
+            // Delete record from owner's requests
+            let deal = await getDoc(doc(db, "Deals", record))
+            let owner = deal.data().owner
+            const ownerInfo = doc(db, "Users", owner)
+            await updateDoc(ownerInfo, {
+                requests: arrayRemove(record)
+            })
+            // Delete from Deals table
+            await deleteDoc(doc(db, "Deals", record))
+            console.log("Deal successfully deleted!")
+            // Re-render the page
+            let tb = document.getElementById("MyDeals")
+                while(tb.rows.length > 1){
+                    tb.deleteRow(1)
+                }
+                display(this)
         }
     }
 }
@@ -131,7 +186,7 @@ export default {
         background-color: rgba(241, 205, 225, 0.767);
     }
 
-    .completeDealBtn {
+    .dealActionBtn {
         width: 80%;
         height: 80%;
         background-color: rgba(255, 55, 255, 0.623);
@@ -140,14 +195,14 @@ export default {
         border: none;
     }
 
-    .completeDealBtn:hover {
+    .dealActionBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px rgb(185, 32, 185);
         transition: 0.5s;
     }
 
-    .completeDealBtn:active {
+    .dealActionBtn:active {
         background-color: rgb(141, 26, 141);
     }
 </style>

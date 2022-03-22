@@ -18,13 +18,29 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
 
 export default {
+    data(){
+        return{
+            userID:''
+        }
+    },
     mounted(){
-        async function display(){
-            let user = await getDoc(doc(db, "Users", "10086"))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                this.userID=user.email
+            }else{
+                this.userID="10086"
+            }
+            display(this)
+        })
+
+        async function display(self){
+            let user = await getDoc(doc(db, "Users", self.userID))
             let ind = 1
             let records = user.data().requests
             // console.log(user.data())
@@ -57,21 +73,29 @@ export default {
                 cell7.innerHTML = requestInfo[6]
                 cell8.innerHTML = requestInfo[7]
                 
-                var deleteBtn = document.createElement("button")
-                deleteBtn.className = "completeRequestBtn"
-                deleteBtn.id = String(requestInfo[0])
-                deleteBtn.innerHTML="Complete"
-                deleteBtn.onclick=function(){
-                    deletePost(record)
+                var requestBtn = document.createElement("button")
+                requestBtn.className = "requestActionBtn"
+                requestBtn.id = String(requestInfo[0])
+                if(requestInfo[6] == "Requested"){
+                    requestBtn.innerHTML="Delete"
+                    requestBtn.onclick=function(){
+                        deleteRequest(record)
+                    }
+                }else if(requestInfo[6] == "Sent Out"){
+                    requestBtn.innerHTML="Confirm"
+                    requestBtn.onclick=function(){
+                        confirmRequest(record)
+                    }
+                }else{
+                    requestBtn.innerHTML="Returned"
                 }
-                cell9.appendChild(deleteBtn)
+                cell9.appendChild(requestBtn)
             })
         }
-        display()
 
         async function findRequestInfo(record){
-            let thisPost = await getDoc(doc(db, "Requests", record))
-            let postID = thisPost.data().requestID
+            let thisPost = await getDoc(doc(db, "Posts", record))
+            let postID = thisPost.data().postID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -85,23 +109,52 @@ export default {
             return requestInfo
         }
 
-        async function deletePost(record){
-            if(confirm("Please confirm that " + record + " is completed." )){
-                // Delete from request table
-                await deleteDoc(doc(db, "Requests", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
-                const docRef = doc(db, "Users", "10086")
+    
+        async function deleteRequest(record){
+            var userID = this.auth.currentUser.email
+            if(confirm("You are going to delete " + record)){
+                // Delete the record from the user table
+                const docRef = doc(db, "Users", userID)
                 await updateDoc(docRef, {
                     requests: arrayRemove(record)
                 })
-
+                // Delete record from the poster's table and Deals table
+                let post = await getDoc(doc(db, "Posts", record))
+                let posterID = post.user
+                await deleteDeal(posterID, record)
+                // Re-render the request table
                 let tb = document.getElementById("MyRequests")
                 while(tb.rows.length > 1){
                     tb.deleteRow(1)
                 }
-                display()
+                display(this)
             }
+        }
+
+        async function deleteDeal(userID, postID){
+            // Remove the record in the user's own table
+            const docRef = doc(db, "Users", userID)
+            await updateDoc(docRef, {
+                deals: arrayRemove(postID)
+            })
+            
+            // Remove the deal in the Deals table
+            await deleteDoc(doc(db, "Deals", postID))
+            console.log("Deal successfully deleted!")
+        }
+
+        async function confirmRequest(record){
+            // Update the post status
+            const docRef = doc(db, "Posts", record)
+            await updateDoc(docRef, {
+                status: "Returned"
+            })
+            // Re-render the page
+            let tb = document.getElementById("MyRequests")
+            while(tb.rows.length > 1){
+                tb.deleteRow(1)
+            }
+            display(this)
         }
     }
 }
@@ -132,7 +185,7 @@ export default {
         background-color: rgb(212, 240, 212);
     }
 
-    .completeRequestBtn {
+    .requestActionBtn {
         width: 80%;
         height: 80%;
         background-color: rgba(117, 255, 117, 0.822);
@@ -141,14 +194,14 @@ export default {
         border: none;
     }
 
-    .completeRequestBtn:hover {
+    .requestActionBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px lightgreen;
         transition: 0.5s;
     }
 
-    .completeRequestBtn:active {
+    .requestActionBtn:active {
         background-color: lightgreen;
     }
 </style>

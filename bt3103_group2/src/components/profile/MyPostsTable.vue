@@ -18,17 +18,31 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc,  updateDoc, deleteDoc, arrayRemove} from "firebase/firestore"
-import {getAuth} from "firebase/auth"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
-const auth = getAuth()
 
 export default {
+    data(){
+        return{
+            userID:''
+        }
+    },
     mounted(){
-        async function display(){
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                this.userID=user.email
+            }else{
+                this.userID="10086"
+            }
+            display(this)
+        })
+
+        async function display(self){
             if (auth != null) {
                 console.log(auth)
-                let user = await getDoc(doc(db, "Users", "10086"))
+                let user = await getDoc(doc(db, "Users", self.userID))
                 let ind = 1
                 let records = user.data().posts
                 console.log(user.data())
@@ -74,7 +88,6 @@ export default {
                 console.log("User need to login")
             }
         }
-        display()
 
         async function findPostInfo(record){
             let thisPost = await getDoc(doc(db, "Posts", record))
@@ -93,21 +106,21 @@ export default {
         }
 
         async function deletePost(record){
-            if(confirm("You are going to delete " + record)){
-                // Delete from Posts table
-                await deleteDoc(doc(db, "Posts", record))
+            if(confirm("Please confirm that " + record + " is completed." )){
+                // Delete from request table
+                await deleteDoc(doc(db, "Requests", record))
                 console.log(record, " successfully deleted!")
                 // Still need to delete from the user table
                 const docRef = doc(db, "Users", "10086")
                 await updateDoc(docRef, {
-                    posts: arrayRemove(record)
+                    requests: arrayRemove(record)
                 })
-                
-                let tb = document.getElementById("MyPosts")
+
+                let tb = document.getElementById("MyRequests")
                 while(tb.rows.length > 1){
                     tb.deleteRow(1)
                 }
-                display()
+                display(this)
             }
         }
     }

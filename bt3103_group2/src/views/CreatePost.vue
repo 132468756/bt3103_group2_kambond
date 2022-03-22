@@ -69,8 +69,8 @@
 
 <script>
 import firebaseApp from "../firebase.js";
-import {getFirestore} from "firebase/firestore";
-import { doc, setDoc} from "firebase/firestore";
+import {arrayUnion, getFirestore} from "firebase/firestore";
+import { doc, setDoc, updateDoc} from "firebase/firestore";
 import NavBar from "../components/NavBar.vue"
 import backBtn from "../components/profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -138,12 +138,18 @@ methods: {
               location:f,
               status: status,
               user:email,
+              postID:postID
           })
           console.log(docRef);
       }
       catch(error){
         console.error("Error adding document:", error);
-        }
+      }
+
+      let user_info = doc(db, "Users", this.user.email)
+      await updateDoc(user_info, {
+        posts: arrayUnion(postID)
+      })
     }
 
   }
