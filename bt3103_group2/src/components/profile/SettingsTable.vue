@@ -39,11 +39,12 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
-import { getAuth } from "firebase/auth";
+// import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp)
 
-const auth = getAuth()
-const id = String(auth.currentUser.email)
+// const auth = getAuth()
+// const id = String(auth.currentUser.email)
+const id = "10086"
 export default {
     names:"SettingsTable",
     components:{
