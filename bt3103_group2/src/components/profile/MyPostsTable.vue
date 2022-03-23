@@ -106,21 +106,16 @@ export default {
         }
 
         async function deletePost(record){
-            if(confirm("Please confirm that " + record + " is completed." )){
-                // Delete from request table
-                await deleteDoc(doc(db, "Requests", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
-                const docRef = doc(db, "Users", "10086")
-                await updateDoc(docRef, {
-                    requests: arrayRemove(record)
+            if(confirm("Please confirm that you want to delete " + record)){
+                // Delete from user table
+                let user = doc(db, "Users", auth.currentUser.email)
+                await updateDoc(user, {
+                    posts:arrayRemove(record)
                 })
-
-                let tb = document.getElementById("MyRequests")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display(this)
+                // Delete from Posts table
+                await deleteDoc(doc(db, "Posts", record))
+                // Re-render the page
+                location.reload()
             }
         }
     }

@@ -8,6 +8,7 @@
             <th class="MyRequestTitle">Category</th>
             <th class="MyRequestTitle">Location</th>
             <th class="MyRequestTitle">Post Date</th>
+            <th class="MyRequestTitle">Lender</th>
             <th class="MyRequestTitle">Status</th>
             <th class="MyRequestTitle">Action</th>
         </tr>
@@ -63,6 +64,7 @@ export default {
                 var cell7 = row.insertCell(6)
                 var cell8 = row.insertCell(7)
                 var cell9 = row.insertCell(8)
+                var cell10 = row.insertCell(9)
 
                 cell1.innerHTML = requestInfo[0]
                 cell2.innerHTML = requestInfo[1]
@@ -71,7 +73,8 @@ export default {
                 cell5.innerHTML = requestInfo[4]
                 cell6.innerHTML = requestInfo[5]
                 cell7.innerHTML = requestInfo[6]
-                cell8.innerHTML = requestInfo[7]
+                cell9.innerHTML = requestInfo[7]
+                cell8.innerHTML = requestInfo[8]
                 
                 var requestBtn = document.createElement("button")
                 requestBtn.className = "requestActionBtn"
@@ -81,15 +84,20 @@ export default {
                     requestBtn.onclick=function(){
                         deleteRequest(record)
                     }
+                    cell10.appendChild(requestBtn)
                 }else if(requestInfo[7] == "Sent Out"){
                     requestBtn.innerHTML="Confirm"
                     requestBtn.onclick=function(){
                         confirmRequest(record)
                     }
+                    cell10.appendChild(requestBtn)
                 }else{
-                    requestBtn.innerHTML="Returned"
+                    var info_div = document.createElement("div")
+                    info_div.className="requestInfoReturned"
+                    info_div.id = String(requestInfo[0])
+                    info_div.innerHTML = "Returned"
+                    cell10.appendChild(info_div)
                 }
-                cell9.appendChild(requestBtn)
             })
         }
 
@@ -103,8 +111,9 @@ export default {
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
+            let user = thisPost.data().user
 
-            let requestInfo = [postID,title,description,purpose,category,location,postDate,status]
+            let requestInfo = [postID,title,description,purpose,category,location,postDate,status,user]
             console.log(requestInfo)
             return requestInfo
         }

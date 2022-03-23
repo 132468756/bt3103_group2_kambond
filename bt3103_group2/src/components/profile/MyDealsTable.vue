@@ -85,15 +85,20 @@ export default {
                     dealBtn.onclick=function(){
                         confirmDeal(record)
                     }
+                    cell10.appendChild(dealBtn)
                 }else if(dealInfo[7]=="Sent Out"){
-                    dealBtn.innerHTML="Sent Out"
+                    var info_div = document.createElement("div")
+                    info_div.className="dealInfoLent"
+                    info_div.id = String(dealInfo[0])
+                    info_div.innerHTML = "Lent"
+                    cell10.appendChild(info_div)
                 }else{
                     dealBtn.innerHTML="Complete"
                     dealBtn.onclick=function(){
                         completeDeal(record)
                     }
+                    cell10.appendChild(dealBtn)
                 }
-                cell10.appendChild(dealBtn)
             })
         }
         display(this)
