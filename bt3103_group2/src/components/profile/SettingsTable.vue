@@ -108,6 +108,7 @@ export default {
                         username: newUsername
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating username")
@@ -136,6 +137,7 @@ export default {
                         email: newEmail
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating email")
@@ -164,6 +166,7 @@ export default {
                         password: newPassword
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating password")
@@ -190,10 +193,11 @@ export default {
             this.bioStatus="static"
 
             try{
-                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
-                        bio: newBio
-                    })
-                    console.log(docRef)
+                const docRef = await updateDoc(doc(db, "Users",this.userID), {
+                    bio: newBio
+                })
+                console.log(docRef)
+                location.reload()
                 }
                 catch(error){
                     console.log("Failed updating bio")
@@ -219,6 +223,7 @@ export default {
                         contactNumber: newContact
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating contactNumber")
