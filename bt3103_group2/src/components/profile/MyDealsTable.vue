@@ -8,6 +8,7 @@
             <th class="MyDealTitle">Category</th>
             <th class="MyDealTitle">Location</th>
             <th class="MyDealTitle">Post Date</th>
+            <th class="MyDealTitle">Borrower</th>
             <th class="MyDealTitle">Status</th>
             <th class="MyDealTitle">Action</th>
         </tr>
@@ -64,6 +65,7 @@ export default {
                 var cell7 = row.insertCell(6)
                 var cell8 = row.insertCell(7)
                 var cell9 = row.insertCell(8)
+                var cell10 = row.insertCell(9)
 
                 cell1.innerHTML = dealInfo[0]
                 cell2.innerHTML = dealInfo[1]
@@ -72,17 +74,18 @@ export default {
                 cell5.innerHTML = dealInfo[4]
                 cell6.innerHTML = dealInfo[5]
                 cell7.innerHTML = dealInfo[6]
-                cell8.innerHTML = dealInfo[7]
-                
+                cell9.innerHTML = dealInfo[7]
+                cell8.innerHTML = dealInfo[8]
+
                 var dealBtn = document.createElement("button")
                 dealBtn.className = "dealActionBtn"
                 dealBtn.id = String(dealInfo[0])
-                if(dealInfo[6]=="Requested"){
-                    dealBtn.innerHTML="Complete"
+                if(dealInfo[7]=="Requested"){
+                    dealBtn.innerHTML="Confirm"
                     dealBtn.onclick=function(){
                         confirmDeal(record)
                     }
-                }else if(dealInfo[6]=="Sent Out"){
+                }else if(dealInfo[7]=="Sent Out"){
                     dealBtn.innerHTML="Sent Out"
                 }else{
                     dealBtn.innerHTML="Complete"
@@ -90,14 +93,14 @@ export default {
                         completeDeal(record)
                     }
                 }
-                cell9.appendChild(dealBtn)
+                cell10.appendChild(dealBtn)
             })
         }
         display(this)
 
         async function findDealInfo(record){
-            let thisPost = await getDoc(doc(db, "Deals", record))
-            let postID = thisPost.data().dealID
+            let thisPost = await getDoc(doc(db, "Posts", record))
+            let postID = thisPost.data().postID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -106,7 +109,10 @@ export default {
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
 
-            let dealInfo = [postID,title,description,purpose,category,location,postDate,status]
+            let deal_info = await getDoc(doc(db, "Deals", record))
+            let owner = deal_info.data().owner
+
+            let dealInfo = [postID,title,description,purpose,category,location,postDate,status,owner]
             console.log(dealInfo)
             return dealInfo
         }
@@ -119,43 +125,37 @@ export default {
                     status: "Sent Out"
                 })
                 // Re-render the page
-                let tb = document.getElementById("MyDeals")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display(this)
+                location.reload()
             }
         }
 
         async function completeDeal(record){
-            // Update the post status to completed
-            const docRef = doc(db, "Posts", record)
-            await updateDoc(docRef, {
-                status: "Completed"
-            })
+            if(confirm("Please confirm the borrower has returned your item.")){
+                // Update the post status to completed
+                const docRef = doc(db, "Posts", record)
+                await updateDoc(docRef, {
+                    status: "Completed"
+                })
 
-            // Delete record from own table
-            let myID = auth.currentUser.email
-            const myInfo = doc(db, "Users", myID)
-            await updateDoc(myInfo, {
-                deals: arrayRemove(record)
-            })
-            // Delete record from owner's requests
-            let deal = await getDoc(doc(db, "Deals", record))
-            let owner = deal.data().owner
-            const ownerInfo = doc(db, "Users", owner)
-            await updateDoc(ownerInfo, {
-                requests: arrayRemove(record)
-            })
-            // Delete from Deals table
-            await deleteDoc(doc(db, "Deals", record))
-            console.log("Deal successfully deleted!")
-            // Re-render the page
-            let tb = document.getElementById("MyDeals")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display(this)
+                // Delete record from own table
+                let myID = auth.currentUser.email
+                const myInfo = doc(db, "Users", myID)
+                await updateDoc(myInfo, {
+                    deals: arrayRemove(record)
+                })
+                // Delete record from owner's requests
+                let deal = await getDoc(doc(db, "Deals", record))
+                let owner = deal.data().owner
+                const ownerInfo = doc(db, "Users", owner)
+                await updateDoc(ownerInfo, {
+                    requests: arrayRemove(record)
+                })
+                // Delete from Deals table
+                await deleteDoc(doc(db, "Deals", record))
+                console.log("Deal successfully deleted!")
+                // Re-render the page
+                location.reload()
+            }
         }
     }
 }

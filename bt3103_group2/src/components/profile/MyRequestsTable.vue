@@ -76,12 +76,12 @@ export default {
                 var requestBtn = document.createElement("button")
                 requestBtn.className = "requestActionBtn"
                 requestBtn.id = String(requestInfo[0])
-                if(requestInfo[6] == "Requested"){
+                if(requestInfo[7] == "Requested"){
                     requestBtn.innerHTML="Delete"
                     requestBtn.onclick=function(){
                         deleteRequest(record)
                     }
-                }else if(requestInfo[6] == "Sent Out"){
+                }else if(requestInfo[7] == "Sent Out"){
                     requestBtn.innerHTML="Confirm"
                     requestBtn.onclick=function(){
                         confirmRequest(record)
@@ -111,7 +111,7 @@ export default {
 
     
         async function deleteRequest(record){
-            var userID = this.auth.currentUser.email
+            var userID = auth.currentUser.email
             if(confirm("You are going to delete " + record)){
                 // Delete the record from the user table
                 const docRef = doc(db, "Users", userID)
@@ -119,42 +119,42 @@ export default {
                     requests: arrayRemove(record)
                 })
                 // Delete record from the poster's table and Deals table
-                let post = await getDoc(doc(db, "Posts", record))
-                let posterID = post.user
+                let post = doc(db, "Posts", record)
+                let post_info = await getDoc(post)
+                let posterID = post_info.data().user
                 await deleteDeal(posterID, record)
+                //Change the post status back to "Want to Lend"
+                await updateDoc(post, {
+                    status:"Want to Lend"
+                })
                 // Re-render the request table
-                let tb = document.getElementById("MyRequests")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display(this)
+                location.reload()
             }
         }
 
         async function deleteDeal(userID, postID){
-            // Remove the record in the user's own table
-            const docRef = doc(db, "Users", userID)
-            await updateDoc(docRef, {
-                deals: arrayRemove(postID)
-            })
-            
-            // Remove the deal in the Deals table
-            await deleteDoc(doc(db, "Deals", postID))
-            console.log("Deal successfully deleted!")
+            if(confirm("Please confirm that you are going to delete this request.")){
+                // Remove the record in the user's own table
+                const docRef = doc(db, "Users", userID)
+                await updateDoc(docRef, {
+                    deals: arrayRemove(postID)
+                })
+                // Remove the deal in the Deals table
+                await deleteDoc(doc(db, "Deals", postID))
+                console.log("Deal successfully deleted!")
+            }
         }
 
         async function confirmRequest(record){
-            // Update the post status
-            const docRef = doc(db, "Posts", record)
-            await updateDoc(docRef, {
-                status: "Returned"
-            })
-            // Re-render the page
-            let tb = document.getElementById("MyRequests")
-            while(tb.rows.length > 1){
-                tb.deleteRow(1)
+            if(confirm("Please confirm that you have returned this item.")){
+                // Update the post status
+                const docRef = doc(db, "Posts", record)
+                await updateDoc(docRef, {
+                    status: "Returned"
+                })
+                // Re-render the page
+                location.reload()
             }
-            display(this)
         }
     }
 }
