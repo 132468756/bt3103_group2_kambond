@@ -140,7 +140,7 @@ methods: {
       catch(error){
         console.error("Error adding document:", error);
       }
-      let user_info = doc(db, "Users", this.user.email)
+      let user_info = doc(db, "Users", String(this.user.email))
       await updateDoc(user_info, {
         posts: arrayUnion(postID)
       })

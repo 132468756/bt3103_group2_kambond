@@ -38,9 +38,9 @@ export default {
     async function createUser() {
       try {
         let data = {
-          username:"this is random name",
-          email:auth.currentUser.email,
-          bio:"this is description",
+          username:"default name",
+          email:String(auth.currentUser.email),
+          bio:"default bio",
           contactNumber:auth.currentUser.phoneNumber,
           creditPoint:0,
           telegramHandle:'',
@@ -50,7 +50,7 @@ export default {
           requests: [],
         };
 
-        let userInfo = await getDoc(doc(db, "Users", auth.currentUser.email))
+        let userInfo = getDoc(doc(db, "Users", String(auth.currentUser.email)))
         if(userInfo == undefined){// Create user only if this is a new user
           const docNow = await setDoc(
             doc(db, "Users", String(auth.currentUser.email)),
