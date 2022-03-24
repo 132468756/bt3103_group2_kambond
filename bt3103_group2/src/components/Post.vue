@@ -9,7 +9,7 @@
     <div id = "description"> {{ description }} </div>
     <hr />
     <div id="owner">
-      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" />
+      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "profilePicture"/>
       <div id = "user">{{ owner }}</div>
     </div>
     
@@ -65,14 +65,14 @@ export default {
 
 #user{
   margin-left: 3%;
-  font-size:3vw;
+  font-size:2vw;
 }
 
 #post {
   display: inline-block;
   border: 2px solid rgb(0, 0, 0);
-  width: 30%;
-  height: 150px;
+  width: 30vw;
+  height: 15vh;
   padding: 10px;
   margin: 10px;
 }
@@ -86,8 +86,8 @@ export default {
   width: 100px;
 }
 
-img {
-  width: 50px;
-  height: 50px;
+#profilePicture {
+  width: 20%;
+  height: 20%;
 }
 </style>

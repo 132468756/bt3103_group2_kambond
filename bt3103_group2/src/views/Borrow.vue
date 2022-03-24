@@ -9,29 +9,25 @@
     <Filter3 />
 
   </div>
-  <div className = "postList">
+  <Modal
+        v-show="isModalVisible"
+        @close="closeModal"
+        :post = "modalData"
+      />
+  <div className = "postList" 
+    v-for= "post in posts"
+    :key = "post.id">
     <button type="button"
           id = "postModal"
-          @click="showModal">
+          @click="showModal(post)">
       <Post className = "posts"
-      v-for= "post in posts"
-      :key = "post.id"
       :owner = "post.userName"
       :title = "post.title"
       :status = "post.status"/>
       
     </button>
-    <Modal
-        v-show="isModalVisible"
-        @close="closeModal"
-        v-for= "post in posts"
-        :key = "post.id"
-        :owner = "post.userName"
-        :title = "post.title"
-        :description = "post.description"
-        :postID = "post.postID"
-        :post = "post"
-      />
+    
+      
     
   </div>
   <div>
@@ -62,6 +58,7 @@ export default {
       user: false,
       checkedNames: [],
       isModalVisible:false,
+      modalData:{},
       posts:[],
     };
   },
@@ -102,8 +99,10 @@ export default {
     
   },
   methods:{
-     showModal() {
+     showModal(data) {
         this.isModalVisible = true;
+        this.modalData = data;
+        console.log("isopen")
       },
   closeModal() {
         this.isModalVisible = false;
@@ -118,6 +117,10 @@ export default {
 <style scoped>
 #postModal{
   justify-content:center;
+}
+
+.postList{
+  display:inline-block;
 }
 
 
