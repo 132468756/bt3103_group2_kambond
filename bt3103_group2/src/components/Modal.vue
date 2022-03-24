@@ -11,7 +11,7 @@
           id="modalTitle"
         >
           <slot name="header">
-            title: {{title}}
+            title: {{post.title}}
           </slot>
           <button
             type="button"
@@ -28,13 +28,13 @@
           id="modalDescription"
         >
           <slot name="body">
-            description: {{description}}
+            description: {{post.description}}
           </slot>
         </section>
 
         <footer class="modal-footer">
           <slot name="footer">
-            owner: {{owner}}
+            owner: {{post.userName}}
           </slot>
           <button
             type="button"
@@ -61,11 +61,7 @@ const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
     props:{
-      title:String,
-      description: String,
-      owner: String,
-      postID:String,
-      post:Object,
+      post:Object
       
       },
     mounted() {
@@ -177,6 +173,8 @@ const db = getFirestore(firebaseApp);
     overflow-x: auto;
     display: flex;
     flex-direction: column;
+    width: 80%;
+    height:80%;
   }
 
   .modal-header,
