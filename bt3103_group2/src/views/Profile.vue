@@ -4,7 +4,7 @@
 </div>
 
 <div>
-  <otherUserProfileTable/>
+  <otherUserProfileTable :id = this.user />
   <button>Chat</button>
 </div>
 </template>
@@ -16,11 +16,20 @@ import userInfo from "../components/profile/UserInfoDisplay.vue"
 
 export default {
   name: "Profile",
+  props:{
+        id:String
+    },
+  data(){
+    return{user: "lrqian2000@gmail.com"}
+    
+  },
+
   components : {
     // Logout,
     userInfo,
     otherUserProfileTable
-  }
+  },
+
 }
 </script>
 

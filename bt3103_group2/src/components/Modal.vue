@@ -37,7 +37,7 @@
             Description: {{post.description}}  
           </div>
           <div classname="body">
-            Time: {{post.postTime}} 
+            Time: {{post.postDate}} 
           </div>
 
         </section>
@@ -45,7 +45,9 @@
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
+            <router-link to="/user/:id" :id = post.user>
             {{post.userName}}
+            </router-link>
           </div>
           <button
             type="button"
@@ -73,14 +75,13 @@
 import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
     props:{
       post:Object
-      
       },
     mounted() {
       const auth = getAuth();
