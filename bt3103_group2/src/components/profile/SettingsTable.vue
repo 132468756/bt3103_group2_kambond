@@ -10,14 +10,13 @@
         <tr class="settingRow">
             <td class="leftCol">Email</td>
             <td id="emailContent">{{email}}</td>
-            <td class="rightCol" v-if="this.emailStatus == 'static'"><changeBtn @click="changeEmail()"/></td>
-            <td v-else><button class="changeSettingBtn" id="confirmChangeEmail" @click="confirmChangeEmail()">Confirm Change</button></td>
+            <td class="rightCol"></td>
         </tr>
         <tr class="settingRow">
-            <td class="leftCol">Password</td>
-            <td id="passwordContent">{{password}}</td>
-            <td class="rightCol" v-if="this.passwordStatus == 'static'"><changeBtn @click="changePassword()"/></td>
-            <td v-else><button class="changeSettingBtn" id="confirmChangePassword" @click="confirmChangePassword()">Confirm Change</button></td>
+            <td class="leftCol">Telegram</td>
+            <td id="telegramContent">{{telegram}}</td>
+            <td class="rightCol" v-if="this.telegramStatus == 'static'"><changeBtn @click="changeTelegram()"/></td>
+            <td v-else><button class="changeSettingBtn" id="confirmChangeTelegram" @click="confirmChangeTelegram()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Bio</td>
@@ -53,9 +52,8 @@ export default {
             username:'',
             usernameStatus:"static",
             email:'',
-            emailStatus:"static",
-            password:'',
-            passwordStatus:"static",
+            telegram:'',
+            telegramStatus:"static",
             bio:'',
             bioStatus:"static",
             contactNumber:'',
@@ -80,7 +78,7 @@ export default {
             self.userID = userID
             self.username = user_info.data().username
             self.email = user_info.data().email
-            self.password = user_info.data().password
+            self.telegram = user_info.data().telegramHandle
             self.bio = user_info.data().bio
             self.contactNumber = user_info.data().contactNumber
         }
@@ -110,56 +108,30 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
-        changeEmail: function(){
-            document.getElementById("emailContent").innerHTML="<input type='text' id='newEmail'>"
-            this.emailStatus="changing"
+        changeTelegram: function(){
+            document.getElementById("telegramContent").innerHTML="<input type='text' id='newTelegram'>"
+            this.telegramStatus="changing"
         },
-        confirmChangeEmail: async function(){
-            var newEmail = document.getElementById("newEmail").value
-            var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-            var ok = regExp.test(newEmail)
+        confirmChangeTelegram: async function(){
+            var newTelegram = document.getElementById("newTelegram").value
+            var regExp = /^@/
+            var ok = regExp.test(newTelegram)
             if(ok){
-                this.email = newEmail
-                document.getElementById("emailContent").innerHTML="'{{email}}'"
-                this.emailStatus="static"
-                try{
-                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
-                        email: newEmail
-                    })
-                    console.log(docRef)
-                    location.reload()
-                }
-                catch(error){
-                    console.log("Failed updating email")
-                }
-            } else {
-                alert("Invalid Email Format!")
-            }
-        },
-        changePassword: function(){
-            document.getElementById("passwordContent").innerHTML="<input type='text' id='newPassword'>"
-            this.passwordStatus="changing"
-        },
-        confirmChangePassword: async function(){
-            var newPassword = document.getElementById("newPassword").value
-            var regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-            var ok = regExp.test(newPassword)
-            if(ok){
-                this.password = newPassword
-                document.getElementById("passwordContent").innerHTML="'{{password}}'"
+                this.telegram = newTelegram
+                document.getElementById("telegramContent").innerHTML="'{{telegram}}'"
                 this.passwordStatus="static"
                 try{
                     const docRef = await updateDoc(doc(db, "Users",this.userID), {
-                        password: newPassword
+                        telegramHandle: newTelegram
                     })
                     console.log(docRef)
                     location.reload()
                 }
                 catch(error){
-                    console.log("Failed updating password")
+                    console.log("Failed updating telegram handle")
                 }
             } else {
-                alert("Invalid Password Format! \nMinimum eight characters, at least one letter and one number.")
+                alert("Invalid Password Format! \nPlease remember the @ in front of your handle.")
             }
         },
         changeBio: function(){
@@ -233,10 +205,10 @@ export default {
         border-collapse: collapse;
         border-width: 1px 0;
     }
-    #confirmChangeUsername,#confirmChangeEmail,#confirmChangePassword,#confirmChangeBio,#confirmChangeContact {
+    #confirmChangeUsername,#confirmChangeTelegram,#confirmChangeBio,#confirmChangeContact {
         margin-left: 10%;
     }
-    #usernameContent,#emailContent,#passwordContent,#bioContent,#contactContent {
+    #usernameContent,#emailContent,#telegramContent,#bioContent,#contactContent {
         width: 60%;
     }
 </style>
