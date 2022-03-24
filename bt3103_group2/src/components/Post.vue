@@ -4,7 +4,7 @@
     <div class="flex-box">
       <div id = "title">{{ title }}</div>
       <div id = "statusbar">{{ status }}</div>
-      <button class="borrow-button" @click="toDetail">Borrow</button>
+      
     </div>
     <div id = "description"> {{ description }} </div>
     <hr />
@@ -25,11 +25,6 @@ export default {
       owner: String,
       status:String,
       description: String,
-  },
-  methods: {
-    toBorrow() {
-      console.log("Go to post detail page");
-    },
   },
 };
 </script>
