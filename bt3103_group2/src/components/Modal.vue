@@ -11,7 +11,7 @@
           id="modalTitle"
         >
           <slot name="header">
-            title: {{post.title}}
+            {{post.title}}
           </slot>
           <button
             type="button"
@@ -27,15 +27,26 @@
           class="modal-body"
           id="modalDescription"
         >
-          <slot name="body">
-            description: {{post.description}}
-          </slot>
+          <div classname="body">
+            Purpose: {{post.purpose}}  
+          </div>
+          <div classname="body">
+            Location: {{post.location}} 
+          </div>
+          <div classname="body">
+            Description: {{post.description}}  
+          </div>
+          <div classname="body">
+            Time: {{post.postTime}} 
+          </div>
+
         </section>
 
         <footer class="modal-footer">
-          <slot name="footer">
-            owner: {{post.userName}}
-          </slot>
+          <div name="footer">
+            <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
+            {{post.userName}}
+          </div>
           <button
             type="button"
             class="btn-green"
@@ -44,7 +55,8 @@
           >
             Close
           </button>
-          <button @click = "toBorrow(this)"> Borrow </button>
+          <button @click = "toBorrow(this)"
+          class = "borrowButton"> Borrow </button>
         </footer>
       </div>
     </div>
@@ -133,15 +145,16 @@ const db = getFirestore(firebaseApp);
           },
 
       toBorrow: async function(self){
-            alert("borrowing item " + this.title)
+            alert("borrowing item " + this.post.title)
             await self.addRequest();
             await self.addDeal();
             await self.updateStatus();
+            this.close();
           },
 
       updateStatus: async function(){
         try{
-          const postDoc = await updateDoc(doc(db, "Posts", this.postID),{
+          const postDoc = await updateDoc(doc(db, "Posts", this.post.postID),{
             status: "Requested"
           })
           console.log(postDoc)
@@ -177,13 +190,12 @@ const db = getFirestore(firebaseApp);
     height:80%;
   }
 
-  .modal-header,
-  .modal-footer {
+  .modal-header{
     padding: 15px;
     display: flex;
-  }
-
-  .modal-header {
+    height: 10%;
+    font-size: 7vh;
+    text-decoration: underline;
     position: relative;
     border-bottom: 1px solid #eeeeee;
     color: #4AAE9B;
@@ -191,13 +203,19 @@ const db = getFirestore(firebaseApp);
   }
 
   .modal-footer {
+    padding: 15px;
+    display: flex;
     border-top: 1px solid #eeeeee;
     flex-direction: column;
+    font-size:4vh;
   }
 
   .modal-body {
     position: relative;
     padding: 20px 10px;
+    display:flex;
+    flex-direction: column;
+    font-size:4vh;
   }
 
   .btn-close {
@@ -218,6 +236,14 @@ const db = getFirestore(firebaseApp);
     background: #4AAE9B;
     border: 1px solid #4AAE9B;
     border-radius: 2px;
+    margin-top:1%;
+    margin-bottom:1%;
+  }
+
+  .borrowButton{
+    border-radius: 2px;
+    margin-top:1%;
+    margin-bottom:1%;
   }
 
   .modal-fade-enter,
@@ -229,4 +255,9 @@ const db = getFirestore(firebaseApp);
   .modal-fade-leave-active {
     transition: opacity .5s ease;
   }
+
+  #picprofile {
+  width: 4vw;
+  height: 4vw;
+}
 </style>
