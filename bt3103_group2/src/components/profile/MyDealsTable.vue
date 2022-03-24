@@ -148,7 +148,7 @@ export default {
                 await deleteDoc(doc(db, "Deals", record))
                 console.log("Deal successfully deleted!")
                 // Re-render the page
-                location.reload()
+                // location.reload()
             }
         }
     }

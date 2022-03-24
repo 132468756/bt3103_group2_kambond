@@ -133,7 +133,7 @@ methods: {
               status: status,
               user:email,
               postID:postID,
-              postTime:timeFormatted
+              postDate:timeFormatted
           })
           console.log(docRef);
       }
