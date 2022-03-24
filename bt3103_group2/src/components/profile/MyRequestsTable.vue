@@ -8,6 +8,7 @@
             <th class="MyRequestTitle">Lender</th>
             <th class="MyRequestTitle">Status</th>
             <th class="MyRequestTitle">Action</th>
+            <th class="MyRequestTitle">Cancel</th>
         </tr>
     </table>
 </template>
@@ -67,9 +68,11 @@ export default {
                 cell5.innerHTML = requestInfo[4]
                 cell6.innerHTML = requestInfo[5]
                 
+                // Create request button
                 var requestBtn = document.createElement("button")
                 requestBtn.className = "requestActionBtn"
                 requestBtn.id = String(requestInfo[0])
+
                 if(requestInfo[5] == "Requested"){
                     requestBtn.innerHTML="Delete"
                     requestBtn.onclick=function(){
@@ -120,10 +123,16 @@ export default {
                 let post_info = await getDoc(post)
                 let posterID = post_info.data().user
                 await deleteDeal(posterID, record)
-                //Change the post status back to "Want to Lend"
-                await updateDoc(post, {
-                    status:"Want to Lend"
-                })
+                //Change the post status back to previous state
+                if(post_info.data().purpose == "Borrowing"){
+                    await updateDoc(post, {
+                        status:"Want to Borrow"
+                    })
+                } else {
+                    await updateDoc(post, {
+                        status:"Want to Lend"
+                    })
+                }
                 // Re-render the request table
                 location.reload()
             }
