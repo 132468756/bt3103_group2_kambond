@@ -140,7 +140,20 @@ const db = getFirestore(firebaseApp);
             alert("borrowing item " + this.title)
             await self.addRequest();
             await self.addDeal();
+            await self.updateStatus();
           },
+
+      updateStatus: async function(){
+        try{
+          const postDoc = await updateDoc(doc(db, "Posts", this.postID),{
+            status: "Requested"
+          })
+          console.log(postDoc)
+        }
+        catch(error){
+          console.error("Error updating document:", error);
+          }
+      },
       },
 }
 </script>
