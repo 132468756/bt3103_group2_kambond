@@ -39,17 +39,14 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
-import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp)
+const id = "jiangnuoyi1999@gmail.com"
 
-const auth = getAuth()
-const id = String(auth.currentUser.email)
 export default {
     names:"SettingsTable",
     components:{
         changeBtn
     },
-
     // No database connection testing code
     data(){
         return{
@@ -65,12 +62,11 @@ export default {
             contactStatus:"static"
         }
     },
-
     mounted(){
         async function displayUserInfo(self){
-            //let user = await getDoc(doc(db, "Users", "10086"))
+            let user = await getDoc(doc(db, "Users", "10086"))
             
-            let user = await getDoc(doc(db, "Users", id))
+            //let user = await getDoc(doc(db, "Users", id))
             // console.log(typeof(user))
             // console.log(user.data())
             self.username = user.data().username
@@ -81,13 +77,11 @@ export default {
         }
         displayUserInfo(this)
     },
-
     methods:{
         changeUsername: function(){
             document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername' ref='newUsername'>"
             this.usernameStatus="changing"
         },
-
         confirmChangeUsername: async function(){
             var newUsername = document.getElementById("newUsername").value
             if (newUsername != '') {
@@ -107,12 +101,10 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
-
         changeEmail: function(){
             document.getElementById("emailContent").innerHTML="<input type='text' id='newEmail'>"
             this.emailStatus="changing"
         },
-
         confirmChangeEmail: async function(){
             var newEmail = document.getElementById("newEmail").value
             var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
@@ -121,7 +113,6 @@ export default {
                 this.email = newEmail
                 document.getElementById("emailContent").innerHTML="'{{email}}'"
                 this.emailStatus="static"
-
                 try{
                     const docRef = await updateDoc(doc(db, "Users",id), {
                         email: newEmail
@@ -135,12 +126,10 @@ export default {
                 alert("Invalid Email Format!")
             }
         },
-
         changePassword: function(){
             document.getElementById("passwordContent").innerHTML="<input type='text' id='newPassword'>"
             this.passwordStatus="changing"
         },
-
         confirmChangePassword: async function(){
             var newPassword = document.getElementById("newPassword").value
             var regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
@@ -149,7 +138,6 @@ export default {
                 this.password = newPassword
                 document.getElementById("passwordContent").innerHTML="'{{password}}'"
                 this.passwordStatus="static"
-
                 try{
                     const docRef = await updateDoc(doc(db, "Users",id), {
                         password: newPassword
@@ -159,17 +147,14 @@ export default {
                 catch(error){
                     console.log("Failed updating password")
                 }
-
             } else {
                 alert("Invalid Password Format! \nMinimum eight characters, at least one letter and one number.")
             }
         },
-
         changeBio: function(){
             document.getElementById("bioContent").innerHTML="<input type='text' id='newBio'>"
             this.bioStatus="changing"
         },
-
         confirmChangeBio: async function(){
             var newBio = document.getElementById("newBio").value
             if (newBio != '') {
@@ -179,7 +164,6 @@ export default {
             }
             document.getElementById("bioContent").innerHTML="'{{bio}}'"
             this.bioStatus="static"
-
             try{
                     const docRef = await updateDoc(doc(db, "Users",id), {
                         bio: newBio
@@ -190,12 +174,10 @@ export default {
                     console.log("Failed updating bio")
                 }
         },
-
         changeContact: function(){
             document.getElementById("contactContent").innerHTML="<input type='text' id='newContact'>"
             this.contactStatus="changing"
         },
-
         confirmChangeContact: async function(){
             var newContact = document.getElementById("newContact").value
             var regExp = /[0-9]{8}$/
@@ -204,7 +186,6 @@ export default {
                 this.contactNumber = newContact
                 document.getElementById("contactContent").innerHTML="'{{contactNumber}}'"
                 this.contactStatus="static"
-
                 try{
                     const docRef = await updateDoc(doc(db, "Users",id), {
                         contactNumber: newContact
@@ -228,25 +209,20 @@ export default {
         height: 50px;
         font-weight: bold;
     }
-
     .rightCol {
         width: 75px;
         text-align: center;
     }
-
     .settingRow:nth-child(odd) {
         background-color: rgb(223, 255, 251);
     }
-
     .settingRow {
         border-collapse: collapse;
         border-width: 1px 0;
     }
-
     #confirmChangeUsername,#confirmChangeEmail,#confirmChangePassword,#confirmChangeBio,#confirmChangeContact {
         margin-left: 10%;
     }
-
     #usernameContent,#emailContent,#passwordContent,#bioContent,#contactContent {
         width: 60%;
     }
