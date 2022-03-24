@@ -37,7 +37,7 @@
             Description: {{post.description}}  
           </div>
           <div classname="body">
-            Time: {{post.postTime}} 
+            Time: {{post.postDate}} 
           </div>
 
         </section>
@@ -45,7 +45,9 @@
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
+            <router-link to="/user/:id" :id = post.user>
             {{post.userName}}
+            </router-link>
           </div>
           <button
             type="button"
@@ -55,8 +57,14 @@
           >
             Close
           </button>
-          <button @click = "toBorrow(this)"
-          class = "borrowButton"> Borrow </button>
+          <div v-if= "post.purpose == 'Borrowing'">
+            <button @click = "toBorrow(this)"
+            class = "borrowButton"> Lend</button>
+          </div>
+          <div v-else>
+            <button @click = "toBorrow(this)"
+            class = "borrowButton"> Borrow </button>
+          </div>
         </footer>
       </div>
     </div>
@@ -66,15 +74,14 @@
 <script>
 import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
-import { doc, updateDoc, setDoc, getDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
     props:{
       post:Object
-      
       },
     mounted() {
       const auth = getAuth();
@@ -89,13 +96,18 @@ const db = getFirestore(firebaseApp);
         this.$emit('close');
         },
 
-      addDeal: async function(){
+      addDeal: async function(purpose){
         var a = this.post.postID
-        console.log(this.post)
+        if (purpose == "Borrowing"){
+          var lender = this.user.email
+        }
+        else {
+          lender = this.post.user
+        }
         try{
           const docRef = await setDoc(doc(db, "Deals", a), {
               dealID: a,
-              owner: this.post.user
+              owner: this.user.email
               })
           console.log(docRef);
           }
@@ -104,16 +116,8 @@ const db = getFirestore(firebaseApp);
           }
         
         try{
-          let docRe = await getDoc(doc(db, "Users", this.post.user));
-          let deals = []
-          if(docRe.data().deals != undefined){
-            deals = docRe.data().deals
-          }
-          console.log(deals)
-          deals.push(a)
-          console.log(this.post.user)
-          const docR = await updateDoc(doc(db, "Users", this.post.user),  {
-            deals:deals
+          const docR = await updateDoc(doc(db, "Users", lender),  {
+            deals:arrayUnion(a)
             })
           console.log(docR);
           }
@@ -122,11 +126,17 @@ const db = getFirestore(firebaseApp);
           }
         },
 
-      addRequest: async function(){
+      addRequest: async function(purpose){
         var a = this.post.postID
         console.log(a)
+        if (purpose == "Borrowing"){
+          var borrower = this.post.user
+        }
+        else {
+          borrower = this.user.email
+        }
         try{
-          let docRef = await getDoc(doc(db, "Users", this.user.email));
+          let docRef = await getDoc(doc(db, "Users", borrower));
           console.log(docRef.data())
           let requests = []
           if (docRef.data().requests!= undefined){
@@ -134,7 +144,7 @@ const db = getFirestore(firebaseApp);
           }
           requests.push(a)
           console.log(requests)
-          const docRe = await updateDoc(doc(db, "Users", this.user.email), {
+          const docRe = await updateDoc(doc(db, "Users", borrower), {
               requests:requests
               })
           console.log(docRe);
@@ -146,8 +156,8 @@ const db = getFirestore(firebaseApp);
 
       toBorrow: async function(self){
             alert("borrowing item " + this.post.title)
-            await self.addRequest();
-            await self.addDeal();
+            await self.addRequest(this.post.purpose);
+            await self.addDeal(this.post.purpose);
             await self.updateStatus();
             this.close();
           },
