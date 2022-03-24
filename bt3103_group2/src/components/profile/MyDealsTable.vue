@@ -15,7 +15,7 @@
 
 <script>
 import  firebaseApp from "../../firebase.js"
-import {getFirestore} from "firebase/firestore"
+import {getFirestore, increment} from "firebase/firestore"
 import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
 
@@ -61,6 +61,7 @@ export default {
                 var cell5 = row.insertCell(4)
                 var cell6 = row.insertCell(5)
                 var cell7 = row.insertCell(6)
+                var cell8 = row.insertCell(7)
 
                 cell1.innerHTML = dealInfo[0]
                 cell2.innerHTML = dealInfo[1]
@@ -69,15 +70,26 @@ export default {
                 cell5.innerHTML = dealInfo[4]
                 cell6.innerHTML = dealInfo[5]
 
+                // Create deal button
                 var dealBtn = document.createElement("button")
                 dealBtn.className = "dealActionBtn"
                 dealBtn.id = String(dealInfo[0])
+
+                // Create cancel button
+                var cancelBtn = document.createElement("button")
+                cancelBtn.className = "dealCancelBtn"
+                cancelBtn.id = String(dealInfo[0])
+                cancelBtn.innerHTML="Cancel Deal"
+                cancelBtn.onclick=function(){
+                    cancelDeal()
+                }
                 if(dealInfo[5]=="Requested"){
                     dealBtn.innerHTML="Confirm"
                     dealBtn.onclick=function(){
                         confirmDeal(record)
                     }
                     cell7.appendChild(dealBtn)
+                    cell8.appendChild(cancelBtn)
                 }else if(dealInfo[5]=="Sent Out"){
                     var info_div = document.createElement("div")
                     info_div.className="dealInfoLent"
@@ -141,12 +153,52 @@ export default {
                 let deal = await getDoc(doc(db, "Deals", record))
                 let owner = deal.data().owner
                 const ownerInfo = doc(db, "Users", owner)
+                let lender = await getDoc(ownerInfo)
+                console.log(lender.data())
                 await updateDoc(ownerInfo, {
                     requests: arrayRemove(record)
                 })
                 // Delete from Deals table
                 await deleteDoc(doc(db, "Deals", record))
                 console.log("Deal successfully deleted!")
+                // Increment the credit point for both users
+                await updateDoc(myInfo, {
+                    creditPoint: increment(10)
+                })
+                await updateDoc(ownerInfo, {
+                    creditPoint: increment(10)
+                })
+                // Re-render the page
+                location.reload()
+            }
+        }
+
+        async function cancelDeal(record){
+            if(confirm("Please confirm that you want to cancel this deal.")){
+                // Update the post status to completed
+                const docRef = doc(db, "Posts", record)
+                await updateDoc(docRef, {
+                    status: "Cancelled"
+                })
+
+                // Delete record from own table
+                let myID = auth.currentUser.email
+                const myInfo = doc(db, "Users", myID)
+                await updateDoc(myInfo, {
+                    deals: arrayRemove(record)
+                })
+                // Delete record from owner's requests
+                let deal = await getDoc(doc(db, "Deals", record))
+                let owner = deal.data().owner
+                const ownerInfo = doc(db, "Users", owner)
+                let lender = await getDoc(ownerInfo)
+                console.log(lender.data())
+                await updateDoc(ownerInfo, {
+                    requests: arrayRemove(record)
+                })
+                // Delete from Deals table
+                await deleteDoc(doc(db, "Deals", record))
+                console.log("Deal successfully cancelled!")
                 // Re-render the page
                 location.reload()
             }
@@ -180,7 +232,7 @@ export default {
         background-color: rgba(241, 205, 225, 0.767);
     }
 
-    .dealActionBtn {
+    .dealActionBtn, .dealCancelBtn {
         width: 80%;
         height: 80%;
         background-color: rgba(255, 55, 255, 0.623);
@@ -189,14 +241,14 @@ export default {
         border: none;
     }
 
-    .dealActionBtn:hover {
+    .dealActionBtn:hover, .dealActionBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px rgb(185, 32, 185);
         transition: 0.5s;
     }
 
-    .dealActionBtn:active {
+    .dealActionBtn:active, .dealActionBtn:active {
         background-color: rgb(141, 26, 141);
     }
 </style>
