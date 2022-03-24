@@ -130,7 +130,8 @@ methods: {
               location:f,
               status: status,
               user:email,
-              postID:postID
+              postID:postID,
+              postTime: timeStamp
           })
           console.log(docRef);
       }
