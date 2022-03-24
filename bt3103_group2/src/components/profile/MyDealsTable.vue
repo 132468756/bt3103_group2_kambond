@@ -3,14 +3,12 @@
         <tr class="MyDealRow">
             <th class="MyDealTitle">Post ID</th>
             <th class="MyDealTitle">Title</th>
-            <th class="MyDealTitle">Description</th>
-            <th class="MyDealTitle">Purpose</th>
-            <th class="MyDealTitle">Category</th>
             <th class="MyDealTitle">Location</th>
             <th class="MyDealTitle">Post Date</th>
             <th class="MyDealTitle">Borrower</th>
             <th class="MyDealTitle">Status</th>
             <th class="MyDealTitle">Action</th>
+            <th class="MyDealTitle">Cancel</th>
         </tr>
     </table>
 </template>
@@ -63,9 +61,6 @@ export default {
                 var cell5 = row.insertCell(4)
                 var cell6 = row.insertCell(5)
                 var cell7 = row.insertCell(6)
-                var cell8 = row.insertCell(7)
-                var cell9 = row.insertCell(8)
-                var cell10 = row.insertCell(9)
 
                 cell1.innerHTML = dealInfo[0]
                 cell2.innerHTML = dealInfo[1]
@@ -73,31 +68,28 @@ export default {
                 cell4.innerHTML = dealInfo[3]
                 cell5.innerHTML = dealInfo[4]
                 cell6.innerHTML = dealInfo[5]
-                cell7.innerHTML = dealInfo[6]
-                cell9.innerHTML = dealInfo[7]
-                cell8.innerHTML = dealInfo[8]
 
                 var dealBtn = document.createElement("button")
                 dealBtn.className = "dealActionBtn"
                 dealBtn.id = String(dealInfo[0])
-                if(dealInfo[7]=="Requested"){
+                if(dealInfo[5]=="Requested"){
                     dealBtn.innerHTML="Confirm"
                     dealBtn.onclick=function(){
                         confirmDeal(record)
                     }
-                    cell10.appendChild(dealBtn)
-                }else if(dealInfo[7]=="Sent Out"){
+                    cell7.appendChild(dealBtn)
+                }else if(dealInfo[5]=="Sent Out"){
                     var info_div = document.createElement("div")
                     info_div.className="dealInfoLent"
                     info_div.id = String(dealInfo[0])
                     info_div.innerHTML = "Lent"
-                    cell10.appendChild(info_div)
+                    cell7.appendChild(info_div)
                 }else{
                     dealBtn.innerHTML="Complete"
                     dealBtn.onclick=function(){
                         completeDeal(record)
                     }
-                    cell10.appendChild(dealBtn)
+                    cell7.appendChild(dealBtn)
                 }
             })
         }
@@ -107,9 +99,6 @@ export default {
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
             let title = thisPost.data().title
-            let description = thisPost.data().description
-            let purpose = thisPost.data().purpose
-            let category = thisPost.data().category
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
@@ -117,7 +106,7 @@ export default {
             let deal_info = await getDoc(doc(db, "Deals", record))
             let owner = deal_info.data().owner
 
-            let dealInfo = [postID,title,description,purpose,category,location,postDate,status,owner]
+            let dealInfo = [postID,title,location,postDate,owner,status]
             console.log(dealInfo)
             return dealInfo
         }
