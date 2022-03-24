@@ -18,20 +18,28 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc,  updateDoc, deleteDoc, arrayRemove} from "firebase/firestore"
-import {getAuth} from "firebase/auth"
-
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 const db = getFirestore(firebaseApp)
-const auth = getAuth()
-
 export default {
+    data(){
+        return{
+            userID:''
+        }
+    },
     mounted(){
-        async function display(){
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                this.userID=user.email
+            }else{
+                this.userID="10086"
+            }
+            display(this)
+        })
+        async function display(self){
             if (auth != null) {
                 console.log(auth)
-                //let email = auth.currentUser.email
-                console.log(auth.currentUser.email)
-                let user = await getDoc(doc(db, "Users", String(auth.currentUser.email)))
-                // let user = await getDoc(doc(db, "Users", "10086"))
+                let user = await getDoc(doc(db, "Users", self.userID))
                 let ind = 1
                 let records = user.data().posts
                 console.log(user.data())
@@ -41,7 +49,6 @@ export default {
                     var table = document.getElementById("MyPosts")
                     var row = table.insertRow(ind)
                     row.className="MyPostRow"
-
                     let postInfo = await findPostInfo(record)
                     // console.log("postInfo", postInfo) 
                     var cell1 = row.insertCell(0)
@@ -54,8 +61,7 @@ export default {
                     var cell7 = row.insertCell(6)
                     var cell8 = row.insertCell(7)
                     var cell9 = row.insertCell(8)
-
-                    cell1.innerHTML = String(postInfo[0]).slice(0,11)
+                    cell1.innerHTML = postInfo[0]
                     cell2.innerHTML = postInfo[1]
                     cell3.innerHTML = postInfo[2]
                     cell4.innerHTML = postInfo[3]
@@ -77,8 +83,6 @@ export default {
                 console.log("User need to login")
             }
         }
-        display()
-
         async function findPostInfo(record){
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
@@ -89,28 +93,21 @@ export default {
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
-
             let postInfo = [postID,title,description,purpose,category,location,postDate,status]
             console.log(postInfo)
             return postInfo
         }
-
         async function deletePost(record){
-            if(confirm("You are going to delete " + record)){
+            if(confirm("Please confirm that you want to delete " + record)){
+                // Delete from user table
+                let user = doc(db, "Users", auth.currentUser.email)
+                await updateDoc(user, {
+                    posts:arrayRemove(record)
+                })
                 // Delete from Posts table
                 await deleteDoc(doc(db, "Posts", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
-                const docRef = doc(db, "Users", "10086")
-                await updateDoc(docRef, {
-                    posts: arrayRemove(record)
-                })
-                
-                let tb = document.getElementById("MyPosts")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display()
+                // Re-render the page
+                location.reload()
             }
         }
     }
@@ -123,25 +120,20 @@ export default {
         width: 80%;
         margin-left: 10%;
     }
-
     #MyPosts,.MyPostTitle {
         border: 3px rgb(164, 219, 238) solid;
         border-collapse: collapse;
         height: 30px;
     }
-
     .MyPostCol {
         height:30px
     }
-
     .MyPostRow:nth-child(odd) {
         background-color: rgb(227, 247, 253);
     }
-
     .MyPostTitle {
         background-color: rgb(194, 240, 255);
     }
-
     .deletePostBtn {
         width: 80%;
         height: 80%;
@@ -150,14 +142,12 @@ export default {
         border-radius: 12px;
         border: none;
     }
-
     .deletePostBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px lightblue;
         transition: 0.5s;
     }
-
     .deletePostBtn:active {
         background-color: lightblue;
     }

@@ -39,18 +39,14 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
-// import { getAuth } from "firebase/auth";
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 const db = getFirestore(firebaseApp)
-
 // const auth = getAuth()
-// const id = String(auth.currentUser.email)
-const id = "10086"
 export default {
     names:"SettingsTable",
     components:{
         changeBtn
     },
-
     // No database connection testing code
     data(){
         return{
@@ -63,32 +59,37 @@ export default {
             bio:'',
             bioStatus:"static",
             contactNumber:'',
-            contactStatus:"static"
+            contactStatus:"static",
+            userID:''
         }
     },
-
     mounted(){
-        async function displayUserInfo(self){
-            //let user = await getDoc(doc(db, "Users", "10086"))
-            
-            let user = await getDoc(doc(db, "Users", id))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                displayUserInfo(this, user.email)
+            }else{
+                displayUserInfo(this,"10086")
+            }
+        })
+        async function displayUserInfo(self, userID){
+            // console.log(auth.currentUser.email)
+            let user_info = await getDoc(doc(db, "Users", userID))
             // console.log(typeof(user))
             // console.log(user.data())
-            self.username = user.data().username
-            self.email = user.data().email
-            self.password = user.data().password
-            self.bio = user.data().bio
-            self.contactNumber = user.data().contactNumber
+            self.userID = userID
+            self.username = user_info.data().username
+            self.email = user_info.data().email
+            self.password = user_info.data().password
+            self.bio = user_info.data().bio
+            self.contactNumber = user_info.data().contactNumber
         }
-        displayUserInfo(this)
     },
-
     methods:{
         changeUsername: function(){
             document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername' ref='newUsername'>"
             this.usernameStatus="changing"
         },
-
         confirmChangeUsername: async function(){
             var newUsername = document.getElementById("newUsername").value
             if (newUsername != '') {
@@ -96,10 +97,11 @@ export default {
                 document.getElementById("usernameContent").innerHTML="'{{username}}'"
                 this.usernameStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users", this.userID), {
                         username: newUsername
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating username")
@@ -108,12 +110,10 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
-
         changeEmail: function(){
             document.getElementById("emailContent").innerHTML="<input type='text' id='newEmail'>"
             this.emailStatus="changing"
         },
-
         confirmChangeEmail: async function(){
             var newEmail = document.getElementById("newEmail").value
             var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
@@ -122,12 +122,12 @@ export default {
                 this.email = newEmail
                 document.getElementById("emailContent").innerHTML="'{{email}}'"
                 this.emailStatus="static"
-
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         email: newEmail
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating email")
@@ -136,12 +136,10 @@ export default {
                 alert("Invalid Email Format!")
             }
         },
-
         changePassword: function(){
             document.getElementById("passwordContent").innerHTML="<input type='text' id='newPassword'>"
             this.passwordStatus="changing"
         },
-
         confirmChangePassword: async function(){
             var newPassword = document.getElementById("newPassword").value
             var regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
@@ -150,27 +148,24 @@ export default {
                 this.password = newPassword
                 document.getElementById("passwordContent").innerHTML="'{{password}}'"
                 this.passwordStatus="static"
-
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         password: newPassword
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating password")
                 }
-
             } else {
                 alert("Invalid Password Format! \nMinimum eight characters, at least one letter and one number.")
             }
         },
-
         changeBio: function(){
             document.getElementById("bioContent").innerHTML="<input type='text' id='newBio'>"
             this.bioStatus="changing"
         },
-
         confirmChangeBio: async function(){
             var newBio = document.getElementById("newBio").value
             if (newBio != '') {
@@ -180,23 +175,21 @@ export default {
             }
             document.getElementById("bioContent").innerHTML="'{{bio}}'"
             this.bioStatus="static"
-
             try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
-                        bio: newBio
-                    })
-                    console.log(docRef)
+                const docRef = await updateDoc(doc(db, "Users",this.userID), {
+                    bio: newBio
+                })
+                console.log(docRef)
+                location.reload()
                 }
                 catch(error){
                     console.log("Failed updating bio")
                 }
         },
-
         changeContact: function(){
             document.getElementById("contactContent").innerHTML="<input type='text' id='newContact'>"
             this.contactStatus="changing"
         },
-
         confirmChangeContact: async function(){
             var newContact = document.getElementById("newContact").value
             var regExp = /[0-9]{8}$/
@@ -205,12 +198,12 @@ export default {
                 this.contactNumber = newContact
                 document.getElementById("contactContent").innerHTML="'{{contactNumber}}'"
                 this.contactStatus="static"
-
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         contactNumber: newContact
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating contactNumber")
@@ -229,25 +222,20 @@ export default {
         height: 50px;
         font-weight: bold;
     }
-
     .rightCol {
         width: 75px;
         text-align: center;
     }
-
     .settingRow:nth-child(odd) {
         background-color: rgb(223, 255, 251);
     }
-
     .settingRow {
         border-collapse: collapse;
         border-width: 1px 0;
     }
-
     #confirmChangeUsername,#confirmChangeEmail,#confirmChangePassword,#confirmChangeBio,#confirmChangeContact {
         margin-left: 10%;
     }
-
     #usernameContent,#emailContent,#passwordContent,#bioContent,#contactContent {
         width: 60%;
     }

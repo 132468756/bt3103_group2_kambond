@@ -3,17 +3,51 @@
         <div class="profilePicDiv">
             <img src="@/assets/profilephoto.jpeg" id="profilePic">
         </div>
-        <h1 id="username">User Name</h1>
+        <h2 id="username">{{username}}</h2>
         <div class="userInfoDetail">
-            <h4 id="Kambond">I like Kambond</h4>
-            <h4 id="myCreditPoint">Credbility Point: 10</h4>
-            <h4 id="likes">Likes: 66</h4>
+            <h4 id="Kambond">{{bio}}</h4>
+            <h4 id="myCreditPoint">Credbility Point: {{creditPoint}}</h4>
+            <h4 id="likes">Likes: {{likes}}</h4>
         </div>
     </div>
 </template>
 
 <script>
+import {getAuth, onAuthStateChanged} from "firebase/auth"
+import { getDoc, doc, getFirestore } from '@firebase/firestore'
+import firebaseApp from '../../firebase'
+
+const db = getFirestore(firebaseApp)
+
 export default {
+    data(){
+        return {
+            username:'',
+            bio:'',
+            creditPoint:'',
+            likes:''
+        }
+    },
+
+    mounted(){
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                display(this, user.email)
+            }else{
+                display(this, "10086")
+            }
+        })
+
+        async function display(self, userID){
+            let user = await getDoc(doc(db, "Users", userID))
+
+            self.username = user.data().username
+            self.bio = user.data().bio
+            self.creditPoint = user.data().creditPoint
+            self.likes = user.data().likes()
+        }
+    }
 
 }
 </script>

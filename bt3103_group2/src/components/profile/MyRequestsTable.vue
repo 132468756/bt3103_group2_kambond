@@ -8,6 +8,7 @@
             <th class="MyRequestTitle">Category</th>
             <th class="MyRequestTitle">Location</th>
             <th class="MyRequestTitle">Post Date</th>
+            <th class="MyRequestTitle">Lender</th>
             <th class="MyRequestTitle">Status</th>
             <th class="MyRequestTitle">Action</th>
         </tr>
@@ -18,13 +19,29 @@
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
 
 export default {
+    data(){
+        return{
+            userID:''
+        }
+    },
     mounted(){
-        async function display(){
-            let user = await getDoc(doc(db, "Users", "10086"))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                this.userID=user.email
+            }else{
+                this.userID="10086"
+            }
+            display(this)
+        })
+
+        async function display(self){
+            let user = await getDoc(doc(db, "Users", self.userID))
             let ind = 1
             let records = user.data().requests
             // console.log(user.data())
@@ -47,6 +64,7 @@ export default {
                 var cell7 = row.insertCell(6)
                 var cell8 = row.insertCell(7)
                 var cell9 = row.insertCell(8)
+                var cell10 = row.insertCell(9)
 
                 cell1.innerHTML = requestInfo[0]
                 cell2.innerHTML = requestInfo[1]
@@ -55,23 +73,37 @@ export default {
                 cell5.innerHTML = requestInfo[4]
                 cell6.innerHTML = requestInfo[5]
                 cell7.innerHTML = requestInfo[6]
-                cell8.innerHTML = requestInfo[7]
+                cell9.innerHTML = requestInfo[7]
+                cell8.innerHTML = requestInfo[8]
                 
-                var deleteBtn = document.createElement("button")
-                deleteBtn.className = "completeRequestBtn"
-                deleteBtn.id = String(requestInfo[0])
-                deleteBtn.innerHTML="Complete"
-                deleteBtn.onclick=function(){
-                    deletePost(record)
+                var requestBtn = document.createElement("button")
+                requestBtn.className = "requestActionBtn"
+                requestBtn.id = String(requestInfo[0])
+                if(requestInfo[7] == "Requested"){
+                    requestBtn.innerHTML="Delete"
+                    requestBtn.onclick=function(){
+                        deleteRequest(record)
+                    }
+                    cell10.appendChild(requestBtn)
+                }else if(requestInfo[7] == "Sent Out"){
+                    requestBtn.innerHTML="Confirm"
+                    requestBtn.onclick=function(){
+                        confirmRequest(record)
+                    }
+                    cell10.appendChild(requestBtn)
+                }else{
+                    var info_div = document.createElement("div")
+                    info_div.className="requestInfoReturned"
+                    info_div.id = String(requestInfo[0])
+                    info_div.innerHTML = "Returned"
+                    cell10.appendChild(info_div)
                 }
-                cell9.appendChild(deleteBtn)
             })
         }
-        display()
 
         async function findRequestInfo(record){
-            let thisPost = await getDoc(doc(db, "Requests", record))
-            let postID = thisPost.data().requestID
+            let thisPost = await getDoc(doc(db, "Posts", record))
+            let postID = thisPost.data().postID
             let title = thisPost.data().title
             let description = thisPost.data().description
             let purpose = thisPost.data().purpose
@@ -79,28 +111,58 @@ export default {
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
+            let user = thisPost.data().user
 
-            let requestInfo = [postID,title,description,purpose,category,location,postDate,status]
+            let requestInfo = [postID,title,description,purpose,category,location,postDate,status,user]
             console.log(requestInfo)
             return requestInfo
         }
 
-        async function deletePost(record){
-            if(confirm("Please confirm that " + record + " is completed." )){
-                // Delete from request table
-                await deleteDoc(doc(db, "Requests", record))
-                console.log(record, " successfully deleted!")
-                // Still need to delete from the user table
-                const docRef = doc(db, "Users", "10086")
+    
+        async function deleteRequest(record){
+            var userID = auth.currentUser.email
+            if(confirm("You are going to delete " + record)){
+                // Delete the record from the user table
+                const docRef = doc(db, "Users", userID)
                 await updateDoc(docRef, {
                     requests: arrayRemove(record)
                 })
+                // Delete record from the poster's table and Deals table
+                let post = doc(db, "Posts", record)
+                let post_info = await getDoc(post)
+                let posterID = post_info.data().user
+                await deleteDeal(posterID, record)
+                //Change the post status back to "Want to Lend"
+                await updateDoc(post, {
+                    status:"Want to Lend"
+                })
+                // Re-render the request table
+                location.reload()
+            }
+        }
 
-                let tb = document.getElementById("MyRequests")
-                while(tb.rows.length > 1){
-                    tb.deleteRow(1)
-                }
-                display()
+        async function deleteDeal(userID, postID){
+            if(confirm("Please confirm that you are going to delete this request.")){
+                // Remove the record in the user's own table
+                const docRef = doc(db, "Users", userID)
+                await updateDoc(docRef, {
+                    deals: arrayRemove(postID)
+                })
+                // Remove the deal in the Deals table
+                await deleteDoc(doc(db, "Deals", postID))
+                console.log("Deal successfully deleted!")
+            }
+        }
+
+        async function confirmRequest(record){
+            if(confirm("Please confirm that you have returned this item.")){
+                // Update the post status
+                const docRef = doc(db, "Posts", record)
+                await updateDoc(docRef, {
+                    status: "Returned"
+                })
+                // Re-render the page
+                location.reload()
             }
         }
     }
@@ -132,7 +194,7 @@ export default {
         background-color: rgb(212, 240, 212);
     }
 
-    .completeRequestBtn {
+    .requestActionBtn {
         width: 80%;
         height: 80%;
         background-color: rgba(117, 255, 117, 0.822);
@@ -141,14 +203,14 @@ export default {
         border: none;
     }
 
-    .completeRequestBtn:hover {
+    .requestActionBtn:hover {
         outline-color: transparent;
         outline-style: solid;
         box-shadow: 0 0 0 1px lightgreen;
         transition: 0.5s;
     }
 
-    .completeRequestBtn:active {
+    .requestActionBtn:active {
         background-color: lightgreen;
     }
 </style>

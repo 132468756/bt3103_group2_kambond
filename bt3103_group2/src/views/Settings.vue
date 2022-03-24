@@ -1,8 +1,10 @@
 <template>
-<div style="text-align:center;" v-if="user">
+<div style="text-align:center;">
     <NavBar/>
     <!-- <h1>This is a sample page for settings</h1> -->
-    <backBtn/>
+    <div id="backBtnDiv">
+        <back-btn/>
+    </div>
     <br><br>
     <span id="left">
         <userInfo/>
@@ -22,7 +24,7 @@ import userInfo from "../components/profile/UserInfoDisplay.vue"
 import settingTable from "../components/profile/SettingsTable.vue"
 import NavBar from "../components/NavBar.vue"
 import LogOut from "../components/Logout.vue"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+// import { getAuth, onAuthStateChanged } from "firebase/auth"
 export default {
   name: "Settings",
   components: {
@@ -39,14 +41,14 @@ export default {
         }
     },
 
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
-    }
+    // mounted() {
+    //     const auth = getAuth();
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             this.user = user;
+    //         }
+    //     })
+    // }
 }
 </script>
 
@@ -59,5 +61,9 @@ export default {
 #right {
     display: inline-block;
     width: 60%;
+}
+
+#backBtnDiv {
+    text-align: left;
 }
 </style>

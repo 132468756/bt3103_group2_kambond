@@ -70,21 +70,18 @@
 <script>
 import firebaseApp from "../firebase.js";
 import {arrayUnion, getFirestore} from "firebase/firestore";
-import { updateDoc, doc, setDoc} from "firebase/firestore";
+import { doc, setDoc, updateDoc} from "firebase/firestore";
 import NavBar from "../components/NavBar.vue"
 import backBtn from "../components/profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-
 const db = getFirestore(firebaseApp);
 const auth = getAuth()
-
 export default {
   name: "CreatePost",
   components:{
     NavBar,
     backBtn,
   },
-
   data() {
     return {
       user: false,
@@ -97,7 +94,6 @@ export default {
       },
     };
   },
-
   mounted() {
     const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
@@ -106,7 +102,6 @@ export default {
         }
       })
   },
-
 methods: {
   async createPost() {
     var a = document.getElementById("post.title").value
@@ -116,22 +111,18 @@ methods: {
     var f = document.getElementById("post.location").value
     var email = auth.currentUser.email
     var status = b
-
     if(b == "Borrowing"){
         status = "Wants to borrow"
     }
     else{
         status = "Wants to lend"
     }
-
     var sysTime = new Date()
     var timeStamp = sysTime.getTime()
     var postID = email + a + timeStamp
-
     if (confirm("creating post : " + a) == true){
       try{
           const docRef = await setDoc(doc(db, "Posts", postID), {
-              postID:String(postID),
               title:a,
               purpose:b,
               description:c,
@@ -139,19 +130,18 @@ methods: {
               location:f,
               status: status,
               user:email,
-              postDate:timeStamp,
-          })
-          const userRef = await updateDoc(doc(db, "Users",String(email)), {
-            posts: arrayUnion(String(postID)),    
+              postID:postID
           })
           console.log(docRef);
-          console.log(userRef);
       }
       catch(error){
         console.error("Error adding document:", error);
-        }
+      }
+      let user_info = doc(db, "Users", this.user.email)
+      await updateDoc(user_info, {
+        posts: arrayUnion(postID)
+      })
     }
-
   }
 }
 };
@@ -164,7 +154,6 @@ methods: {
   border-radius: 10px;
   justify-content:center;
 }
-
 .postlabel {
   color: rgb(31, 34, 34);
   display: flex;
@@ -176,7 +165,6 @@ methods: {
   letter-spacing: 1px;
   font-weight: bold;
 }
-
 input,select {
   display: flex;
   justify-content:center;
@@ -187,19 +175,16 @@ input,select {
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-
 .row{
     display:flex;
     flex-direction:column;
     width:40%;
     margin-left:30%;
 }
-
 .submitRow{
     margin-left:60%;
     padding:1%;
 }
-
 .submit {
     position:absolute;
     text-align: center;
@@ -213,14 +198,12 @@ input,select {
     height:7%;
     cursor: pointer;
 }
-
 .submit:hover{
   outline-color: transparent;
   outline-style: solid;
   box-shadow: 0 0 0 1px lightblue;
   transition: 0.5s;
 }
-
 .submit:active{
   background-color: lightblue;
 }
