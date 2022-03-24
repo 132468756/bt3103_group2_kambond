@@ -4,13 +4,9 @@
         <tr class="OtherPostRow">
             <th class="OtherPostTitle">Post ID</th>
             <th class="OtherPostTitle">Title</th>
-            <th class="OtherPostTitle">Description</th>
-            <th class="OtherPostTitle">Purpose</th>
-            <th class="OtherPostTitle">Category</th>
             <th class="OtherPostTitle">Location</th>
             <th class="OtherPostTitle">Post Date</th>
             <th class="OtherPostTitle">Status</th>
-            <th class="OtherPostTitle">Action</th>
         </tr>
     </table>
 </template>
@@ -18,7 +14,7 @@
 <script>
 import  firebaseApp from "../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc, deleteDoc} from "firebase/firestore"
+import{getDoc, doc} from "firebase/firestore"
 
 const db = getFirestore(firebaseApp)
 
@@ -44,28 +40,13 @@ export default {
                 var cell3 = row.insertCell(2)
                 var cell4 = row.insertCell(3)
                 var cell5 = row.insertCell(4)
-                var cell6 = row.insertCell(5)
-                var cell7 = row.insertCell(6)
-                var cell8 = row.insertCell(7)
-                var cell9 = row.insertCell(8)
+
 
                 cell1.innerHTML = postInfo[0]
                 cell2.innerHTML = postInfo[1]
                 cell3.innerHTML = postInfo[2]
                 cell4.innerHTML = postInfo[3]
                 cell5.innerHTML = postInfo[4]
-                cell6.innerHTML = postInfo[5]
-                cell7.innerHTML = postInfo[6]
-                cell8.innerHTML = postInfo[7]
-                
-                var deleteBtn = document.createElement("button")
-                deleteBtn.className = "requestFromOtherBtn"
-                deleteBtn.id = String(postInfo[0])
-                deleteBtn.innerHTML="Request"
-                deleteBtn.onclick=function(){
-                    deletePost(record)
-                }
-                cell9.appendChild(deleteBtn)
             })
         }
         let tb = document.getElementById("OtherPosts")
@@ -78,29 +59,13 @@ export default {
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
             let title = thisPost.data().title
-            let description = thisPost.data().description
-            let purpose = thisPost.data().purpose
-            let category = thisPost.data().category
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
 
-            let postInfo = [postID,title,description,purpose,category,location,postDate,status]
+            let postInfo = [postID,title,location,postDate,status]
             console.log(postInfo)
             return postInfo
-        }
-
-        async function deletePost(record){
-            alert("You are going to request for " + record)
-            deleteDoc()
-            // // console.log(doc(db, "Users", "PeterParker", "posts"))
-            // await deleteDoc(doc(db, "Posts", record))
-            // console.log(record, " successfully deleted!")
-            // let tb = document.getElementById("OtherPosts")
-            // while(tb.rows.length > 1){
-            //     tb.deleteRow(1)
-            // }
-            // display()
         }
     }
 }

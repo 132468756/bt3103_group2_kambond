@@ -5,6 +5,7 @@
 
 <div>
   <otherUserProfileTable/>
+  <button>Chat</button>
 </div>
 </template>
 
