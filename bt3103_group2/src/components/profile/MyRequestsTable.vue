@@ -3,9 +3,6 @@
         <tr class="MyRequestRow">
             <th class="MyRequestTitle">Post ID</th>
             <th class="MyRequestTitle">Title</th>
-            <th class="MyRequestTitle">Description</th>
-            <th class="MyRequestTitle">Purpose</th>
-            <th class="MyRequestTitle">Category</th>
             <th class="MyRequestTitle">Location</th>
             <th class="MyRequestTitle">Post Date</th>
             <th class="MyRequestTitle">Lender</th>
@@ -62,9 +59,6 @@ export default {
                 var cell5 = row.insertCell(4)
                 var cell6 = row.insertCell(5)
                 var cell7 = row.insertCell(6)
-                var cell8 = row.insertCell(7)
-                var cell9 = row.insertCell(8)
-                var cell10 = row.insertCell(9)
 
                 cell1.innerHTML = requestInfo[0]
                 cell2.innerHTML = requestInfo[1]
@@ -72,31 +66,28 @@ export default {
                 cell4.innerHTML = requestInfo[3]
                 cell5.innerHTML = requestInfo[4]
                 cell6.innerHTML = requestInfo[5]
-                cell7.innerHTML = requestInfo[6]
-                cell9.innerHTML = requestInfo[7]
-                cell8.innerHTML = requestInfo[8]
                 
                 var requestBtn = document.createElement("button")
                 requestBtn.className = "requestActionBtn"
                 requestBtn.id = String(requestInfo[0])
-                if(requestInfo[7] == "Requested"){
+                if(requestInfo[5] == "Requested"){
                     requestBtn.innerHTML="Delete"
                     requestBtn.onclick=function(){
                         deleteRequest(record)
                     }
-                    cell10.appendChild(requestBtn)
-                }else if(requestInfo[7] == "Sent Out"){
+                    cell7.appendChild(requestBtn)
+                }else if(requestInfo[5] == "Sent Out"){
                     requestBtn.innerHTML="Confirm"
                     requestBtn.onclick=function(){
                         confirmRequest(record)
                     }
-                    cell10.appendChild(requestBtn)
+                    cell7.appendChild(requestBtn)
                 }else{
                     var info_div = document.createElement("div")
                     info_div.className="requestInfoReturned"
                     info_div.id = String(requestInfo[0])
                     info_div.innerHTML = "Returned"
-                    cell10.appendChild(info_div)
+                    cell7.appendChild(info_div)
                 }
             })
         }
@@ -105,15 +96,12 @@ export default {
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
             let title = thisPost.data().title
-            let description = thisPost.data().description
-            let purpose = thisPost.data().purpose
-            let category = thisPost.data().category
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
             let user = thisPost.data().user
 
-            let requestInfo = [postID,title,description,purpose,category,location,postDate,status,user]
+            let requestInfo = [postID,title,location,postDate,user,status]
             console.log(requestInfo)
             return requestInfo
         }

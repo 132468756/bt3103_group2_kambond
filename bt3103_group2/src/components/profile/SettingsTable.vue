@@ -10,14 +10,13 @@
         <tr class="settingRow">
             <td class="leftCol">Email</td>
             <td id="emailContent">{{email}}</td>
-            <td class="rightCol" v-if="this.emailStatus == 'static'"><changeBtn @click="changeEmail()"/></td>
-            <td v-else><button class="changeSettingBtn" id="confirmChangeEmail" @click="confirmChangeEmail()">Confirm Change</button></td>
+            <td class="rightCol"></td>
         </tr>
         <tr class="settingRow">
-            <td class="leftCol">Password</td>
-            <td id="passwordContent">{{password}}</td>
-            <td class="rightCol" v-if="this.passwordStatus == 'static'"><changeBtn @click="changePassword()"/></td>
-            <td v-else><button class="changeSettingBtn" id="confirmChangePassword" @click="confirmChangePassword()">Confirm Change</button></td>
+            <td class="leftCol">Telegram</td>
+            <td id="telegramContent">{{telegram}}</td>
+            <td class="rightCol" v-if="this.telegramStatus == 'static'"><changeBtn @click="changeTelegram()"/></td>
+            <td v-else><button class="changeSettingBtn" id="confirmChangeTelegram" @click="confirmChangeTelegram()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Bio</td>
@@ -39,9 +38,9 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 const db = getFirestore(firebaseApp)
-const id = "jiangnuoyi1999@gmail.com"
-
+// const auth = getAuth()
 export default {
     names:"SettingsTable",
     components:{
@@ -53,29 +52,36 @@ export default {
             username:'',
             usernameStatus:"static",
             email:'',
-            emailStatus:"static",
-            password:'',
-            passwordStatus:"static",
+            telegram:'',
+            telegramStatus:"static",
             bio:'',
             bioStatus:"static",
             contactNumber:'',
-            contactStatus:"static"
+            contactStatus:"static",
+            userID:''
         }
     },
     mounted(){
-        async function displayUserInfo(self){
-            let user = await getDoc(doc(db, "Users", "10086"))
-            
-            //let user = await getDoc(doc(db, "Users", id))
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user) => {
+            if(user){
+                displayUserInfo(this, user.email)
+            }else{
+                displayUserInfo(this,"10086")
+            }
+        })
+        async function displayUserInfo(self, userID){
+            // console.log(auth.currentUser.email)
+            let user_info = await getDoc(doc(db, "Users", userID))
             // console.log(typeof(user))
             // console.log(user.data())
-            self.username = user.data().username
-            self.email = user.data().email
-            self.password = user.data().password
-            self.bio = user.data().bio
-            self.contactNumber = user.data().contactNumber
+            self.userID = userID
+            self.username = user_info.data().username
+            self.email = user_info.data().email
+            self.telegram = user_info.data().telegramHandle
+            self.bio = user_info.data().bio
+            self.contactNumber = user_info.data().contactNumber
         }
-        displayUserInfo(this)
     },
     methods:{
         changeUsername: function(){
@@ -89,10 +95,11 @@ export default {
                 document.getElementById("usernameContent").innerHTML="'{{username}}'"
                 this.usernameStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users", this.userID), {
                         username: newUsername
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating username")
@@ -101,54 +108,30 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
-        changeEmail: function(){
-            document.getElementById("emailContent").innerHTML="<input type='text' id='newEmail'>"
-            this.emailStatus="changing"
+        changeTelegram: function(){
+            document.getElementById("telegramContent").innerHTML="<input type='text' id='newTelegram'>"
+            this.telegramStatus="changing"
         },
-        confirmChangeEmail: async function(){
-            var newEmail = document.getElementById("newEmail").value
-            var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-            var ok = regExp.test(newEmail)
+        confirmChangeTelegram: async function(){
+            var newTelegram = document.getElementById("newTelegram").value
+            var regExp = /^@/
+            var ok = regExp.test(newTelegram)
             if(ok){
-                this.email = newEmail
-                document.getElementById("emailContent").innerHTML="'{{email}}'"
-                this.emailStatus="static"
-                try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
-                        email: newEmail
-                    })
-                    console.log(docRef)
-                }
-                catch(error){
-                    console.log("Failed updating email")
-                }
-            } else {
-                alert("Invalid Email Format!")
-            }
-        },
-        changePassword: function(){
-            document.getElementById("passwordContent").innerHTML="<input type='text' id='newPassword'>"
-            this.passwordStatus="changing"
-        },
-        confirmChangePassword: async function(){
-            var newPassword = document.getElementById("newPassword").value
-            var regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-            var ok = regExp.test(newPassword)
-            if(ok){
-                this.password = newPassword
-                document.getElementById("passwordContent").innerHTML="'{{password}}'"
+                this.telegram = newTelegram
+                document.getElementById("telegramContent").innerHTML="'{{telegram}}'"
                 this.passwordStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
-                        password: newPassword
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
+                        telegramHandle: newTelegram
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
-                    console.log("Failed updating password")
+                    console.log("Failed updating telegram handle")
                 }
             } else {
-                alert("Invalid Password Format! \nMinimum eight characters, at least one letter and one number.")
+                alert("Invalid Password Format! \nPlease remember the @ in front of your handle.")
             }
         },
         changeBio: function(){
@@ -165,10 +148,11 @@ export default {
             document.getElementById("bioContent").innerHTML="'{{bio}}'"
             this.bioStatus="static"
             try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
-                        bio: newBio
-                    })
-                    console.log(docRef)
+                const docRef = await updateDoc(doc(db, "Users",this.userID), {
+                    bio: newBio
+                })
+                console.log(docRef)
+                location.reload()
                 }
                 catch(error){
                     console.log("Failed updating bio")
@@ -187,10 +171,11 @@ export default {
                 document.getElementById("contactContent").innerHTML="'{{contactNumber}}'"
                 this.contactStatus="static"
                 try{
-                    const docRef = await updateDoc(doc(db, "Users",id), {
+                    const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         contactNumber: newContact
                     })
                     console.log(docRef)
+                    location.reload()
                 }
                 catch(error){
                     console.log("Failed updating contactNumber")
@@ -220,10 +205,10 @@ export default {
         border-collapse: collapse;
         border-width: 1px 0;
     }
-    #confirmChangeUsername,#confirmChangeEmail,#confirmChangePassword,#confirmChangeBio,#confirmChangeContact {
+    #confirmChangeUsername,#confirmChangeTelegram,#confirmChangeBio,#confirmChangeContact {
         margin-left: 10%;
     }
-    #usernameContent,#emailContent,#passwordContent,#bioContent,#contactContent {
+    #usernameContent,#emailContent,#telegramContent,#bioContent,#contactContent {
         width: 60%;
     }
 </style>

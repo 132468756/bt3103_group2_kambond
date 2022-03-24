@@ -45,7 +45,7 @@ export default {
             self.username = user.data().username
             self.bio = user.data().bio
             self.creditPoint = user.data().creditPoint
-            self.likes = user.data().likes()
+            self.likes = user.data().likes
         }
     }
 

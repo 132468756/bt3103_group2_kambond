@@ -11,7 +11,7 @@ import SearchField from "../components/Home/SearchField.vue";
 import NavBar from "../components/NavBar.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -40,21 +40,24 @@ export default {
         let data = {
           username:"this is random name",
           email:auth.currentUser.email,
-          password:0,
           bio:"this is description",
           contactNumber:auth.currentUser.phoneNumber,
-          credibitliy:0,
+          creditPoint:0,
+          telegramHandle:'',
           likes:0,
           posts: [],
           deals: [],
           requests: [],
         };
 
-        const docNow = await setDoc(
-          doc(db, "Users", String(auth.currentUser.email)),
-          data
-        );
-        console.log(docNow);
+        let userInfo = await getDoc(doc(db, "Users", auth.currentUser.email))
+        if(userInfo == undefined){// Create user only if this is a new user
+          const docNow = await setDoc(
+            doc(db, "Users", String(auth.currentUser.email)),
+            data
+          );
+          console.log(docNow);
+        }
       } catch (error) {
         console.error("Error adding document:", error);
       }

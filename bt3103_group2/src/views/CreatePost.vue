@@ -119,6 +119,8 @@ methods: {
     }
     var sysTime = new Date()
     var timeStamp = sysTime.getTime()
+    var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
+                        " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
     var postID = email + a + timeStamp
     if (confirm("creating post : " + a) == true){
       try{
@@ -131,7 +133,7 @@ methods: {
               status: status,
               user:email,
               postID:postID,
-              postTime: timeStamp
+              postTime:timeFormatted
           })
           console.log(docRef);
       }
@@ -143,6 +145,7 @@ methods: {
         posts: arrayUnion(postID)
       })
     }
+    history.back()
   }
 }
 };
