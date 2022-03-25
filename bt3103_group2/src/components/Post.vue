@@ -7,6 +7,7 @@
       
     </div>
     <div id = "description"> {{ description }} </div>
+    <div id = "category"> {{category}}</div>
     <hr />
     <div id="owner">
       <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "profilePicture"/>
@@ -40,7 +41,7 @@ export default {
 .borrow-button {
   background-color: black;
   color: white;
-  text-align: center;
+  text-align: right;
   font-size: 11px;
   border: 10px;
   border-radius: 10px;
@@ -78,12 +79,13 @@ export default {
 }
 #statusbar {
   text-align:center;
-  font-size: 10px;
+  font-size: 13px;
   background-color:#ffecda;
   border-radius:3px;
   border:2px solid;
   height:15px;
   width: 100px;
+  
 }
 
 #profilePicture {
