@@ -10,9 +10,9 @@
           class="modal-header"
           id="modalTitle"
         >
-          <slot name="header">
+          <section name="header">
             {{post.title}}
-          </slot>
+          </section>
           <button
             type="button"
             class="btn-close"
@@ -199,6 +199,7 @@ const db = getFirestore(firebaseApp);
     padding: 15px;
     display: flex;
     height: 10%;
+    margin-top: 0;
     font-size: 7vh;
     text-decoration: underline;
     position: relative;
@@ -232,11 +233,12 @@ const db = getFirestore(firebaseApp);
     top: 0;
     right: 0;
     border: none;
-    font-size: 50px;
-    padding: 100px;
+    font-size: 25px;
+    margin-top: 2px;
+    margin-right: 5px;
     cursor: pointer;
     font-weight: bold;
-    color: #4AAE9B;
+    color:black;
     background: transparent;
   }
 

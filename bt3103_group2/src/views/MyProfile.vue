@@ -83,7 +83,7 @@ export default {
 
     .InnerText {
         color: rgb(0, 0, 0);
-        font-size: 13px;
+        font-size: 20px;
     }
 
     #BottomElement{
