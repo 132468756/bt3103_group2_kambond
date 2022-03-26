@@ -40,24 +40,30 @@ export default {
 }
 
 #name {
-  background-color: blueviolet;
+  background-color: rgba(177, 178, 248, 0.699);
   text-align: center;
-  width: 100px;
+  width: 180px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
 }
 
 #checkboxes {
-  background-color: rgba(210, 179, 240, 0.911);
+  background-color: rgba(218, 217, 245, 0.911);
   padding: 10px;
-  width:2000px
+  width: 2000px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .whole {
   display: flex;
+  font-family:'Times New Roman', Times, serif;
 }
 
 #checked {
-  background-color: rgb(187, 189, 188);
-  padding:5px;
-  border-radius: 15px;
+  background-color: rgba(241, 238, 255, 0.582);
+  padding: 5px;
+  border: 1px solid black;
+  border-top: 0px;
 }
 </style>

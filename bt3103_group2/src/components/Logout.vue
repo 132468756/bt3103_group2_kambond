@@ -1,5 +1,7 @@
 <template>
-  <button id="btn" @click="signOut()" v-if="user"> Logout</button>
+    <br>
+    <br>
+  <button id="btn" type="button" @click="signOut()" v-if="user">Logout</button>
 </template>
 
 <script>
@@ -26,7 +28,7 @@ export default {
     methods:{
         signOut() {
             const auth = getAuth();
-            const user = suth.currentUser;
+            const user = auth.currentUser;
             signOut(auth, user);
             this.$router.push({name:'Login'});
         }
@@ -36,10 +38,12 @@ export default {
 
 <style>
 #btn{
-    text-align: center;
-    margin: auto;
-    background-color: black;
-    color:white;
+    width: 5%;
+    height: 5%;
+    background-color: rgb(186, 218, 224);
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
 }
 
 #btn:hover{

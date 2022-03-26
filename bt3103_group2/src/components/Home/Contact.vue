@@ -1,18 +1,21 @@
 <template>
-  <h5>Contact Us: KamBond@gmail.com</h5>
+  <h5 id="ContactUs">Contact Us: KamBond@gmail.com</h5>
   <br>
-
 </template>
 
 <script>
+
 export default {
-name: "Contact"
+name: "Contact",
+components:{
+
+}
 }
 </script>
 
 <style>
 
-h5{
+#ContactUs {
   text-align: center;
   background-color: aliceblue;
 }

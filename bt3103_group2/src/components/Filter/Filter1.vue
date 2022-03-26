@@ -1,16 +1,43 @@
 <script>
+import firebaseApp from "../../firebase.js";
+import {
+  getFirestore,
+  collection,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
 export default {
   name: "filter1",
   data() {
     return {
       checkedNames: [],
+      postlist:[],
     };
+  },
+  watch: {
+    async checkedNames() {
+      const qTitle = query(
+        collection(db, "Posts"),
+        where("category", "in", this.checkedNames),where("status","not-in",["Want to lend","Has lent"]),where("purpost","==","Lending")
+      );
+      const queryTitle = await getDocs(qTitle);
+      console.log(queryTitle);
+      queryTitle.forEach((doc) => {
+        this.postlist.push(doc.data());
+        console.log(doc);
+      });
+      console.log(this.postlist);
+    }
   },
 };
 </script>
 
 <template>
   <div id="checked">Checked names: {{ checkedNames }}</div>
+   
   <div class="whole">
     <div id="name">
       <h3>Category</h3>
@@ -154,15 +181,19 @@ export default {
 }
 
 #name {
-  background-color: blueviolet;
+  background-color: rgba(177, 178, 248, 0.699);
   text-align: center;
-  width: 100px;
+  width: 180px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
 }
 
 #checkboxes {
-  background-color: rgba(210, 179, 240, 0.911);
+  background-color: rgba(218, 217, 245, 0.911);
   padding: 10px;
   width: 2000px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .whole {
@@ -170,8 +201,8 @@ export default {
 }
 
 #checked {
-  background-color: rgb(187, 189, 188);
+  background-color: rgba(241, 238, 255, 0.582);
   padding: 5px;
-  border-radius: 15px;
+  border: 1px solid black;
 }
 </style>

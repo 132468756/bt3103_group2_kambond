@@ -2,16 +2,16 @@
   <form id="post">
       
     <div class="flex-box">
-
-      <div id = "title">title:{{ title }}</div>
-      <div id = "statusbar">{{status}}</div>
-      <button @click="toDetail">Borrow</button>
-
+      <div id = "title">{{ title }}</div>
+      <div id = "statusbar">{{ status }}</div>
+      
     </div>
+    <div id = "description"> {{ description }} </div>
+    <div id = "category"> {{category}}</div>
     <hr />
     <div id="owner">
-      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" />
-      <h3>owner:{{ owner }}</h3>
+      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "profilePicture"/>
+      <div id = "user">{{ owner }}</div>
     </div>
     
   </form>
@@ -25,67 +25,71 @@ export default {
       title: String,
       owner: String,
       status:String,
-  },
-  methods: {
-    toDetail() {
-      console.log("Go to post detail page");
-    },
+      description: String,
   },
 };
 </script>
 
 <style>
-h2 {
-  margin:0px;
-}
 .flex-box {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   height:40%;
 }
 
-#borrowbutton {
+.borrow-button {
   background-color: black;
   color: white;
-  text-align: center;
+  text-align: right;
+  font-size: 11px;
   border: 10px;
   border-radius: 10px;
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 20px;
   position: relative;
   float: right;
 }
 
 #title{
   margin:0px;
-  font-size: 36px;
+  font-size: 30px;
+  font-weight: 700;
 }
 
 #owner {
   display: inline-flex;
+  justify-content:left;
+  align-items:center;
+  margin-top: 2%;
+}
+
+#user{
+  margin-left: 3%;
+  font-size:2vw;
 }
 
 #post {
   display: inline-block;
-  border: 2px solid rgb(243, 20, 20);
-  border-radius: 10px;
-  width: 400px;
-  height: 150px;
+  border: 2px solid rgb(0, 0, 0);
+  width: 30vw;
+  height: 15vh;
   padding: 10px;
   margin: 10px;
 }
 #statusbar {
   text-align:center;
-  background-color:#FFB7BB;
-  border-radius:10px;
+  font-size: 13px;
+  background-color:#ffecda;
+  border-radius:3px;
   border:2px solid;
-  height:50px;
+  height:15px;
   width: 100px;
+  
 }
 
-img {
-  width: 50px;
-  height: 50px;
+#profilePicture {
+  width: 20%;
+  height: 20%;
 }
 </style>
