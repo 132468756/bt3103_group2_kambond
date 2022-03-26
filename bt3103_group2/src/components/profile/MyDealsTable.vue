@@ -1,7 +1,7 @@
 <template>
     <table id="MyDeals">
         <tr class="MyDealRow">
-            <th class="MyDealTitle">Post ID</th>
+            <th class="MyDealTitle">ID</th>
             <th class="MyDealTitle">Title</th>
             <th class="MyDealTitle">Location</th>
             <th class="MyDealTitle">Post Date</th>
@@ -45,6 +45,7 @@ export default {
             let records = user.data().deals
             // console.log(user.data())
             // console.log(records)
+            let reverseID=records.length
             
             records.forEach(async (record) => {
                 var table = document.getElementById("MyDeals")
@@ -63,7 +64,7 @@ export default {
                 var cell7 = row.insertCell(6)
                 var cell8 = row.insertCell(7)
 
-                cell1.innerHTML = dealInfo[0]
+                cell1.innerHTML = reverseID
                 cell2.innerHTML = dealInfo[1]
                 cell3.innerHTML = dealInfo[2]
                 cell4.innerHTML = dealInfo[3]
@@ -83,26 +84,41 @@ export default {
                 cancelBtn.onclick=function(){
                     cancelDeal()
                 }
+
+                //Create Info block
+                var info_div = document.createElement("div")
+                info_div.className="dealInfoLent"
+                info_div.id = String(dealInfo[0])
+
                 if(dealInfo[5]=="Requested"){
-                    dealBtn.innerHTML="Confirm"
+                    dealBtn.innerHTML="Send"
                     dealBtn.onclick=function(){
                         confirmDeal(record)
                     }
                     cell7.appendChild(dealBtn)
-                    cell8.appendChild(cancelBtn)
                 }else if(dealInfo[5]=="Sent Out"){
-                    var info_div = document.createElement("div")
-                    info_div.className="dealInfoLent"
-                    info_div.id = String(dealInfo[0])
                     info_div.innerHTML = "Lent"
                     cell7.appendChild(info_div)
-                }else{
+                    cell8.appendChild(cancelBtn)
+                }else if(dealInfo[5]=="Received"){
+                    info_div.innerHTML = "Waiting for Return"
+                    cell7.appendChild(info_div)
+                    cell8.appendChild(cancelBtn)
+                }else if(dealInfo[5]=="Returned"){
                     dealBtn.innerHTML="Complete"
                     dealBtn.onclick=function(){
                         completeDeal(record)
                     }
                     cell7.appendChild(dealBtn)
+                    cell8.appendChild(cancelBtn)
+                }else{
+                    dealBtn.innerHTML="Delete"
+                    dealBtn.onclick=function(){
+                        deleteDeal(record)
+                    }
+                    cell7.appendChild(dealBtn)
                 }
+                reverseID -= 1
             })
         }
         display(this)
@@ -143,30 +159,43 @@ export default {
                     status: "Completed"
                 })
 
-                // Delete record from own table
+                // // Delete record from own table
                 let myID = auth.currentUser.email
                 const myInfo = doc(db, "Users", myID)
-                await updateDoc(myInfo, {
-                    deals: arrayRemove(record)
-                })
-                // Delete record from owner's requests
+                // await updateDoc(myInfo, {
+                //     deals: arrayRemove(record)
+                // })
+                // // Delete record from owner's requests
                 let deal = await getDoc(doc(db, "Deals", record))
                 let owner = deal.data().owner
                 const ownerInfo = doc(db, "Users", owner)
-                let lender = await getDoc(ownerInfo)
-                console.log(lender.data())
-                await updateDoc(ownerInfo, {
-                    requests: arrayRemove(record)
-                })
-                // Delete from Deals table
-                await deleteDoc(doc(db, "Deals", record))
-                console.log("Deal successfully deleted!")
+                // let lender = await getDoc(ownerInfo)
+                // console.log(lender.data())
+                // await updateDoc(ownerInfo, {
+                //     requests: arrayRemove(record)
+                // })
+                // // Delete from Deals table
+                // await deleteDoc(doc(db, "Deals", record))
+                // console.log("Deal successfully deleted!")
                 // Increment the credit point for both users
                 await updateDoc(myInfo, {
                     creditPoint: increment(10)
                 })
                 await updateDoc(ownerInfo, {
                     creditPoint: increment(10)
+                })
+                // Re-render the page
+                location.reload()
+            }
+        }
+
+        async function deleteDeal(record){
+            if(confirm("Please confirm that you want to delete this transaction history from your Deal record.")){
+                // Delete from user table
+                let myID = auth.currentUser.email
+                const myInfo = doc(db, "Users", myID)
+                await updateDoc(myInfo, {
+                    deals:arrayRemove(record)
                 })
                 // Re-render the page
                 location.reload()

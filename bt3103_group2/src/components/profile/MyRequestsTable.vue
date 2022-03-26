@@ -1,7 +1,7 @@
 <template>
     <table id="MyRequests">
         <tr class="MyRequestRow">
-            <th class="MyRequestTitle">Post ID</th>
+            <th class="MyRequestTitle">ID</th>
             <th class="MyRequestTitle">Title</th>
             <th class="MyRequestTitle">Location</th>
             <th class="MyRequestTitle">Post Date</th>
@@ -43,7 +43,8 @@ export default {
             let records = user.data().requests
             // console.log(user.data())
             // console.log(records)
-            
+            console.log(records.length)
+            let reverseID = records.length
             records.forEach(async (record) => {
                 var table = document.getElementById("MyRequests")
                 var row = table.insertRow(ind)
@@ -60,7 +61,7 @@ export default {
                 var cell6 = row.insertCell(5)
                 var cell7 = row.insertCell(6)
 
-                cell1.innerHTML = requestInfo[0]
+                cell1.innerHTML = reverseID
                 cell2.innerHTML = requestInfo[1]
                 cell3.innerHTML = requestInfo[2]
                 cell4.innerHTML = requestInfo[3]
@@ -79,18 +80,31 @@ export default {
                     }
                     cell7.appendChild(requestBtn)
                 }else if(requestInfo[5] == "Sent Out"){
-                    requestBtn.innerHTML="Confirm"
+                    requestBtn.innerHTML="Receive"
                     requestBtn.onclick=function(){
-                        confirmRequest(record)
+                        receiveRequest(record)
                     }
                     cell7.appendChild(requestBtn)
-                }else{
+                }else if(requestInfo[5] == "Received"){
+                    requestBtn.innerHTML="Return"
+                    requestBtn.onclick=function(){
+                        returnRequest(record)
+                    }
+                    cell7.appendChild(requestBtn)
+                }else if(requestInfo[5] == "Returned"){
                     var info_div = document.createElement("div")
                     info_div.className="requestInfoReturned"
                     info_div.id = String(requestInfo[0])
-                    info_div.innerHTML = "Returned"
+                    info_div.innerHTML = "Waiting to Complete"
                     cell7.appendChild(info_div)
+                }else{
+                    requestBtn.innerHTML="Delete"
+                    requestBtn.onclick=function(){
+                        deleteRequestAfterComplete(record)
+                    }
+                    cell7.appendChild(requestBtn)
                 }
+                reverseID -= 1
             })
         }
 
@@ -150,12 +164,37 @@ export default {
             }
         }
 
-        async function confirmRequest(record){
+        async function receiveRequest(record){
+            if(confirm("Please confirm that you have returned this item.")){
+                // Update the post status
+                const docRef = doc(db, "Posts", record)
+                await updateDoc(docRef, {
+                    status: "Received"
+                })
+                // Re-render the page
+                location.reload()
+            }
+        }
+
+        async function returnRequest(record){
             if(confirm("Please confirm that you have returned this item.")){
                 // Update the post status
                 const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
                     status: "Returned"
+                })
+                // Re-render the page
+                location.reload()
+            }
+        }
+
+        async function deleteRequestAfterComplete(record){
+            if(confirm("Please confirm that you want to delete this transaction history from your Request record.")){
+                // Delete from user table
+                let myID = auth.currentUser.email
+                const myInfo = doc(db, "Users", myID)
+                await updateDoc(myInfo, {
+                    requests:arrayRemove(record)
                 })
                 // Re-render the page
                 location.reload()

@@ -1,7 +1,7 @@
 <template>
     <table id="MyPosts">
         <tr class="MyPostRow">
-            <th class="MyPostTitle">Post ID</th>
+            <th class="MyPostTitle">ID</th>
             <th class="MyPostTitle">Title</th>
             <th class="MyPostTitle">Description</th>
             <th class="MyPostTitle">Purpose</th>
@@ -17,7 +17,7 @@
 <script>
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc,  updateDoc, deleteDoc, arrayRemove} from "firebase/firestore"
+import{getDoc, doc,  updateDoc, arrayRemove} from "firebase/firestore"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
 const db = getFirestore(firebaseApp)
 export default {
@@ -44,6 +44,7 @@ export default {
                 let records = user.data().posts
                 console.log(user.data())
                 console.log(records)
+                let reverseID = records.length
                 
                 records.forEach(async (record) => {
                     var table = document.getElementById("MyPosts")
@@ -61,7 +62,7 @@ export default {
                     var cell7 = row.insertCell(6)
                     var cell8 = row.insertCell(7)
                     var cell9 = row.insertCell(8)
-                    cell1.innerHTML = postInfo[0]
+                    cell1.innerHTML = reverseID
                     cell2.innerHTML = postInfo[1]
                     cell3.innerHTML = postInfo[2]
                     cell4.innerHTML = postInfo[3]
@@ -86,6 +87,7 @@ export default {
                         divBlk.id = String(postInfo[0])
                         cell9.appendChild(divBlk)
                     }
+                    reverseID -= 1
                 })
             } else {
                 console.log("User need to login")
@@ -106,14 +108,12 @@ export default {
             return postInfo
         }
         async function deletePost(record){
-            if(confirm("Please confirm that you want to delete " + record)){
+            if(confirm("Please confirm that you want to delete this post." )){
                 // Delete from user table
                 let user = doc(db, "Users", auth.currentUser.email)
                 await updateDoc(user, {
                     posts:arrayRemove(record)
                 })
-                // Delete from Posts table
-                await deleteDoc(doc(db, "Posts", record))
                 // Re-render the page
                 location.reload()
             }
