@@ -22,10 +22,10 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return {
-            username:'',
-            bio:'',
-            creditPoint:'',
-            likes:''
+            username:'<default name>',
+            bio:'<default bio>',
+            creditPoint:'0',
+            likes:'0'
         }
     },
 
@@ -39,14 +39,17 @@ export default {
             }
         })
 
-        async function display(self, userID){
-            let user = await getDoc(doc(db, "Users", userID))
+        async function display(email){
+            let user = await getDoc(doc(db, "Users", email))
 
-            self.username = user.data().username
-            self.bio = user.data().bio
-            self.creditPoint = user.data().creditPoint
-            self.likes = user.data().likes
+            this.username = user.data().username
+            this.bio = user.data().bio
+            this.creditPoint = user.data().creditPoint
+            this.likes = user.data().likes
+            console.log(this.likes)
         }
+                
+        display(auth.currentUser.email)
     }
 
 }

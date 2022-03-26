@@ -112,10 +112,10 @@ methods: {
     var email = auth.currentUser.email
     var status = b
     if(b == "Borrowing"){
-        status = "Wants to borrow"
+        status = "Want to borrow"
     }
     else{
-        status = "Wants to lend"
+        status = "Want to lend"
     }
     var sysTime = new Date()
     var timeStamp = sysTime.getTime()
@@ -140,7 +140,7 @@ methods: {
       catch(error){
         console.error("Error adding document:", error);
       }
-      let user_info = doc(db, "Users", this.user.email)
+      let user_info = doc(db, "Users", String(this.user.email))
       await updateDoc(user_info, {
         posts: arrayUnion(postID)
       })
