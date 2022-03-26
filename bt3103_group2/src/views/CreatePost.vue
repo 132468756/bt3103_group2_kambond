@@ -1,12 +1,15 @@
 <template>
-  <form @submit.prevent="createPost" method="post" id="createpostform">
+<div style="text-align:center;" v-if="user"> 
+  <NavBar/>
+  <backBtn/>
+  <form @submit.prevent="onSubmit" method="post" id="createpostform">
       <div className ="row">
-    <label> Title </label>
+    <label className = "postlabel"> Title </label>
     <input type="title" required v-model="post.title" id = "post.title"/>
     </div>
 
     <div className ="row">
-    <label> Purpose </label>
+    <label className = "postlabel"> Purpose </label>
     <select required v-model="post.purpose" id = "post.purpose">
       <option>Borrowing</option>
       <option>Lending</option>
@@ -14,12 +17,12 @@
     </div>
 
     <div className ="row">
-    <label> Description </label>
+    <label className = "postlabel"> Description </label>
     <input type="desription" required v-model="post.description" id = "post.description"/>
     </div>
 
     <div className ="row">
-    <label> Category </label>
+    <label className = "postlabel"> Category </label>
     <select required v-model="post.category" id = "post.category">
       <option>Beauty & Personal Care</option>
       <option>Bulletin Board</option>
@@ -41,7 +44,7 @@
     </div>
 
     <div className ="row">
-    <label> Location </label>
+    <label className = "postlabel"> Location </label>
     <select required v-model="post.location" id = "post.location">
       <option>PGP / PGPR</option>
       <option>Utown</option>
@@ -57,30 +60,47 @@
     </div>
 
     <div className = "submitRow">
-    <button className="submit" v-on:click = "createPost()"> Create Post </button>
-
-  </div>
-  </form>
+      <button className="submit" @click = "createPost()"> Create Post </button>
+    </div>
   
+  </form>
+</div>
 </template>
 
 <script>
 import firebaseApp from "../firebase.js";
-import {getFirestore} from "firebase/firestore";
-import { doc, setDoc} from "firebase/firestore";
+import {arrayUnion, getFirestore} from "firebase/firestore";
+import { doc, setDoc, updateDoc} from "firebase/firestore";
+import NavBar from "../components/NavBar.vue"
+import backBtn from "../components/profile/BackButton.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 const db = getFirestore(firebaseApp);
+const auth = getAuth()
 export default {
   name: "CreatePost",
+  components:{
+    NavBar,
+    backBtn,
+  },
   data() {
     return {
+      user: false,
       post:{
       title: "",
       purpose: "",
       desription: "",
       category: "",
       location: "",
-      }
+      },
     };
+  },
+  mounted() {
+    const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+        }
+      })
   },
 methods: {
   async createPost() {
@@ -89,24 +109,43 @@ methods: {
     var c = document.getElementById("post.description").value
     var d = document.getElementById("post.category").value
     var f = document.getElementById("post.location").value
-
-    alert("creating post : " + a)
-    try{
-        const docRef = await setDoc(doc(db, "Posts", a),
-        {
-            title:a,
-            purpose:b,
-            description:c,
-            category:d,
-            location:f
-        }
-        )
-        console.log(docRef);
+    var email = auth.currentUser.email
+    var status = b
+    if(b == "Borrowing"){
+        status = "Want to borrow"
     }
-    catch(error){
-                console.error("Error adding document:", error);
-            }
-
+    else{
+        status = "Want to lend"
+    }
+    var sysTime = new Date()
+    var timeStamp = sysTime.getTime()
+    var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
+                        " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
+    var postID = email + a + timeStamp
+    if (confirm("creating post : " + a) == true){
+      try{
+          const docRef = await setDoc(doc(db, "Posts", postID), {
+              title:a,
+              purpose:b,
+              description:c,
+              category:d,
+              location:f,
+              status: status,
+              user:email,
+              postID:postID,
+              postDate:timeFormatted
+          })
+          console.log(docRef);
+      }
+      catch(error){
+        console.error("Error adding document:", error);
+      }
+      let user_info = doc(db, "Users", String(this.user.email))
+      await updateDoc(user_info, {
+        posts: arrayUnion(postID)
+      })
+    }
+    history.back()
   }
 }
 };
@@ -119,10 +158,10 @@ methods: {
   border-radius: 10px;
   justify-content:center;
 }
-label {
+.postlabel {
   color: rgb(31, 34, 34);
   display: flex;
-  justify-content:center;
+  justify-content:left;
   margin-top:2%;
   margin-bottom:2%;
   width:100%;
@@ -140,19 +179,16 @@ input,select {
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-
 .row{
     display:flex;
     flex-direction:column;
     width:40%;
     margin-left:30%;
 }
-
 .submitRow{
     margin-left:60%;
-
+    padding:1%;
 }
-
 .submit {
     position:absolute;
     text-align: center;
@@ -163,6 +199,16 @@ input,select {
     color:aliceblue;
     border-radius: 20px;
     width:10%;
-    height:5%;
+    height:7%;
+    cursor: pointer;
+}
+.submit:hover{
+  outline-color: transparent;
+  outline-style: solid;
+  box-shadow: 0 0 0 1px lightblue;
+  transition: 0.5s;
+}
+.submit:active{
+  background-color: lightblue;
 }
 </style>
