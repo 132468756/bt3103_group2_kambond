@@ -70,14 +70,22 @@ export default {
                     cell7.innerHTML = postInfo[6]
                     cell8.innerHTML = postInfo[7]
                     
-                    var deleteBtn = document.createElement("button")
-                    deleteBtn.className = "deletePostBtn"
-                    deleteBtn.id = String(postInfo[0])
-                    deleteBtn.innerHTML="Delete"
-                    deleteBtn.onclick=function(){
-                        deletePost(record)
+                    if(postInfo[7] == "Completed" || postInfo[7] == "Want to Lend" || postInfo[7] == "Want to Borrow"){
+                        var deleteBtn = document.createElement("button")
+                        deleteBtn.className = "deletePostBtn"
+                        deleteBtn.id = String(postInfo[0])
+                        deleteBtn.innerHTML="Delete"
+                        deleteBtn.onclick=function(){
+                            deletePost(record)
+                        }
+                        cell9.appendChild(deleteBtn)
+                    }else{
+                        var divBlk = document.createElement("div")
+                        divBlk.innerHTML = "In Transaction"
+                        divBlk.className = "emptyDiv"
+                        divBlk.id = String(postInfo[0])
+                        cell9.appendChild(divBlk)
                     }
-                    cell9.appendChild(deleteBtn)
                 })
             } else {
                 console.log("User need to login")

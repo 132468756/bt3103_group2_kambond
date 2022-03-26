@@ -25,21 +25,21 @@ export default {
 
   data() {
     return {
-      user: false,
+      user:'',
     };
   },
 
   mounted() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
         this.user = user.email;
-    }
-    );
-        // console.log(auth)
-        // console.log(auth.currentUser)
-        // console.log(this.user)
+        console.log(user.email)
+        console.log(this.user)
+      }
+    });
+
     async function createUser(self) {
-      // try {
+      try {
         let data = {
           username:"this is random name",
           email:self.user,
@@ -56,10 +56,10 @@ export default {
         let userExits = false
         let userInfo = await getDocs(collection(db, "Users"))
         userInfo.forEach((doc) => {
-        //console.log(doc.id, " => ", doc.data());
-        if(doc.id == self.user){
-          userExits=true
-        }
+          // console.log(doc.id, " => ", doc.data());
+          if(doc.id == self.user){
+            userExits=true
+          }
         });
         if(!userExits){// Create user only if this is a new user
           const docNow = await setDoc(

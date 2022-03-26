@@ -77,6 +77,7 @@ export default {
                 this.user = user;
             }
         })
+
         
     async function collectData(posts){
       let z = await getDocs(collection(db,"Posts"))
@@ -84,14 +85,28 @@ export default {
       posts.push(doc.data()))
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
-      console.log(docRef.data().username)
+      console.log(docRef.data().username);
+      //computed: {
+      //filteredpost: function() {
+      // var vm = this;
+
+      // checkedNames.forEach((fil) => 
+      //  {
+      //    var category = fil;
+      //    return vm.posts.filter(function(post) {
+      //    return post.category == category;
+      //    });
+      //  }
+      // )
+      //}
+    //}
 
       posts.forEach(async (post)=>{
         docRef = await getDoc(doc(db, "Users", post.user));
         console.log(docRef.data().username)
         post.userName = docRef.data().username
        
-      })
+      });
       return posts;
     }
     collectData(this.posts)
