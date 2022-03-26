@@ -39,8 +39,8 @@ export default {
             }
         })
 
-        async function display(self, email){
-            let user = await getDoc(doc(db, "Users", String(email)))
+        async function display(email){
+            let user = await getDoc(doc(db, "Users", email))
 
             this.username = user.data().username
             this.bio = user.data().bio
@@ -49,7 +49,7 @@ export default {
             console.log(this.likes)
         }
                 
-        display(this, this.user.email)
+        display(auth.currentUser.email)
     }
 
 }
