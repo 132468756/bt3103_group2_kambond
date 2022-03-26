@@ -25,7 +25,8 @@ export default {
             username:'<default name>',
             bio:'<default bio>',
             creditPoint:'0',
-            likes:'0'
+            likes:'0',
+            email:''
         }
     },
 
@@ -33,23 +34,23 @@ export default {
         const auth = getAuth()
         onAuthStateChanged(auth, (user) => {
             if(user){
+                this.email = user.email
                 display(this, user.email)
             }else{
                 display(this, "10086")
             }
         })
 
-        async function display(self, email){
-            let user = await getDoc(doc(db, "Users", String(email)))
-
-            this.username = user.data().username
-            this.bio = user.data().bio
-            this.creditPoint = user.data().creditPoint
-            this.likes = user.data().likes
-            console.log(this.likes)
+        async function display(self){
+            let user = await getDoc(doc(db, "Users", self.email))
+            self.username = user.data().username
+            self.bio = user.data().bio
+            self.creditPoint = user.data().creditPoint
+            self.likes = user.data().likes
+            console.log(self.likes)
         }
                 
-        display(this, this.user.email)
+        display(this)
     }
 
 }

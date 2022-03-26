@@ -10,7 +10,7 @@ import MyDeal from "../views/MyDeals.vue";
 import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
 // import Chats from "../views/Chats";
-import Profile from "../views/Profile.vue"
+import Profile from "../views/Profile.vue";
 
 const routes = [
   {
@@ -77,10 +77,8 @@ const routes = [
   //   name: "Chats",
   //   component: Chats,
   // },
-  
-  { path: '/user/:id', 
-  component: Profile, 
-  props: true },
+
+  { path: "/user/:id", component: Profile, props: true },
 ];
 
 const router = new createRouter({
