@@ -8,7 +8,6 @@
             <th class="MyRequestTitle">Lender</th>
             <th class="MyRequestTitle">Status</th>
             <th class="MyRequestTitle">Action</th>
-            <th class="MyRequestTitle">Cancel</th>
         </tr>
     </table>
 </template>

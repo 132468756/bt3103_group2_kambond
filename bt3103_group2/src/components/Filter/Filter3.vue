@@ -57,7 +57,7 @@ export default {
 
 .whole {
   display: flex;
-  font-family: ;
+  font-family:'Times New Roman', Times, serif;
 }
 
 #checked {

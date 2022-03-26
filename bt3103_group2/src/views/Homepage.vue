@@ -11,7 +11,7 @@ import SearchField from "../components/Home/SearchField.vue";
 import NavBar from "../components/NavBar.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseApp from "../firebase.js";
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDocs, collection } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -24,24 +24,26 @@ export default {
 
   data() {
     return {
-      user: false,
+      user:'',
     };
   },
 
   mounted() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.user = user;
+        this.user = user.email;
+        console.log(user.email)
+        console.log(this.user)
       }
     });
 
-    async function createUser() {
+    async function createUser(self) {
       try {
         let data = {
-          username:"default name",
-          email:String(auth.currentUser.email),
-          bio:"default bio",
-          contactNumber:auth.currentUser.phoneNumber,
+          username:"this is random name",
+          email:self.user,
+          bio:"this is description",
+          contactNumber:0,
           creditPoint:0,
           telegramHandle:'',
           likes:0,
@@ -50,10 +52,17 @@ export default {
           requests: [],
         };
 
-        let userInfo = getDoc(doc(db, "Users", String(auth.currentUser.email)))
-        if(userInfo == undefined){// Create user only if this is a new user
+        let userExits = false
+        let userInfo = await getDocs(collection(db, "Users"))
+        userInfo.forEach((doc) => {
+          // console.log(doc.id, " => ", doc.data());
+          if(doc.id == self.user){
+            userExits=true
+          }
+        });
+        if(!userExits){// Create user only if this is a new user
           const docNow = await setDoc(
-            doc(db, "Users", String(auth.currentUser.email)),
+            doc(db, "Users", self.user),
             data
           );
           console.log(docNow);
@@ -62,7 +71,7 @@ export default {
         console.error("Error adding document:", error);
       }
     }
-    createUser();
+    createUser(this);
   },
 };
 </script>
