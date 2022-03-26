@@ -22,10 +22,10 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return {
-            username:'<default name>',
-            bio:'<default bio>',
-            creditPoint:'0',
-            likes:'0',
+            username:'Username',
+            bio:'Bio',
+            creditPoint:0,
+            likes:0,
             email:''
         }
     },
@@ -49,7 +49,6 @@ export default {
             self.likes = user.data().likes
             console.log(self.likes)
         }
-                
         display(this)
     }
 

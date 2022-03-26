@@ -75,7 +75,6 @@ export default {
         width:20vw;
     }
 
-
     #RightFunction {
         width:20vw;
         margin-right:1.9vw;
