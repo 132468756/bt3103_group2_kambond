@@ -115,9 +115,12 @@ export default {
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
-            let user = thisPost.data().user
+            let deal_info = await getDoc(doc(db, "Deals", record))
+            let user = deal_info.data().owner
+            let user_info = await getDoc(doc(db, "Users", user))
+            let lenderName = user_info.data().username
 
-            let requestInfo = [postID,title,location,postDate,user,status]
+            let requestInfo = [postID,title,location,postDate,lenderName,status]
             console.log(requestInfo)
             return requestInfo
         }

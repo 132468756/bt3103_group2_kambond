@@ -128,8 +128,10 @@ export default {
 
             let deal_info = await getDoc(doc(db, "Deals", record))
             let owner = deal_info.data().owner
+            let owner_info  = await getDoc(doc(db, "Users", owner))
+            let borrowerName = owner_info.data().username
 
-            let dealInfo = [postID,title,location,postDate,owner,status]
+            let dealInfo = [postID,title,location,postDate,borrowerName,status]
             console.log(dealInfo)
             return dealInfo
         }
