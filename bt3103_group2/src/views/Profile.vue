@@ -7,7 +7,7 @@
 <div>
   <otherUserProfileTable :id = this.user />
   <button id="chatBtn">Chat</button>
-  <likeBtn/>
+  <likeBtn />
 </div>
 </template>
 
