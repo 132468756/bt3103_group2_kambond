@@ -65,7 +65,15 @@ export default {
                 cell2.innerHTML = requestInfo[1]
                 cell3.innerHTML = requestInfo[2]
                 cell4.innerHTML = requestInfo[3]
-                cell5.innerHTML = requestInfo[4]
+                //Create button for other user profile
+                var otherUserBtn = document.createElement("button")
+                otherUserBtn.className = "otherLenderBtn"
+                otherUserBtn.id = String(requestInfo[0])
+                otherUserBtn.innerHTML = requestInfo[4]
+                otherUserBtn.onclick = function(){
+                    self.$router.push({ name:"Profile", params:{id: requestInfo[6]}})
+                    }
+                cell5.appendChild(otherUserBtn)
                 cell6.innerHTML = requestInfo[5]
                 
                 // Create request button
@@ -115,9 +123,12 @@ export default {
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
-            let user = thisPost.data().user
+            let deal_info = await getDoc(doc(db, "Deals", record))
+            let user = deal_info.data().owner
+            let user_info = await getDoc(doc(db, "Users", user))
+            let lenderName = user_info.data().username
 
-            let requestInfo = [postID,title,location,postDate,user,status]
+            let requestInfo = [postID,title,location,postDate,lenderName,status, user]
             console.log(requestInfo)
             return requestInfo
         }
@@ -247,5 +258,21 @@ export default {
 
     .requestActionBtn:active {
         background-color: lightgreen;
+    }
+
+    .otherLenderBtn {
+        width: 80%;
+        height: 80%;
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 12px;
+        border: none;
+        font-size: 95%;
+    }
+
+    .otherLenderBtn:hover {
+        font-weight: bold;
+        transition: 0.3s;
+        color: rgba(94, 197, 94, 0.692);
     }
 </style>

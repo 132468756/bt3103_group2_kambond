@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import {getAuth, onAuthStateChanged} from "firebase/auth"
 import { getDoc, doc, getFirestore } from '@firebase/firestore'
 import firebaseApp from '../../firebase'
 
@@ -22,34 +21,38 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return {
-            username:'<default name>',
-            bio:'<default bio>',
-            creditPoint:'0',
-            likes:'0'
+            username:'Username',
+            bio:'Bio',
+            creditPoint:0,
+            likes:0,
+            email:''
         }
     },
 
+    props:{
+        user:String
+    },
+
     mounted(){
-        const auth = getAuth()
-        onAuthStateChanged(auth, (user) => {
-            if(user){
-                display(this, user.email)
-            }else{
-                display(this, "10086")
-            }
-        })
-
-        async function display(email){
-            let user = await getDoc(doc(db, "Users", email))
-
-            this.username = user.data().username
-            this.bio = user.data().bio
-            this.creditPoint = user.data().creditPoint
-            this.likes = user.data().likes
-            console.log(this.likes)
+        async function update(self){
+            self.email = self.user
+            let user_info = await getDoc(doc(db, "Users", self.user))
+            self.username = user_info.data().username
+            self.bio = user_info.data().bio
+            self.likes = user_info.data().likes
+            self.creditPoint = user_info.data().creditPoint
         }
-                
-        display(auth.currentUser.email)
+        update(this)
+
+        async function display(self){
+            let user = await getDoc(doc(db, "Users", self.email))
+            self.username = user.data().username
+            self.bio = user.data().bio
+            self.creditPoint = user.data().creditPoint
+            self.likes = user.data().likes
+            console.log(self.likes)
+        }
+        display(this)
     }
 
 }

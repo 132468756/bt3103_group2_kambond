@@ -78,7 +78,12 @@ const routes = [
   //   component: Chats,
   // },
 
-  { path: "/user/:id", component: Profile, props: true },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    props: true,
+  },
 ];
 
 const router = new createRouter({
