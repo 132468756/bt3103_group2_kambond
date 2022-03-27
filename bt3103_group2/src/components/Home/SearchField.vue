@@ -5,7 +5,7 @@
       <input
         type="text"
         id="inputbox"
-        v-model="searchText"
+        v-model.lazy="searchText"
         required=""
         Placeholder="Search"
       />
@@ -13,52 +13,47 @@
         Search
       </button>
     </div>
-     
-    <div className = "postList">
-    <button type="button"
-          id = "postModal"
-          @click="showModal">
-      <Post className = "posts"
-      v-for= "post in postlist"
-      :key = "post.id"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"/>
-      
-    </button>
-    <Modal
+
+    <div className="postList" v-if="searchText">
+      <button type="button" id="postModal" @click="showModal">
+        <Post
+          className="posts"
+          v-for="post in postlist"
+          :key="post.id"
+          :owner="post.userName"
+          :title="post.title"
+          :status="post.status"
+        />
+      </button>
+      <Modal
         v-show="isModalVisible"
         @close="closeModal"
-        v-for= "post in postlist"
-        :key = "post.id"
-        :owner = "post.userName"
-        :title = "post.title"
-        :description = "post.description"
-        :postID = "post.postID"
-        :post = "post"
+        v-for="post in postlist"
+        :key="post.id"
+        :owner="post.userName"
+        :title="post.title"
+        :description="post.description"
+        :postID="post.postID"
+        :post="post"
       />
-    
-  </div>
-
+    </div>
   </div>
 </template>
 
 <script>
 import firebaseApp from "../../firebase.js";
 import Modal from "../Modal.vue";
-import Post from "../Post.vue"
+import Post from "../Post.vue";
 import {
   getFirestore,
   collection,
-  where,
-  query,
   getDocs,
 } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 export default {
   name: "SearchField",
-  components: {Modal,Post},
+  components: { Modal, Post },
   data() {
     return { postlist: [], searchText: "" };
   },
@@ -67,20 +62,27 @@ export default {
     async search() {
       alert("Searching for...");
       console.log("searching");
-      const qTitle = query(collection(db, "Posts"), where("title", "==", this.searchText));
-      const queryTitle = await getDocs(qTitle);
-      console.log(queryTitle);
-      queryTitle.forEach((doc) => {
-        this.postlist.push(doc.data());
-        console.log(doc);
+      this.postlist=[];
+      var regEx = new RegExp(this.searchText + "*", "i");
+      const querySnapshotTitle = await getDocs(collection(db, "Posts"));
+      querySnapshotTitle.forEach((post) => {
+        if (regEx.test(post.data().title)) {
+          this.postlist.push(post.data());
+          console.log(post);
+        }
       });
-      console.log(this.postlist);
-      const qUser = query(collection(db, "Posts"), where("user", "==", this.searchText));
-      const queryUser = await getDocs(qUser);
-      console.log(queryUser);
-      queryUser.forEach((doc) => {
-        this.postlist.push(doc.data());
-        console.log(doc);
+
+      const querySnapshotUser = await getDocs(collection(db, "Users"));
+      querySnapshotUser.forEach((post) => {
+        if (regEx.test(post.data().username)) {
+          this.postlist.push(post.data());
+          console.log(post);
+        }
+        console.log(post.data().email);
+        if (regEx.test(post.data().email)) {
+          this.postlist.push(post.data());
+          console.log(post);
+        }
       });
       console.log(this.postlist);
     },
