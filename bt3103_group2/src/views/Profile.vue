@@ -1,7 +1,7 @@
 <template>
 <div>
   <backBtn/>
-  <userInfo/>
+  <userInfo :user = this.id />
 </div>
 
 <div>
@@ -15,7 +15,7 @@
 // import Logout from "../components/Logout.vue"
 import backBtn from "../components/profile/BackButton.vue"
 import otherUserProfileTable from "../components/OtherUserProfileTable.vue"
-import userInfo from "../components/profile/UserInfoDisplay.vue"
+import userInfo from "../components/profile/OtherUserInfoDisplay.vue"
 import likeBtn from "../components/profile/LikeButton.vue"
 
 export default {
@@ -24,8 +24,12 @@ export default {
         id:String
     },
   data(){
-    return{user: "lrqian2000@gmail.com"}
-    
+    return{
+      user: this.id
+      }
+  },
+  mounted(){
+    console.log(this.id)
   },
 
   components : {

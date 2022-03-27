@@ -66,22 +66,21 @@ export default {
                 cell2.innerHTML = dealInfo[1]
                 cell3.innerHTML = dealInfo[2]
                 cell4.innerHTML = dealInfo[3]
-                cell5.innerHTML = dealInfo[4]
+                // Create button for other user profile
+                var otherUserBtn = document.createElement("button")
+                otherUserBtn.className = "otherBorrowerBtn"
+                otherUserBtn.id = String(dealInfo[0])
+                otherUserBtn.innerHTML = dealInfo[4]
+                otherUserBtn.onclick = function(){
+                    self.$router.push({ name:"Profile", params:{id: dealInfo[6]}})
+                    }
+                cell5.appendChild(otherUserBtn)
                 cell6.innerHTML = dealInfo[5]
 
                 // Create deal button
                 var dealBtn = document.createElement("button")
                 dealBtn.className = "dealActionBtn"
                 dealBtn.id = String(dealInfo[0])
-
-                // Create cancel button
-                // var cancelBtn = document.createElement("button")
-                // cancelBtn.className = "dealCancelBtn"
-                // cancelBtn.id = String(dealInfo[0])
-                // cancelBtn.innerHTML="Cancel Deal"
-                // cancelBtn.onclick=function(){
-                //     cancelDeal()
-                // }
 
                 //Create Info block
                 var info_div = document.createElement("div")
@@ -131,7 +130,7 @@ export default {
             let owner_info  = await getDoc(doc(db, "Users", owner))
             let borrowerName = owner_info.data().username
 
-            let dealInfo = [postID,title,location,postDate,borrowerName,status]
+            let dealInfo = [postID,title,location,postDate,borrowerName,status,owner]
             console.log(dealInfo)
             return dealInfo
         }
@@ -156,25 +155,13 @@ export default {
                     status: "Completed"
                 })
 
-                // // Delete record from own table
+                // Get my info and borrower info
                 let myID = auth.currentUser.email
                 const myInfo = doc(db, "Users", myID)
-                // await updateDoc(myInfo, {
-                //     deals: arrayRemove(record)
-                // })
-                // // Delete record from owner's requests
                 let deal = await getDoc(doc(db, "Deals", record))
                 let owner = deal.data().owner
                 const ownerInfo = doc(db, "Users", owner)
-                // let lender = await getDoc(ownerInfo)
-                // console.log(lender.data())
-                // await updateDoc(ownerInfo, {
-                //     requests: arrayRemove(record)
-                // })
-                // // Delete from Deals table
-                // await deleteDoc(doc(db, "Deals", record))
-                // console.log("Deal successfully deleted!")
-                // Increment the credit point for both users
+                // Increase the credit point of both parties
                 await updateDoc(myInfo, {
                     creditPoint: increment(10)
                 })
@@ -198,37 +185,6 @@ export default {
                 location.reload()
             }
         }
-
-        // async function cancelDeal(record){
-        //     if(confirm("Please confirm that you want to cancel this deal.")){
-        //         // Update the post status to completed
-        //         const docRef = doc(db, "Posts", record)
-        //         await updateDoc(docRef, {
-        //             status: "Cancelled"
-        //         })
-
-        //         // Delete record from own table
-        //         let myID = auth.currentUser.email
-        //         const myInfo = doc(db, "Users", myID)
-        //         await updateDoc(myInfo, {
-        //             deals: arrayRemove(record)
-        //         })
-        //         // Delete record from owner's requests
-        //         let deal = await getDoc(doc(db, "Deals", record))
-        //         let owner = deal.data().owner
-        //         const ownerInfo = doc(db, "Users", owner)
-        //         let lender = await getDoc(ownerInfo)
-        //         console.log(lender.data())
-        //         await updateDoc(ownerInfo, {
-        //             requests: arrayRemove(record)
-        //         })
-        //         // Delete from Deals table
-        //         await deleteDoc(doc(db, "Deals", record))
-        //         console.log("Deal successfully cancelled!")
-        //         // Re-render the page
-        //         location.reload()
-        //     }
-        // }
     }
 }
 </script>
@@ -276,5 +232,21 @@ export default {
 
     .dealActionBtn:active, .dealActionBtn:active {
         background-color: rgb(141, 26, 141);
+    }
+
+    .otherBorrowerBtn {
+        width: 80%;
+        height: 80%;
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 12px;
+        border: none;
+        font-size: 95%;
+    }
+
+    .otherBorrowerBtn:hover {
+        font-weight: bold;
+        transition: 0.3s;
+        color: rgb(141, 26, 141);
     }
 </style>
