@@ -8,7 +8,6 @@
             <th class="MyDealTitle">Borrower</th>
             <th class="MyDealTitle">Status</th>
             <th class="MyDealTitle">Action</th>
-            <th class="MyDealTitle">Cancel</th>
         </tr>
     </table>
 </template>
@@ -16,7 +15,7 @@
 <script>
 import  firebaseApp from "../../firebase.js"
 import {getFirestore, increment} from "firebase/firestore"
-import{getDoc, doc, deleteDoc, updateDoc, arrayRemove} from "firebase/firestore"
+import{getDoc, doc, updateDoc, arrayRemove} from "firebase/firestore"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 const db = getFirestore(firebaseApp)
@@ -62,7 +61,6 @@ export default {
                 var cell5 = row.insertCell(4)
                 var cell6 = row.insertCell(5)
                 var cell7 = row.insertCell(6)
-                var cell8 = row.insertCell(7)
 
                 cell1.innerHTML = reverseID
                 cell2.innerHTML = dealInfo[1]
@@ -77,13 +75,13 @@ export default {
                 dealBtn.id = String(dealInfo[0])
 
                 // Create cancel button
-                var cancelBtn = document.createElement("button")
-                cancelBtn.className = "dealCancelBtn"
-                cancelBtn.id = String(dealInfo[0])
-                cancelBtn.innerHTML="Cancel Deal"
-                cancelBtn.onclick=function(){
-                    cancelDeal()
-                }
+                // var cancelBtn = document.createElement("button")
+                // cancelBtn.className = "dealCancelBtn"
+                // cancelBtn.id = String(dealInfo[0])
+                // cancelBtn.innerHTML="Cancel Deal"
+                // cancelBtn.onclick=function(){
+                //     cancelDeal()
+                // }
 
                 //Create Info block
                 var info_div = document.createElement("div")
@@ -99,18 +97,15 @@ export default {
                 }else if(dealInfo[5]=="Sent Out"){
                     info_div.innerHTML = "Lent"
                     cell7.appendChild(info_div)
-                    cell8.appendChild(cancelBtn)
                 }else if(dealInfo[5]=="Received"){
                     info_div.innerHTML = "Waiting for Return"
                     cell7.appendChild(info_div)
-                    cell8.appendChild(cancelBtn)
                 }else if(dealInfo[5]=="Returned"){
                     dealBtn.innerHTML="Complete"
                     dealBtn.onclick=function(){
                         completeDeal(record)
                     }
                     cell7.appendChild(dealBtn)
-                    cell8.appendChild(cancelBtn)
                 }else{
                     dealBtn.innerHTML="Delete"
                     dealBtn.onclick=function(){
@@ -140,7 +135,7 @@ export default {
         }
 
         async function confirmDeal(record){
-            if(confirm("Please confirm that you want to lend the item in this post to the poster." )){
+            if(confirm("Please confirm that you want to lend the item in this post." )){
                 // Update status in both Deals and Posts tables
                 const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
@@ -202,36 +197,36 @@ export default {
             }
         }
 
-        async function cancelDeal(record){
-            if(confirm("Please confirm that you want to cancel this deal.")){
-                // Update the post status to completed
-                const docRef = doc(db, "Posts", record)
-                await updateDoc(docRef, {
-                    status: "Cancelled"
-                })
+        // async function cancelDeal(record){
+        //     if(confirm("Please confirm that you want to cancel this deal.")){
+        //         // Update the post status to completed
+        //         const docRef = doc(db, "Posts", record)
+        //         await updateDoc(docRef, {
+        //             status: "Cancelled"
+        //         })
 
-                // Delete record from own table
-                let myID = auth.currentUser.email
-                const myInfo = doc(db, "Users", myID)
-                await updateDoc(myInfo, {
-                    deals: arrayRemove(record)
-                })
-                // Delete record from owner's requests
-                let deal = await getDoc(doc(db, "Deals", record))
-                let owner = deal.data().owner
-                const ownerInfo = doc(db, "Users", owner)
-                let lender = await getDoc(ownerInfo)
-                console.log(lender.data())
-                await updateDoc(ownerInfo, {
-                    requests: arrayRemove(record)
-                })
-                // Delete from Deals table
-                await deleteDoc(doc(db, "Deals", record))
-                console.log("Deal successfully cancelled!")
-                // Re-render the page
-                location.reload()
-            }
-        }
+        //         // Delete record from own table
+        //         let myID = auth.currentUser.email
+        //         const myInfo = doc(db, "Users", myID)
+        //         await updateDoc(myInfo, {
+        //             deals: arrayRemove(record)
+        //         })
+        //         // Delete record from owner's requests
+        //         let deal = await getDoc(doc(db, "Deals", record))
+        //         let owner = deal.data().owner
+        //         const ownerInfo = doc(db, "Users", owner)
+        //         let lender = await getDoc(ownerInfo)
+        //         console.log(lender.data())
+        //         await updateDoc(ownerInfo, {
+        //             requests: arrayRemove(record)
+        //         })
+        //         // Delete from Deals table
+        //         await deleteDoc(doc(db, "Deals", record))
+        //         console.log("Deal successfully cancelled!")
+        //         // Re-render the page
+        //         location.reload()
+        //     }
+        // }
     }
 }
 </script>
