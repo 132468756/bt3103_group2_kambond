@@ -2,7 +2,7 @@
   <!-- This is the table you see when you look at other people's profile -->
   <table id="OtherPosts">
         <tr class="OtherPostRow">
-            <th class="OtherPostTitle">Post ID</th>
+            <th class="OtherPostTitle">ID</th>
             <th class="OtherPostTitle">Title</th>
             <th class="OtherPostTitle">Location</th>
             <th class="OtherPostTitle">Post Date</th>
@@ -13,14 +13,14 @@
 
 <script>
 import  firebaseApp from "../firebase.js"
-import {getFirestore} from "firebase/firestore"
+import { getFirestore} from "firebase/firestore"
 import{getDoc, doc} from "firebase/firestore"
+
 const db = getFirestore(firebaseApp)
 export default {
     props:{
         id:String
     },
-    
     mounted(){
         async function display(u){
             console.log(u)
@@ -29,6 +29,7 @@ export default {
             let records = user.data().posts
             // console.log(user.data())
             console.log(records)
+            let reverseOrder = records.length
             
             records.forEach(async (record) => {
                 var table = document.getElementById("OtherPosts")
@@ -42,11 +43,14 @@ export default {
                 var cell3 = row.insertCell(2)
                 var cell4 = row.insertCell(3)
                 var cell5 = row.insertCell(4)
-                cell1.innerHTML = postInfo[0]
+
+                cell1.innerHTML = reverseOrder
                 cell2.innerHTML = postInfo[1]
                 cell3.innerHTML = postInfo[2]
                 cell4.innerHTML = postInfo[3]
                 cell5.innerHTML = postInfo[4]
+
+                reverseOrder -= 1
             })
         }
         let tb = document.getElementById("OtherPosts")
