@@ -36,58 +36,58 @@ export default {
       ref: database.ref("chatrooms/"),
     };
   },
-  methods: {
-    listFriends() {
-      axios
-        .get(`${API_BASE_URL}private/listFriends`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("idToken"),
-          },
-        })
-        .then((resp) => {
-          this.fetched = true;
-          if (resp.status === 200) {
-            this.friends = resp.data;
-            console.log("friends", this.friends);
-          }
-        })
-        .catch((err) => {
-          console.log("coming in error", err);
-          this.$router.push("/");
-        });
-    },
-    getRooms() {
-      axios
-        .get(`${API_BASE_URL}private/rooms`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("idToken"),
-          },
-        })
-        .then((resp) => {
-          this.fetched = true;
-          if (resp.status === 200) {
-            this.rooms = resp.data;
-            console.log("rooms", this.rooms);
-            if (this.rooms.length > 0) {
-              //update chatview by first user
-              console.log("update chatview by first room", this.rooms[0]);
-              this.firstRoom = this.rooms[0];
-            }
-          }
-        })
-        .catch((err) => {
-          console.log("coming in error", err);
-          this.$router.push("/");
-        });
-    },
-  },
-  mounted() {
-    if (!this.username) {
-      this.$router.push("/");
-    } else {
-      this.getRooms();
-    }
-  },
+  // methods: {
+  //   listFriends() {
+  //     axios
+  //       .get(`${API_BASE_URL}private/listFriends`, {
+  //         headers: {
+  //           Authorization: "Bearer " + localStorage.getItem("idToken"),
+  //         },
+  //       })
+  //       .then((resp) => {
+  //         this.fetched = true;
+  //         if (resp.status === 200) {
+  //           this.friends = resp.data;
+  //           console.log("friends", this.friends);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log("coming in error", err);
+  //         this.$router.push("/");
+  //       });
+  //   },
+  //   getRooms() {
+  //     axios
+  //       .get(`${API_BASE_URL}private/rooms`, {
+  //         headers: {
+  //           Authorization: "Bearer " + localStorage.getItem("idToken"),
+  //         },
+  //       })
+  //       .then((resp) => {
+  //         this.fetched = true;
+  //         if (resp.status === 200) {
+  //           this.rooms = resp.data;
+  //           console.log("rooms", this.rooms);
+  //           if (this.rooms.length > 0) {
+  //             //update chatview by first user
+  //             console.log("update chatview by first room", this.rooms[0]);
+  //             this.firstRoom = this.rooms[0];
+  //           }
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log("coming in error", err);
+  //         this.$router.push("/");
+  //       });
+  //   },
+  // },
+  // mounted() {
+  //   if (!this.username) {
+  //     this.$router.push("/");
+  //   } else {
+  //     this.getRooms();
+  //   }
+  // },
 };
 </script>
 
