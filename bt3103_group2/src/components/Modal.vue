@@ -50,8 +50,8 @@
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
-            <router-link to="/user/:id" :id = post.user>
-            {{post.userName}}
+            <router-link :to= "{name:'Profile', params:{id: post.user}}">
+              {{post.userName}}
             </router-link>
           </div>
           <button
