@@ -57,6 +57,7 @@ export default {
           posts: [],
           deals: [],
           requests: [],
+          chatrooms:[],
         };
 
         let userExits = false;
