@@ -1,8 +1,8 @@
 <template>
   <div class="home" v-if="user">
     <NavBar />
-    <br /><br />
-    <SearchField />
+    
+  <SearchField />
   </div>
 </template>
 
@@ -87,7 +87,7 @@ export default {
 <style>
 .home {
   /* The image used */
-  background-image: url("~@/assets/search-bg.jpg");
+  background-image: url("~@/assets/search-bg.png");
 
   /* Control the height of the image */
   min-height: 380px;
@@ -95,7 +95,6 @@ export default {
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
+  background-size:cover;
 }
 </style>
