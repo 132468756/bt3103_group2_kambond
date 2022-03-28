@@ -86,6 +86,10 @@ export default {
 </script>
 
 <style>
+.search-area {
+  position:1500px;
+}
+
 #search-title {
   color: aliceblue; /* black */
   text-align: center;
