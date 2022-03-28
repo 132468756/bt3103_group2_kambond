@@ -87,7 +87,7 @@ export default {
 
 <style>
 .search-area {
-  position:1500px;
+  position:sticky;
 }
 
 #search-title {
