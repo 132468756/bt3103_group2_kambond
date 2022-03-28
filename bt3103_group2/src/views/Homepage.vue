@@ -3,6 +3,7 @@
     <NavBar />
     <br /><br />
     <SearchField />
+    
   </div>
 </template>
 
@@ -87,7 +88,7 @@ export default {
 <style>
 .home {
   /* The image used */
-  background-image: url("~@/assets/search-bg.jpg");
+  background-image: url("~@/assets/search-bg.png");
 
   /* Control the height of the image */
   min-height: 380px;
