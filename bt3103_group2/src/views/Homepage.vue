@@ -60,6 +60,7 @@ export default {
           deals: [],
           requests: [],
           chatrooms:[],
+          photoURL:"some photos"
         };
 
         let userExits = false;

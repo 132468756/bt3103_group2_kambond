@@ -1,30 +1,31 @@
 <template>
-<div>
-  <NavBar/>
-  <backBtn/>
-  <userInfo :user = this.id />
-</div>
+  <div>
+    <NavBar />
+    <backBtn />
+    <userInfo :user="this.id" />
+  </div>
 
-<div>
-  <otherUserProfileTable :id = this.user />
-  <button id="chatBtn">Chat</button>
-  <likeBtn />
-</div>
+  <div>
+    <otherUserProfileTable :id="this.user" />
+    <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+    <likeBtn />
+  </div>
 </template>
 
 <script>
 // import Logout from "../components/Logout.vue"
-import backBtn from "../components/profile/BackButton.vue"
-import otherUserProfileTable from "../components/OtherUserProfileTable.vue"
-import userInfo from "../components/profile/OtherUserInfoDisplay.vue"
-import likeBtn from "../components/profile/LikeButton.vue"
-import NavBar from "../components/NavBar.vue"
+import backBtn from "../components/profile/BackButton.vue";
+import otherUserProfileTable from "../components/OtherUserProfileTable.vue";
+import userInfo from "../components/profile/OtherUserInfoDisplay.vue";
+import likeBtn from "../components/profile/LikeButton.vue";
+import NavBar from "../components/NavBar.vue";
 import {
   getFirestore,
   doc,
   updateDoc,
   arrayUnion,
-  setDoc
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import firebaseApp from "../firebase.js";
@@ -41,55 +42,58 @@ export default {
     };
   },
   methods: {
-    async createChatRoom(user,self) {
+    async createChatRoom(self) {
       const userId = auth.currentUser.email;
       const chatUserId = self.id;
-      console.log(userId);
-      console.log(chatUserId);
-      console.log(chatRoomId);
-      const chatRoomId = userId + chatUserId;
-      const docNow = await setDoc(doc(db, "Chats", String(chatRoomId)), 
-      {
-        username: String(user.displayName),
-        email: String(user.email),
-        profile_picture: String(user.photoURL),
-        meetingrooms: '',
-      });
-      console.log(docNow);
-      const docRef = await updateDoc(doc(db,"Users",String(userId)), {
-        chatrooms:arrayUnion(String(chatUserId))
-      });
-      console.log(docRef);
-      const docNew = await updateDoc(doc(db,"Users",String(chatUserId)), {
-        chatrooms:arrayUnion(String(userId))
-      })
-      console.log(docNew);
+      const queryCheck = await getDoc(doc(db, "Users", userId));
+      const chatrooms = queryCheck.data().chatrooms;
+      const haveOrNot = chatrooms.includes(String(chatUserId));
+      console.log(haveOrNot);
+      if (!haveOrNot) {
+        const chatUser = await getDoc(doc(db, "Users", String(chatUserId)));
+        const chatRoomId = userId + chatUserId;
+        const docNow = await setDoc(doc(db, "Chats", String(chatRoomId)), {
+          username: String(chatUser.data().username),
+          email: String(chatUser.data().email),
+          profile_picture: String(chatUser.data().photoURL),
+          chats: [],
+        });
+        console.log(docNow);
+        const docRef = await updateDoc(doc(db, "Users", String(userId)), {
+          chatrooms: arrayUnion(String(chatUserId)),
+        });
+        console.log(docRef);
+        const docNew = await updateDoc(doc(db, "Users", String(chatUserId)), {
+          chatrooms: arrayUnion(String(userId)),
+        });
+        console.log(docNew);
+      }
     },
   },
-  mounted(){
-    console.log(this.id)
+  mounted() {
+    console.log(this.id);
   },
 
-  components : {
+  components: {
     // Logout,
     backBtn,
     userInfo,
     otherUserProfileTable,
     likeBtn,
-    NavBar
+    NavBar,
   },
-}
+};
 </script>
 
 <style>
-  #chatBtn{
-    width: 60px;
-    height: 30px;
-    background-color: rgb(184, 240, 192);
-    color: white;
-    cursor: pointer;
-    border-radius: 12px;
-    border: none;
-    margin-left: 10%;
-  }
+#chatBtn {
+  width: 60px;
+  height: 30px;
+  background-color: rgb(184, 240, 192);
+  color: white;
+  cursor: pointer;
+  border-radius: 12px;
+  border: none;
+  margin-left: 10%;
+}
 </style>
