@@ -42,6 +42,7 @@ export default {
         this.user = user.email;
         console.log(user.email);
         console.log(this.user);
+        createUser(this)
       }
     });
 
@@ -73,6 +74,7 @@ export default {
           // Create user only if this is a new user
           const docNow = await setDoc(doc(db, "Users", self.user), data);
           console.log(docNow);
+          self.$router.push({ path:"/settings"})
         }
         // } catch (error) {
         //   console.error("Error adding document:", error);
@@ -81,7 +83,6 @@ export default {
         console.error("Error adding document:", error);
       }
     }
-    createUser(this);
   },
 };
 </script>
