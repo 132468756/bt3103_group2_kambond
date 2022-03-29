@@ -6,13 +6,13 @@
         <img :src="avatar" />
       </md-avatar>
       <div class="chat__headerInfo">
-        <h3> {{friend.email}}</h3>
-        <p> Last seen at ...</p>
+        <h3>{{ friend.email }}</h3>
+        <p>Last seen at ...</p>
       </div>
 
       <div class="chat__headerRight">
         <md-button class="md-icon-button">
-          <md-icon >search</md-icon>
+          <md-icon>search</md-icon>
         </md-button>
         <md-button class="md-icon-button">
           <md-icon>attach_file</md-icon>
@@ -24,17 +24,16 @@
     </div>
     <div class="chat__body" id="container">
       <div v-for="chat in chats" :key="chat.key">
-        <p :class='`chat__message ${isMe(chat) && "chat__reciever"}`' >
-          {{chat.message}}
+        <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
+          {{ chat.message }}
         </p>
       </div>
-
     </div>
     <div class="chat__footer">
       <md-icon>insert_emoticon</md-icon>
       <form v-on:submit.prevent="onSubmit">
-        <input type="text" id="inputMsg"/>
-        <button type="submit" >send a message</button>
+        <input type="text" id="inputMsg" />
+        <button type="submit">send a message</button>
       </form>
       <md-icon>mic</md-icon>
     </div>
@@ -43,80 +42,103 @@
 
 <script>
 import firebaseApp from "../../firebase.js";
-import { getFirestore, setDoc,doc,updateDoc,arrayUnion, collection} from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  arrayUnion,
+  collection,
+  getDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
 
 export default {
   name: "Chat",
-  props : ['room'],
-  data () {
+  props: ["room"],
+  data() {
     return {
       chats: [],
-      ref: collection(db,"Chats"),
+      ref: collection(db, "Chats"),
       roomid: null,
       avatar: null,
-      friend: {}
-    }
+      friend: {},
+    };
   },
-  methods : {
-    onSubmit(){
+  methods: {
+    async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
       console.log("msg on submit", msg);
-      let newData = database.ref('chatrooms/'+this.roomid+'/chats').push();
-      newData.set({
-        type: 'newmsg',
-        user: localStorage.getItem("username"),
-        message: msg,
-        sendDate: Date()
+      let newData = await updateDoc(doc(db, "Chats", this.roomid), {
+        chats: arrayUnion(msg),
       });
-      document.getElementById("inputMsg").value = '';
+      console.log(newData);
+      // let newData = database.ref('chatrooms/'+this.roomid+'/chats').push();
+      // newData.set({
+      //   type: 'newmsg',
+      //   user: localStorage.getItem("username"),
+      //   message: msg,
+      //   sendDate: Date()
+      // });
+      document.getElementById("inputMsg").value = "";
     },
-    isMe(chat){
+    isMe(chat) {
       return chat.user == this.email;
     },
-    getPreviousChats (roomId) {
-      database.ref('chatrooms/'+roomId+'/chats').on('value', (snapshot) => {
-        this.chats = [];
-        snapshot.forEach((doc) => {
-          let item = doc.val()
-          item.key = doc.key
-          this.chats.push(item)
-        });
-        console.log("chats",this.chats);
+    async getPreviousChats(roomId) {
+      let docRef = await getDoc(doc(db, "Chats", roomId));
+      let previous = docRef.data().chats;
+      console.log(docRef);
+      previous.forEach((doc) => {
+        let item = doc.val();
+        this.chats.push(item);
       });
+      // database.ref('chatrooms/'+roomId+'/chats').on('value', (snapshot) => {
+      //   this.chats = [];
+      //   snapshot.forEach((doc) => {
+      //     let item = doc.val()
+      //     item.key = doc.key
+      //     this.chats.push(item)
+      //   });
+      console.log("chats", this.chats);
     },
+
     getRoomName(room) {
-         console.log("room name is ", room);
-          this.ref.orderByChild('roomName').equalTo(room).once('value', snapshot => {
-          if (snapshot.exists()) {
-            console.log('Room Exists');
-            snapshot.forEach((doc) => {
-              console.log("roomId", doc.key);
-              this.roomid = doc.key;
-              this.getPreviousChats(doc.key)
-            })
-          } else {
-            // create a new doc
-              let newData = this.ref.push()
-              newData.set({
-                roomName: room
-              });
-              // after creating the room, get the chats again by recursive function
-              this.getRoomName(room);
-          }
-        })
+      console.log("room name is ", room);
+      //   this.ref.orderByChild('roomName').equalTo(room).once('value', snapshot => {
+      //   if (snapshot.exists()) {
+      //     console.log('Room Exists');
+      //     snapshot.forEach((doc) => {
+      //       console.log("roomId", doc.key);
+      //       this.roomid = doc.key;
+      //       this.getPreviousChats(doc.key)
+      //     })
+      //   } else {
+      //     // create a new doc
+      //       let newData = this.ref.push()
+      //       newData.set({
+      //         roomName: room
+      //       });
+      //       // after creating the room, get the chats again by recursive function
+      //       this.getRoomName(room);
+      //   }
+      // })
+      let otherUser = auth.currentUser.email;
+      const room1 = String(otherUser + room);
+      const room2 = String(room + otherUser);
+      this.getPreviousChats(room1);
+      this.getPreviousChats(room2);
     },
-    displayFirstRoom(){
+    displayFirstRoom() {
       this.friend = this.room.user;
       this.getRoomName(this.room.meetingRoom);
       this.avatar = this.friend.picture;
-    }
+    },
   },
-  mounted(){
-    var container = this.$el.querySelector("#container");
-    container.scrollTop = container.scrollHeight;
+  mounted() {
+    //var container = this.$el.querySelector("#container");
+    //container.scrollTop = container.scrollHeight;
     // this.$root.$on('updateChatViewEvent', room => {
     //       console.log("retriving", room);
     //       this.room = room;
@@ -126,15 +148,15 @@ export default {
     //       var container = this.$el.querySelector("#container");
     //       container.scrollTop = container.scrollHeight;
     //   });
-      this.displayFirstRoom();
-      this.email = localStorage.getItem("username");
-  }
-}
+    //this.displayFirstRoom();
+    //this.email = localStorage.getItem("username");
+  },
+};
 </script>
 
 <style scoped>
 .chat {
-  flex: 0.70;
+  flex: 0.7;
   display: flex;
   flex-direction: column;
 }
@@ -149,7 +171,6 @@ export default {
 .chat__headerInfo {
   flex: 1;
   padding-left: 20px;
-
 }
 
 .chat__headerInfo > h3 {
@@ -169,7 +190,8 @@ export default {
 
 .chat__body {
   flex: 1;
-  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png") repeat center;
+  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
+    repeat center;
   padding: 30px;
   overflow-y: auto;
 }
@@ -180,7 +202,7 @@ export default {
   padding: 10px;
   background-color: white;
   border-radius: 10px;
-  width: fit-content ;
+  width: fit-content;
   margin-bottom: 30px;
 }
 
@@ -218,7 +240,7 @@ export default {
   flex: 1;
   border-radius: 30px;
   padding: 10px;
-  border: none ;
+  border: none;
 }
 .chat__footer > form > button {
   display: none;
@@ -227,5 +249,4 @@ export default {
   padding: 10px;
   color: gray;
 }
-
 </style>

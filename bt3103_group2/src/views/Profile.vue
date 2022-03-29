@@ -53,6 +53,10 @@ export default {
         chatrooms:arrayUnion(String(chatUserId))
       });
       console.log(docRef);
+      const docNew = await updateDoc(doc(db,"Users",String(chatUserId)), {
+        chatrooms:arrayUnion(String(userId))
+      })
+      console.log(docNew);
     },
   },
 
