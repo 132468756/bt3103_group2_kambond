@@ -3,6 +3,7 @@
     <NavBar />
     
   <SearchField />
+ 
   </div>
 </template>
 

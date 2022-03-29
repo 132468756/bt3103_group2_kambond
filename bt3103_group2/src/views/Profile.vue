@@ -22,8 +22,38 @@ import NavBar from "../components/NavBar.vue"
 
 export default {
   name: "Profile",
-  props:{
-        id:String
+  props: {
+    id: String,
+  },
+  data() {
+    return {
+      user: this.id,
+    };
+  },
+  methods: {
+    async createChatRoom(user,self) {
+      const userId = auth.currentUser.email;
+      const chatUserId = self.id;
+      console.log(userId);
+      console.log(chatUserId);
+      console.log(chatRoomId);
+      const chatRoomId = userId + chatUserId;
+      const docNow = await setDoc(doc(db, "Chats", String(chatRoomId)), 
+      {
+        username: String(user.displayName),
+        email: String(user.email),
+        profile_picture: String(user.photoURL),
+        meetingrooms: '',
+      });
+      console.log(docNow);
+      const docRef = await updateDoc(doc(db,"Users",String(userId)), {
+        chatrooms:arrayUnion(String(chatUserId))
+      });
+      console.log(docRef);
+      const docNew = await updateDoc(doc(db,"Users",String(chatUserId)), {
+        chatrooms:arrayUnion(String(userId))
+      })
+      console.log(docNew);
     },
   data(){
     return{

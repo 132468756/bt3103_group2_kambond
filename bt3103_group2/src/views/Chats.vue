@@ -1,30 +1,36 @@
 <template>
   <div v-if="fetched" class="app">
     <div class="app__body">
-      <ChatSideBar :rooms="rooms" />
+      <!-- <ChatSidebar :rooms="rooms"/> -->
       <ChatView :room="firstRoom" />
     </div>
   </div>
   <div v-else>
     <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
   </div>
-  <!-- <ListFriends />
-  <ListUsers /> -->
 </template>
 
 <script>
 import ChatView from "../components/Chat/ChatView.vue";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
-import {database} from "../realfire";
-import ChatSideBar from "../components/Chat/ChatSideBar";
+//import ChatSideBar from "../components/Chat/ChatSideBar.vue";
 // import ListFriends from "../components/Chat/ListFriends.vue";
 // import ListUsers from "../components/Chat/ListUsers.vue";
-
+import firebaseApp from "../firebase.js";
+import {
+  getFirestore,
+  getDoc,
+  doc,
+  //updateDoc,
+  //arrayUnion,
+  //collection,
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const db = getFirestore(firebaseApp);
+const auth = getAuth();
 export default {
   name: "Chat",
   //components: { ChatSideBar, ChatView, ListFriends, ListUsers },
-  components: { ChatSideBar, ChatView,  },
+  components: { ChatView },
   data() {
     return {
       fetched: false,
@@ -32,62 +38,79 @@ export default {
       email: "",
       rooms: [],
       firstRoom: {},
-      username: localStorage.getItem("username"),
-      ref: database.ref("chatrooms/"),
+      username: "",
+      ref: "", //database.ref("chatrooms/"),
+      user: "",
     };
   },
-  // methods: {
-  //   listFriends() {
-  //     axios
-  //       .get(`${API_BASE_URL}private/listFriends`, {
-  //         headers: {
-  //           Authorization: "Bearer " + localStorage.getItem("idToken"),
-  //         },
-  //       })
-  //       .then((resp) => {
-  //         this.fetched = true;
-  //         if (resp.status === 200) {
-  //           this.friends = resp.data;
-  //           console.log("friends", this.friends);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.log("coming in error", err);
-  //         this.$router.push("/");
-  //       });
-  //   },
-  //   getRooms() {
-  //     axios
-  //       .get(`${API_BASE_URL}private/rooms`, {
-  //         headers: {
-  //           Authorization: "Bearer " + localStorage.getItem("idToken"),
-  //         },
-  //       })
-  //       .then((resp) => {
-  //         this.fetched = true;
-  //         if (resp.status === 200) {
-  //           this.rooms = resp.data;
-  //           console.log("rooms", this.rooms);
-  //           if (this.rooms.length > 0) {
-  //             //update chatview by first user
-  //             console.log("update chatview by first room", this.rooms[0]);
-  //             this.firstRoom = this.rooms[0];
-  //           }
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.log("coming in error", err);
-  //         this.$router.push("/");
-  //       });
-  //   },
-  // },
-  // mounted() {
-  //   if (!this.username) {
-  //     this.$router.push("/");
-  //   } else {
-  //     this.getRooms();
-  //   }
-  // },
+  methods: {
+    // listFriends() {
+    //   axios
+    //     .get(`${API_BASE_URL}private/listFriends`, {
+    //       headers: {
+    //         Authorization: "Bearer " + localStorage.getItem("idToken"),
+    //       },
+    //     })
+    //     .then((resp) => {
+    //       this.fetched = true;
+    //       if (resp.status === 200) {
+    //         this.friends = resp.data;
+    //         console.log("friends", this.friends);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("coming in error", err);
+    //       this.$router.push("/");
+    //     });
+    // },
+    async getRooms() {
+      // axios
+      //   .get(`${API_BASE_URL}private/rooms`, {
+      //     headers: {
+      //       Authorization: "Bearer " + localStorage.getItem("idToken"),
+      //     },
+      //   })
+      //   .then((resp) => {
+      //     this.fetched = true;
+      //     if (resp.status === 200) {
+      //       this.rooms = resp.data;
+      //       console.log("rooms", this.rooms);
+      //       if (this.rooms.length > 0) {
+      //         //update chatview by first user
+      //         console.log("update chatview by first room", this.rooms[0]);
+      //         this.firstRoom = this.rooms[0];
+      //       }
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("coming in error", err);
+      //     this.$router.push("/");
+      //   });
+      this.fetched = true;
+      const docRef = await getDoc(doc(db, "Users", String(this.username)));
+      this.rooms = docRef.data().chatrooms;
+      console.log("rooms", this.rooms);
+      if (this.rooms.length > 0) {
+        console.log("update chatview by first room", this.rooms[0]);
+        this.firstRoom = this.rooms[0];
+      }
+    },
+  },
+  mounted() {
+    // if (!this.username) {
+    //   this.$router.push("/");
+    // } else {
+    //   this.getRooms();
+    // }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user.email;
+        console.log(user.email);
+        console.log(this.user);
+        this.getRooms();
+      }
+    });
+  },
 };
 </script>
 
