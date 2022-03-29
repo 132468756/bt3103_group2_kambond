@@ -60,7 +60,6 @@ export default {
   data() {
     return {
       chats: [],
-      ref: collection(db, "Chats"),
       roomid: null,
       avatar: null,
       friend: {},
@@ -74,13 +73,6 @@ export default {
         chats: arrayUnion(msg),
       });
       console.log(newData);
-      // let newData = database.ref('chatrooms/'+this.roomid+'/chats').push();
-      // newData.set({
-      //   type: 'newmsg',
-      //   user: localStorage.getItem("username"),
-      //   message: msg,
-      //   sendDate: Date()
-      // });
       document.getElementById("inputMsg").value = "";
     },
     isMe(chat) {
@@ -94,36 +86,11 @@ export default {
         let item = doc.val();
         this.chats.push(item);
       });
-      // database.ref('chatrooms/'+roomId+'/chats').on('value', (snapshot) => {
-      //   this.chats = [];
-      //   snapshot.forEach((doc) => {
-      //     let item = doc.val()
-      //     item.key = doc.key
-      //     this.chats.push(item)
-      //   });
       console.log("chats", this.chats);
     },
 
     getRoomName(room) {
       console.log("room name is ", room);
-      //   this.ref.orderByChild('roomName').equalTo(room).once('value', snapshot => {
-      //   if (snapshot.exists()) {
-      //     console.log('Room Exists');
-      //     snapshot.forEach((doc) => {
-      //       console.log("roomId", doc.key);
-      //       this.roomid = doc.key;
-      //       this.getPreviousChats(doc.key)
-      //     })
-      //   } else {
-      //     // create a new doc
-      //       let newData = this.ref.push()
-      //       newData.set({
-      //         roomName: room
-      //       });
-      //       // after creating the room, get the chats again by recursive function
-      //       this.getRoomName(room);
-      //   }
-      // })
       let otherUser = auth.currentUser.email;
       const room1 = String(otherUser + room);
       const room2 = String(room + otherUser);
@@ -137,19 +104,19 @@ export default {
     },
   },
   mounted() {
-    //var container = this.$el.querySelector("#container");
-    //container.scrollTop = container.scrollHeight;
-    // this.$root.$on('updateChatViewEvent', room => {
-    //       console.log("retriving", room);
-    //       this.room = room;
-    //       this.friend = room.user;
-    //       this.getRoomName(room.meetingRoom);
-    //       this.avatar = this.friend.picture;
-    //       var container = this.$el.querySelector("#container");
-    //       container.scrollTop = container.scrollHeight;
-    //   });
-    //this.displayFirstRoom();
-    //this.email = localStorage.getItem("username");
+    var container = this.$el.querySelector("#container");
+    container.scrollTop = container.scrollHeight;
+    this.$root.$on('updateChatViewEvent', room => {
+          console.log("retriving", room);
+          this.room = room;
+          this.friend = room.user;
+          this.getRoomName(room.meetingRoom);
+          this.avatar = this.friend.picture;
+          var container = this.$el.querySelector("#container");
+          container.scrollTop = container.scrollHeight;
+      });
+    this.displayFirstRoom();
+    this.email = auth.currentUser.email;
   },
 };
 </script>
