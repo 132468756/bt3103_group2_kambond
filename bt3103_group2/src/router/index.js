@@ -11,6 +11,7 @@ import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
 import Chats from "../views/Chats";
 import Profile from "../views/Profile.vue";
+import SideBar from "../components/profile/ProfileSideBar.vue";
 
 const routes = [
   {
@@ -83,6 +84,12 @@ const routes = [
     name: "Profile",
     component: Profile,
     props: true,
+  },
+
+  {
+    path: "/sideBar",
+    name: "sideBar",
+    component: SideBar,
   },
 ];
 

@@ -3,30 +3,30 @@
     <table id="SettingTable" border=1 frame=void rules=rows>
         <tr class="settingRow">
             <td class="leftCol">User Name</td>
-            <td id="usernameContent">{{username}}</td>
+            <td id="usernameContent" class="midCol">{{username}}</td>
             <td class="rightCol" id="changeUsernameBtn" v-if="this.usernameStatus == 'static'"><changeBtn @click="changeUsername()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeUsername" @click="confirmChangeUsername()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Email</td>
-            <td id="emailContent">{{email}}</td>
+            <td id="emailContent" class="midCol">{{email}}</td>
             <td class="rightCol"></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Telegram</td>
-            <td id="telegramContent">{{telegram}}</td>
+            <td id="telegramContent" class="midCol">{{telegram}}</td>
             <td class="rightCol" v-if="this.telegramStatus == 'static'"><changeBtn @click="changeTelegram()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeTelegram" @click="confirmChangeTelegram()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Bio</td>
-            <td id="bioContent">{{bio}}</td>
+            <td id="bioContent" class="midCol">{{bio}}</td>
             <td class="rightCol" v-if="this.bioStatus == 'static'"><changeBtn @click="changeBio()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeBio" @click="confirmChangeBio()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Contact Number</td>
-            <td id="contactContent">{{contactNumber}}</td>
+            <td id="contactContent" class="midCol">{{contactNumber}}</td>
             <td class="rightCol" v-if="this.contactStatus == 'static'"><changeBtn @click="changeContact()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeContact" @click="confirmChangeContact()">Confirm Change</button></td>
         </tr>
@@ -189,6 +189,11 @@ export default {
 </script>
 
 <style>
+    #SettingTable, .settingRow, .leftCol, .rightCol, .midCol{
+        border: 1px solid white;
+        border-collapse: collapse;
+    }
+
     .leftCol {
         width: 150px;
         height: 50px;
@@ -199,7 +204,10 @@ export default {
         text-align: center;
     }
     .settingRow:nth-child(odd) {
-        background-color: rgb(223, 255, 251);
+        background-color: rgba(223, 255, 251, 0.753);
+    }
+    .settingRow:nth-child(even) {
+        background-color: rgba(251, 253, 253, 0.507);
     }
     .settingRow {
         border-collapse: collapse;

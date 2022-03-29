@@ -3,7 +3,6 @@
         <tr class="MyPostRow">
             <th class="MyPostTitle">ID</th>
             <th class="MyPostTitle">Title</th>
-            <th class="MyPostTitle">Description</th>
             <th class="MyPostTitle">Purpose</th>
             <th class="MyPostTitle">Category</th>
             <th class="MyPostTitle">Location</th>
@@ -61,7 +60,7 @@ export default {
                     var cell6 = row.insertCell(5)
                     var cell7 = row.insertCell(6)
                     var cell8 = row.insertCell(7)
-                    var cell9 = row.insertCell(8)
+
                     cell1.innerHTML = reverseID
                     cell2.innerHTML = postInfo[1]
                     cell3.innerHTML = postInfo[2]
@@ -69,9 +68,9 @@ export default {
                     cell5.innerHTML = postInfo[4]
                     cell6.innerHTML = postInfo[5]
                     cell7.innerHTML = postInfo[6]
-                    cell8.innerHTML = postInfo[7]
+
                     
-                    if(postInfo[7] == "Completed" || postInfo[7] == "Want to Lend" || postInfo[7] == "Want to Borrow"){
+                    if(postInfo[6] == "Completed" || postInfo[6] == "Want to lend" || postInfo[6] == "Want to borrow"){
                         var deleteBtn = document.createElement("button")
                         deleteBtn.className = "deletePostBtn"
                         deleteBtn.id = String(postInfo[0])
@@ -79,13 +78,13 @@ export default {
                         deleteBtn.onclick=function(){
                             deletePost(record)
                         }
-                        cell9.appendChild(deleteBtn)
+                        cell8.appendChild(deleteBtn)
                     }else{
                         var divBlk = document.createElement("div")
                         divBlk.innerHTML = "In Transaction"
                         divBlk.className = "emptyDiv"
                         divBlk.id = String(postInfo[0])
-                        cell9.appendChild(divBlk)
+                        cell8.appendChild(divBlk)
                     }
                     reverseID -= 1
                 })
@@ -97,13 +96,12 @@ export default {
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
             let title = thisPost.data().title
-            let description = thisPost.data().description
             let purpose = thisPost.data().purpose
             let category = thisPost.data().category
             let location = thisPost.data().location
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
-            let postInfo = [postID,title,description,purpose,category,location,postDate,status]
+            let postInfo = [postID,title,purpose,category,location,postDate,status]
             console.log(postInfo)
             return postInfo
         }
