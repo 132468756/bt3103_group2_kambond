@@ -20,9 +20,8 @@ import {
   getFirestore,
   getDoc,
   doc,
-  //updateDoc,
-  //arrayUnion,
-  //collection,
+  collection,
+  getDocs,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
@@ -39,56 +38,28 @@ export default {
       rooms: [],
       firstRoom: {},
       username: "",
-      ref: "", //database.ref("chatrooms/"),
       user: "",
     };
   },
   methods: {
-    // listFriends() {
-    //   axios
-    //     .get(`${API_BASE_URL}private/listFriends`, {
-    //       headers: {
-    //         Authorization: "Bearer " + localStorage.getItem("idToken"),
-    //       },
-    //     })
-    //     .then((resp) => {
-    //       this.fetched = true;
-    //       if (resp.status === 200) {
-    //         this.friends = resp.data;
-    //         console.log("friends", this.friends);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("coming in error", err);
-    //       this.$router.push("/");
-    //     });
-    // },
+    async listFriends() {
+      const docRef = await getDoc(doc(db, "Users", auth.currentUser.email));
+      this.friends = docRef.data().chatrooms;
+      console.log("friends", this.friends);
+    },
     async getRooms() {
-      // axios
-      //   .get(`${API_BASE_URL}private/rooms`, {
-      //     headers: {
-      //       Authorization: "Bearer " + localStorage.getItem("idToken"),
-      //     },
-      //   })
-      //   .then((resp) => {
-      //     this.fetched = true;
-      //     if (resp.status === 200) {
-      //       this.rooms = resp.data;
-      //       console.log("rooms", this.rooms);
-      //       if (this.rooms.length > 0) {
-      //         //update chatview by first user
-      //         console.log("update chatview by first room", this.rooms[0]);
-      //         this.firstRoom = this.rooms[0];
-      //       }
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log("coming in error", err);
-      //     this.$router.push("/");
-      //   });
       this.fetched = true;
-      const docRef = await getDoc(doc(db, "Users", String(this.username)));
-      this.rooms = docRef.data().chatrooms;
+      const docNow = await getDocs(collection(db, "Chats"));
+      
+      docNow.forEach((doc) => {
+        console.log(doc.data().user2 == String(auth.currentUser.displayName));
+        if (
+          (doc.data().user1 == String(auth.currentUser.email)) |
+          (doc.data().user2 == String(auth.currentUser.email))
+        ) {
+          this.rooms.push(doc);
+        }
+      });
       console.log("rooms", this.rooms);
       if (this.rooms.length > 0) {
         console.log("update chatview by first room", this.rooms[0]);
