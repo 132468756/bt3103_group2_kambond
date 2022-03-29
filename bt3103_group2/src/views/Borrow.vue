@@ -2,60 +2,247 @@
 <div style="text-align:center;" v-if="user"> 
   <NavBar/>
   <backBtn/>
-  <form @submit.prevent="onSubmit" method="post" id="createpostform">
+  <div class = "filter" id="createpostform">
 
     <div className ="row">
     <label className = "postlabel"> Status </label>
     <select required v-model="post.status" id = "post.status">
-      <option>Wants to lend</option>
+      <option>Want to lend</option>
       <option>Requested</option>
       <option>Completed</option>
     </select>
     </div>
 
-    <div className ="row">
-    <label className = "postlabel"> Category </label>
-    <select required v-model="post.category" id = "post.category">
-      <option>Beauty & Personal Care</option>
-      <option>Bulletin Board</option>
-      <option>Computers & Tech</option>
-      <option>Food & Drinks</option>
-      <option>Health & Nutrition</option>
-      <option>Hobbies & Toys</option>
-      <option>Mobile Phones & Gadgets</option>
-      <option>Photography</option>
-      <option>Sports Equipment</option>
-      <option>Tickets & Vouchers</option>
-      <option>Learning & Enrichment</option>
-      <option>Video Gaming</option>
-      <option>Fashion</option>
-      <option>Exchange Currency</option>
-      <option>Musical Instrument</option>
-      <option>Others</option>
-    </select>
+<div id="checked">Filtered status: {{ this.selectedstatus }}</div>
+  <div class="whole">
+    <div id="name">
+      <h3>Status</h3>
+    </div>
+    <div id="checkboxes">
+      <input
+        type="checkbox"
+        id="wtl"
+        value="Want to lend"
+        v-model="selectedstatus"
+      />
+      <label for="wtl">Want to lend</label>
+
+      <input type="checkbox" id="rq" value="Requested" v-model="selectedstatus" />
+      <label for="rq">Requested</label>
+
+      <input type="checkbox" id="cl" value="Completed" v-model="selectedstatus" />
+      <label for="cl">Completed</label>
+    </div>
+  </div>
+
+  <div id="checked">Filtered category: {{ this.selectedcategory }}</div>
+   
+  <div class="whole">
+    <div id="name">
+      <h3>Category</h3>
     </div>
 
-    <div className ="row">
-    <label className = "postlabel"> Location </label>
-    <select required v-model="post.location" id = "post.location">
-      <option>PGP / PGPR</option>
-      <option>Utown</option>
-      <option>RVRC</option>
-      <option>Temasek Hall</option>
-      <option>Sheares Hall</option>
-      <option>KEVII Hall</option>
-      <option>Eusoff Hall</option>
-      <option>Raffles Hall</option>
-      <option>Kent Ridge Hall</option>
-      <option>Others</option>
-    </select>
+    <div id="checkboxes">
+      <input
+        type="checkbox"
+        id="BP"
+        value = "Beauty & Personal Care"
+        v-model="selectedcategory"
+      />
+
+      <label for="BP">Beauty & Personal Care</label>
+
+      <input
+        type="checkbox"
+        id="BB"
+        value="Bulletin Board"
+        v-model="selectedcategory"
+      />
+      <label for="BB">Bulletin Board</label>
+
+      <input
+        type="checkbox"
+        id="CT"
+        value="Computers & Tech"
+        v-model="selectedcategory"
+      />
+      <label for="CT">Computers & Tech</label>
+
+      <input
+        type="checkbox"
+        id="FD"
+        value="Food & Drinks"
+        v-model="selectedcategory"
+      />
+      <label for="FD">Food & Drinks</label>
+
+      <input
+        type="checkbox"
+        id="HN"
+        value="Health & Nutrition"
+        v-model="selectedcategory"
+      />
+      <label for="HN">Health & Nutrition</label>
+
+      <input
+        type="checkbox"
+        id="HT"
+        value="Hobbies & Toys"
+        v-model="selectedcategory"
+      />
+      <label for="HT">Hobbies & Toys</label>
+
+      <input
+        type="checkbox"
+        id="MG"
+        value="Mobile Phones & Gadgets"
+        v-model="selectedcategory"
+      />
+      <label for="MG">Mobile Phones & Gadgets</label>
+
+      <input
+        type="checkbox"
+        id="PG"
+        value="Photography"
+        v-model="selectedcategory"
+      />
+      <label for="PG">Photography</label>
+
+      <input
+        type="checkbox"
+        id="SE"
+        value="Sports Equipment"
+        v-model="selectedcategory"
+      />
+      <label for="SE">Sports Equipment</label>
+      <br />
+      <input
+        type="checkbox"
+        id="TV"
+        value="Tickets & Vouchers"
+        v-model="selectedcategory"
+      />
+      <label for="TV">Tickets & Vouchers</label>
+
+      <input
+        type="checkbox"
+        id="LE"
+        value="Learning & Enrichment"
+        v-model="selectedcategory"
+      />
+      <label for="LE">Learning & Enrichment</label>
+
+      <input
+        type="checkbox"
+        id="VG"
+        value="Video Gaming"
+        v-model="selectedcategory"
+      />
+      <label for="VG">Video Gaming</label>
+
+      <input type="checkbox" id="FS" value="Fashion" v-model="selectedcategory" />
+      <label for="FS">Fashion</label>
+
+      <input
+        type="checkbox"
+        id="EC"
+        value="Exchange Currency"
+        v-model="selectedcategory"
+      />
+      <label for="EC">Exchange Currency</label>
+
+      <input
+        type="checkbox"
+        id="MI"
+        value="Musical Instrument"
+        v-model="selectedcategory"
+      />
+      <label for="MI">Musical Instrument</label>
+
+      <input
+        type="checkbox"
+        id="others"
+        value="Others"
+        v-model="selectedcategory"
+      />
+      <label for="others">Others</label>
     </div>
+  </div>
+
+  <div id="checked">Filtered locations: {{ this.selectedlocation }}</div>
+  <div class="whole">
+      <div id="name">
+      <h3>Location</h3>
+    </div>
+  <div id="checkboxes">
+    <input type="checkbox" id="pgp" value="PGP / PGPR" v-model="selectedlocation" />
+    <label for="pgp">PGP / PGPR</label>
+
+    <input type="checkbox" id="ut" value="Utown" v-model="selectedlocation" />
+    <label for="ut">Utown</label>
+
+    <input type="checkbox" id="rvrc" value="RVRC" v-model="selectedlocation" />
+    <label for="rvrc">RVRC</label>
+
+    <input
+      type="checkbox"
+      id="temasek"
+      value="Temasek Hall"
+      v-model="selectedlocation"
+    />
+    <label for="temasek">Temasek Hall</label>
+
+    <input
+      type="checkbox"
+      id="sheares"
+      value="Sheares Hall"
+      v-model="selectedlocation"
+    />
+    <label for="sheares">Sheares Hall</label>
+
+    <input
+      type="checkbox"
+      id="kevii"
+      value="KEVII Hall"
+      v-model="selectedlocation"
+    />
+    <label for="kevii">KEVII Hall </label>
+
+    <input
+      type="checkbox"
+      id="eusoff"
+      value="Eusoff Hall"
+      v-model="selectedlocation"
+    />
+    <label for="eusoff">Eusoff Hall</label>
+
+    <input
+      type="checkbox"
+      id="raffles"
+      value="Raffles Hall"
+      v-model="selectedlocation"
+    />
+    <label for="raffles">Raffles Hall</label>
+
+    <input
+      type="checkbox"
+      id="kentridge"
+      value="Kent Ridge Hall"
+      v-model="selectedlocation"
+    />
+    <label for="kentridge">Kent Ridge Hall</label>
+
+    <input type="checkbox" id="others" value="Others" v-model="selectedlocation" />
+    <label for="others">Others</label>
+  </div>
+  </div>
+ 
     <div className = "showRow">
       <button className="show" @click = "showpost()"> Show </button>
     </div>
     
   
-  </form>
+  </div>
 </div>
   <Modal
         v-show="isModalVisible"
@@ -114,9 +301,9 @@ export default {
       modalData:{},
       posts:[],
       filteredProducts:[],
-      selectedstatus: "",
-      selectedcategory: "",
-      selectedlocation: "",
+      selectedstatus: [],
+      selectedcategory: [],
+      selectedlocation: [],
     };
   },
   mounted() {
@@ -153,10 +340,8 @@ methods: {
         console.log("isopen")
   },
   showpost() {
-    this.selectedcategory = document.getElementById("post.category").value;
-    this.selectedstatus = document.getElementById("post.status").value;
-    this.selectedlocation = document.getElementById("post.location").value;
-    this.filteredProducts = this.posts.filter(post => post.purpose === "Lending").filter(post =>  post.category === this.selectedcategory).filter(post => post.location = this.selectedlocation).filter(post => post.status === this.selectedstatus);
+    this.filteredProducts = this.posts.filter(post => post.purpose === "Lending").filter(post => this.selectedcategory.includes(post.category)).filter(post => this.selectedstatus.includes(post.status)).filter(post => this.selectedlocation.includes(post.location));
+
     this.showdata = true;  
   },
   closeModal() {
@@ -233,6 +418,39 @@ input,select {
 }
 .submit:active{
   background-color: lightblue;
+}
+#checkboxes input {
+  margin: 10px 1px 10px 10px;
+}
+
+#checkboxes label {
+  margin: 10px 20px 10px 5px;
+}
+
+#name {
+  background-color: rgba(177, 178, 248, 0.699);
+  text-align: center;
+  width: 180px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+#checkboxes {
+  background-color: rgba(218, 217, 245, 0.911);
+  padding: 10px;
+  width: 2000px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.whole {
+  display: flex;
+}
+
+#checked {
+  background-color: rgba(241, 238, 255, 0.582);
+  padding: 5px;
+  border: 1px solid black;
 }
 </style>
 
