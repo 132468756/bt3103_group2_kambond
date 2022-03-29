@@ -19,7 +19,17 @@ import otherUserProfileTable from "../components/OtherUserProfileTable.vue"
 import userInfo from "../components/profile/OtherUserInfoDisplay.vue"
 import likeBtn from "../components/profile/LikeButton.vue"
 import NavBar from "../components/NavBar.vue"
-
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  arrayUnion,
+  setDoc
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import firebaseApp from "../firebase.js";
+const db = getFirestore(firebaseApp);
+const auth = getAuth();
 export default {
   name: "Profile",
   props: {
@@ -55,10 +65,6 @@ export default {
       })
       console.log(docNew);
     },
-  data(){
-    return{
-      user: this.id
-      }
   },
   mounted(){
     console.log(this.id)
@@ -72,7 +78,6 @@ export default {
     likeBtn,
     NavBar
   },
-
 }
 </script>
 
