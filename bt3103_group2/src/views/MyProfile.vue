@@ -1,10 +1,10 @@
 <template>
 <div style="text-align:center;" v-if="user">
     <NavBar/>
+    <button @click="toSideBar()">sidebar</button>
     <!-- <h1>This is a sample of My_Profile</h1> -->
     <div id="TopElement">
-        <div id = "emptyDiv">        
-        </div>
+        <div id = "emptyDiv"></div>
         <div id="TopLeft">
             <userInfo id="MyInfo"/>
         </div>
@@ -55,6 +55,12 @@ export default {
             }
         })
     },
+
+    methods:{
+        toSideBar(){
+            this.$router.push({ path:"/sideBar"})
+        }
+    }
 }
 </script>
 
