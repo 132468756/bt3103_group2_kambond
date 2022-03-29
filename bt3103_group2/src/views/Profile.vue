@@ -53,8 +53,8 @@ export default {
         const chatUser = await getDoc(doc(db, "Users", String(chatUserId)));
         const chatRoomId = userId + chatUserId;
         const docNow = await setDoc(doc(db, "Chats", String(chatRoomId)), {
-          username: String(chatUser.data().username),
-          email: String(chatUser.data().email),
+          user1:String(chatUserId),
+          user2:String(userId),
           profile_picture: String(chatUser.data().photoURL),
           chats: [],
         });
