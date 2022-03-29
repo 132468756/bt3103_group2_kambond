@@ -42,7 +42,11 @@
 </template>
 
 <script>
-import {database} from '../../realfire';
+import firebaseApp from "../../firebase.js";
+import { getFirestore, setDoc,doc,updateDoc,arrayUnion, collection} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+const db = getFirestore(firebaseApp);
+const auth = getAuth();
 
 export default {
   name: "Chat",
@@ -50,7 +54,7 @@ export default {
   data () {
     return {
       chats: [],
-      ref: database.ref('chatrooms/'),
+      ref: collection(db,"Chats"),
       roomid: null,
       avatar: null,
       friend: {}

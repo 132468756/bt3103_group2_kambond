@@ -13,30 +13,20 @@
         Search
       </button>
     </div>
-
-    <div className="postList" v-if="searchText">
-      <button type="button" id="postModal" @click="showModal">
+  </div>
+  <div className="postList" v-if="searchText">
+     <Modal v-show="isModalVisible" @close="closeModal" :post="modalData" />
+    <div className="postList" v-for="post in postlist" :key="post.id">
+      <button type="button" id="postModal" @click="showModal(post)">
         <Post
           className="posts"
-          v-for="post in postlist"
-          :key="post.id"
           :owner="post.userName"
           :title="post.title"
           :status="post.status"
         />
       </button>
-      <Modal
-        v-show="isModalVisible"
-        @close="closeModal"
-        v-for="post in postlist"
-        :key="post.id"
-        :owner="post.userName"
-        :title="post.title"
-        :description="post.description"
-        :postID="post.postID"
-        :post="post"
-      />
     </div>
+   
   </div>
 </template>
 
@@ -44,53 +34,62 @@
 import firebaseApp from "../../firebase.js";
 import Modal from "../Modal.vue";
 import Post from "../Post.vue";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
 export default {
   name: "SearchField",
   components: { Modal, Post },
   data() {
-    return { postlist: [], searchText: "" };
+    return {
+      postlist: [],
+      searchText: "",
+      isModalVisible: false,
+      modalData: {},
+    };
   },
   methods: {
     // Search
     async search() {
       alert("Searching for...");
       console.log("searching");
-      this.postlist=[];
+      this.postlist = [];
       var regEx = new RegExp(this.searchText + "*", "i");
       const querySnapshotTitle = await getDocs(collection(db, "Posts"));
+      const querySnapshotUser = await getDocs(collection(db, "Users"));
       querySnapshotTitle.forEach((post) => {
         if (regEx.test(post.data().title)) {
           this.postlist.push(post.data());
-          console.log(post);
         }
       });
 
-      const querySnapshotUser = await getDocs(collection(db, "Users"));
       querySnapshotUser.forEach((post) => {
         if (regEx.test(post.data().username)) {
           this.postlist.push(post.data());
-          console.log(post);
         }
-        console.log(post.data().email);
         if (regEx.test(post.data().email)) {
           this.postlist.push(post.data());
-          console.log(post);
         }
       });
       console.log(this.postlist);
+    },
+    showModal(data) {
+      this.isModalVisible = true;
+      this.modalData = data;
+      console.log("isopen");
+    },
+    closeModal() {
+      this.isModalVisible = false;
     },
   },
 };
 </script>
 
 <style>
+.search-area {
+  position:sticky;
+}
+
 #search-title {
   color: aliceblue; /* black */
   text-align: center;
@@ -122,5 +121,13 @@ export default {
 #searchbutton:hover {
   background-color: lightblue;
   box-shadow: 1px 1px black;
+}
+
+#postModal {
+  justify-content: center;
+}
+
+.postList {
+  display: inline-block;
 }
 </style>
