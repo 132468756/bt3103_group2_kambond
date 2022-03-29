@@ -1,6 +1,6 @@
 <template>
-  <!-- This is the table you see when you look at other people's profile -->
-  <table id="OtherPosts">
+    <!-- This is the table you see when you look at other people's profile -->
+    <table id="OtherPosts">
         <tr class="OtherPostRow">
             <th class="OtherPostTitle">ID</th>
             <th class="OtherPostTitle">Title</th>
@@ -9,20 +9,33 @@
             <th class="OtherPostTitle">Status</th>
         </tr>
     </table>
+    <Modal v-show="isModalVisible" @close="closeModal" :post = "modalData"/>
 </template>
 
 <script>
 import  firebaseApp from "../firebase.js"
 import { getFirestore} from "firebase/firestore"
 import{getDoc, doc} from "firebase/firestore"
+import Modal from "../components/Modal.vue"
 
 const db = getFirestore(firebaseApp)
 export default {
     props:{
         id:String
     },
+
+    components:{
+        Modal,
+    },
+
+    data(){
+        return{
+            isModalVisible:false,
+            modalData:{}
+        }
+    },
     mounted(){
-        async function display(u){
+        async function display(self, u){
             console.log(u)
             let user = await getDoc(doc(db, "Users", u))
             let ind = 1
@@ -45,10 +58,18 @@ export default {
                 var cell5 = row.insertCell(4)
 
                 cell1.innerHTML = reverseOrder
-                cell2.innerHTML = postInfo[1]
-                cell3.innerHTML = postInfo[2]
-                cell4.innerHTML = postInfo[3]
-                cell5.innerHTML = postInfo[4]
+                // Create button for post modal
+                var modalBtn = document.createElement("button")
+                modalBtn.className = "modalBtn"
+                modalBtn.id = postInfo.data().postID
+                modalBtn.innerHTML = postInfo.data().title
+                modalBtn.onclick = function(){
+                    self.showModal(postInfo.data())
+                    }
+                cell2.appendChild(modalBtn)
+                cell3.innerHTML = postInfo.data().location
+                cell4.innerHTML = postInfo.data().postDate
+                cell5.innerHTML = postInfo.data().status
 
                 reverseOrder -= 1
             })
@@ -57,17 +78,28 @@ export default {
         while(tb.rows.length > 1){
             tb.deleteRow(1)
         }
-        display(this.id)
+        display(this, this.id)
         async function findPostInfo(record){
             let thisPost = await getDoc(doc(db, "Posts", record))
-            let postID = thisPost.data().postID
-            let title = thisPost.data().title
-            let location = thisPost.data().location
-            let postDate = thisPost.data().postDate
-            let status = thisPost.data().status
-            let postInfo = [postID,title,location,postDate,status]
-            console.log(postInfo)
-            return postInfo
+            // let postID = thisPost.data().postID
+            // let title = thisPost.data().title
+            // let location = thisPost.data().location
+            // let postDate = thisPost.data().postDate
+            // let status = thisPost.data().status
+            // let postInfo = [postID,title,location,postDate,status]
+            // console.log(postInfo)
+            return thisPost
+        }
+    },
+    methods:{
+        closeModal(){
+            this.isModalVisible= false
+        },
+
+        showModal(data){
+            this.isModalVisible = true;
+            this.modalData = data;
+            console.log("isopen")
         }
     }
 }
@@ -93,21 +125,20 @@ export default {
     .OtherPostTitle {
         background-color: lightpink;
     }
-    .requestFromOtherBtn {
+    
+    .modalBtn {
         width: 80%;
         height: 80%;
-        background-color: rgb(255, 121, 141);
+        background-color: transparent;
         cursor: pointer;
         border-radius: 12px;
         border: none;
+        font-size: 95%;
     }
-    .requestFromOtherBtn:hover {
-        outline-color: transparent;
-        outline-style: solid;
-        box-shadow: 0 0 0 1px rgb(194, 95, 109);
-        transition: 0.5s;
-    }
-    .requestFromOtherBtn:active {
-        background-color: rgb(194, 95, 109);
+
+    .modalBtn:hover {
+        font-weight: bold;
+        transition: 0.3s;
+        color: lightpink;
     }
 </style>

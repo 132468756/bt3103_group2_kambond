@@ -1,5 +1,6 @@
 <template>
 <div>
+  <NavBar/>
   <backBtn/>
   <userInfo :user = this.id />
 </div>
@@ -17,6 +18,7 @@ import backBtn from "../components/profile/BackButton.vue"
 import otherUserProfileTable from "../components/OtherUserProfileTable.vue"
 import userInfo from "../components/profile/OtherUserInfoDisplay.vue"
 import likeBtn from "../components/profile/LikeButton.vue"
+import NavBar from "../components/NavBar.vue"
 
 export default {
   name: "Profile",
@@ -38,6 +40,7 @@ export default {
     userInfo,
     otherUserProfileTable,
     likeBtn,
+    NavBar
   },
 
 }
