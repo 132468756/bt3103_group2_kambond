@@ -34,6 +34,7 @@
         <MyDealTable id="MyDeals" v-if="this.showDeals" />
         <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
         <CreatePost id="createpostform" v-if="this.showCreate" />
+        <LogOut v-if="this.showProfile"/>
     </div>
 </div>
 </template>
@@ -50,6 +51,7 @@ import MyRequestTable from "../profile/MyRequestsTable.vue"
 import MyDealTable from "../profile/MyDealsTable.vue"
 import UserInfoDisplay from "../profile/UserInfoDisplay.vue"
 import CreatePost from "../profile/CreatePostForm.vue"
+import LogOut from "../Logout.vue"
 
 const db = getFirestore(firebaseApp)
 
@@ -63,7 +65,8 @@ export default {
         MyRequestTable,
         MyDealTable,
         UserInfoDisplay,
-        CreatePost
+        CreatePost,
+        LogOut
     },
     data(){
         return{
@@ -242,7 +245,7 @@ export default {
 
 .sideBarBtn {
     width: 100%;
-    height: 6vw;
+    height: 100px;
     background-color: transparent;
     border: transparent;
 }
@@ -276,6 +279,7 @@ export default {
     height: 400px;
     margin-top: 5%;
     margin-right: 5%;
+    text-align: center;
 }
 
 #settingTable {
@@ -285,5 +289,25 @@ export default {
 
 #MyPosts {
     width: 80%;
+}
+
+#btn{
+    margin-left: 3.5%;
+    width: 10%;
+    height: 10%;
+    background-color:rgb(233, 233, 233);
+    border: 1px gray solid;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#btn:hover{
+    background-color: gray;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+#btn:active{
+    background-color: rgb(107, 107, 107);
 }
 </style>

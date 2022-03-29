@@ -204,7 +204,7 @@ export default {
         text-align: center;
     }
     .settingRow:nth-child(odd) {
-        background-color: rgba(223, 255, 251, 0.753);
+        background-color: rgba(206, 255, 249, 0.63);
     }
     .settingRow:nth-child(even) {
         background-color: rgba(251, 253, 253, 0.507);
