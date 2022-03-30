@@ -20,7 +20,7 @@ export default {
   padding-bottom: 10px;
   padding-right: 60px;
   text-align: right;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 #nav a {
   font-weight: bold;

@@ -235,14 +235,14 @@ export default {
 #sideBar {
     height: 100%;
     width: 15vw;
-    background-color: rgba(70, 70, 70, 0.700);
+    background-color: rgba(255, 255, 255, 0.8);
     float: left;
     border-radius: 10px;
     margin-top: 30px;
 }
 
 .sideBarText{
-    color: rgb(82, 218, 211);
+    color: rgb(87, 180, 194);
 }
 
 .sideBarBtn {
@@ -253,11 +253,12 @@ export default {
 }
 
 .sideBarBtn:hover {
+    transition: 0.5s;
     cursor: pointer;
 }
 
 #userBtn {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(255, 255, 255);
 }
 
 #sideProfilePic {
@@ -279,10 +280,10 @@ export default {
     float: right;
     width: 75%;
     height: 742px;
-    margin-top: 1.75%;
+    margin-top: 30px;
     margin-right: 5%;
     text-align: center;
-    background-color: rgba(233, 233, 233, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
 }
 
@@ -298,8 +299,8 @@ export default {
 
 #btn{
     margin-left: 3%;
-    width: 7%;
-    height: 5%;
+    width: 10%;
+    height: 4%;
     background-color:rgb(233, 233, 233);
     border: 1px gray solid;
     border-radius: 10px;
@@ -307,8 +308,7 @@ export default {
 }
 
 #btn:hover{
-    background-color: gray;
-    font-weight: bold;
+    background-color: rgb(199, 199, 199);
     transition: 0.3s;
 }
 
