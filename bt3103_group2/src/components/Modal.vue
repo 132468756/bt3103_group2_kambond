@@ -45,7 +45,7 @@
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
-            <router-link to="/user/:id" :id = post.user>
+            <router-link to="/user/:id" :id = post.user :test = "test">
             {{post.userName}}
             </router-link>
           </div>
