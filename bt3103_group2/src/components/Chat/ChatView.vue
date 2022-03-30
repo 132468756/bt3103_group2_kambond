@@ -47,7 +47,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
-  collection,
+  //collection,
   getDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -63,6 +63,7 @@ export default {
       roomid: null,
       avatar: null,
       friend: {},
+      myemail:auth.currentUser.email,
     };
   },
   methods: {
@@ -89,26 +90,29 @@ export default {
       console.log("chats", this.chats);
     },
 
-    getRoomName(room) {
+    async getRoomName(room) {
       console.log("room name is ", room);
-      let otherUser = auth.currentUser.email;
-      const room1 = String(otherUser + room);
-      const room2 = String(room + otherUser);
-      this.getPreviousChats(room1);
-      this.getPreviousChats(room2);
+      
+      //this.getPreviousChats(room1);
+      //this.getPreviousChats(room2);
     },
     displayFirstRoom() {
-      this.friend = this.room.user;
-      this.getRoomName(this.room.meetingRoom);
-      this.avatar = this.friend.picture;
+      if (this.room.data().user1 != this.myemail) {
+        this.friend = this.room.data().user2;
+      } else {
+        this.friend = this.room.data().user1;
+      }
+      this.getRoomName(this.room.data().chatRoomName);
+      this.avatar = this.room.data().profile_picture;
     },
   },
   mounted() {
+    console.log("Chatview",this.room.data());
     var container = this.$el.querySelector("#container");
     container.scrollTop = container.scrollHeight;
     this.$root.$on('updateChatViewEvent', room => {
           console.log("retriving", room);
-          this.room = room;
+          this.roomFirst = room;
           this.friend = room.user;
           this.getRoomName(room.meetingRoom);
           this.avatar = this.friend.picture;
@@ -116,7 +120,7 @@ export default {
           container.scrollTop = container.scrollHeight;
       });
     this.displayFirstRoom();
-    this.email = auth.currentUser.email;
+    // this.email = auth.currentUser.email;
   },
 };
 </script>
