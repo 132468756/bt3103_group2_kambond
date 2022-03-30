@@ -204,10 +204,10 @@ export default {
         text-align: center;
     }
     .settingRow:nth-child(odd) {
-        background-color: rgba(206, 255, 249, 0.9);
+        background-color: rgba(200, 238, 255, 0.9);
     }
     .settingRow:nth-child(even) {
-        background-color: rgba(251, 253, 253, 0.9);
+        background-color: rgba(253, 231, 208, 0.9);
     }
     .settingRow {
         border-collapse: collapse;

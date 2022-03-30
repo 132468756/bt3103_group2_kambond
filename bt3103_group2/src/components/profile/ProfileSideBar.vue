@@ -288,12 +288,17 @@ export default {
     text-align: center;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+
+    background-image: url("~@/assets/hand-paint.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
 }
 
 #settingTable {
-    width: 80%;
+    width: 70%;
     height: 350px;
-    margin-left: 10%;
+    margin-left: 15%;
 }
 
 #MyPosts {

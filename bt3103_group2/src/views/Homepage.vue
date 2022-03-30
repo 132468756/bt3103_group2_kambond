@@ -149,11 +149,11 @@ export default {
 
 <style scoped>
 .home {
-  background-image: url("~@/assets/search-bg.png");
+  /* background-image: url("~@/assets/search-bg.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
-  height: 880px;
+  height: 880px; */
 }
 
 
