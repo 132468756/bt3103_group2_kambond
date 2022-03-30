@@ -18,12 +18,12 @@ export default {
     background-color: transparent;
     border: transparent;
     cursor: pointer;
-    color: blue;
+    color: rgb(0, 102, 255);
 }
 
 .changeSettingBtn:hover {
     font-weight: bold;
-    background-color: rgba(15, 252, 220, 0.7);
+    background-color: rgba(80, 218, 199, 0.7);
     transition: 0.5s;
 }
 

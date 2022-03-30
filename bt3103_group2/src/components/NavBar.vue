@@ -18,8 +18,7 @@ export default {
 #nav {
   padding-top: 30px;
   padding-bottom: 10px;
-  padding-right: 60px;
-  text-align: right;
+  text-align: center;
   background-color: transparent;
 }
 #nav a {

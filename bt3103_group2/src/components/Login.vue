@@ -1,10 +1,11 @@
 <template>
   <div class="login">
-    <div style="text-align: center">
-      <br /><br />
+    <br><br><br><br><br>
+    <div style="text-align: center" id="loginComponent">
+      <br><br>
       <h1 id="login-title">LOG IN</h1>
       <div id="firebaseui-auth-container"></div>
-      <div id="notice">Do not have an account? Create an account first!</div>
+      <div id="notice">Start your journey with Kambond!</div>
     </div>
   </div>
 </template>
@@ -44,28 +45,41 @@ export default {
 
 #login-title {
   text-align: center;
-  color: rgb(255, 247, 240); /* black */
+  color: rgb(25, 64, 80); /* black */
   text-align: center;
-  text-shadow: 1px 1px black;
 }
 
 .login {
   /* The image used */
-  background-image: url("~@/assets/login-bg.jpg");
+  /* background-image: url("~@/assets/login-bg.jpg"); */
 
   /* Control the height of the image */
-  min-height: 380px;
+  /* height: 880px; */
 
   /* Center and scale the image nicely */
-  background-position: center;
+  /* background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;
+  position: relative; */
+  text-align: center;
 }
 
 #notice {
   text-align: center;
-  color: rgb(255, 247, 240);
+  color: rgb(25, 64, 80);
   font-style: italic;
+  font-weight: bold;
+}
+
+#loginComponent {
+  width: 30%;
+  height: 500px;
+  border-radius: 25px;
+  margin-left: 35%;
+
+  background-image: url("~@/assets/hand-paint.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
 }
 </style>
