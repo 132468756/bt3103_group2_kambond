@@ -1,9 +1,11 @@
 <template>
   <div class="home" v-if="user">
-    <NavBar />
-    
-  <SearchField />
- 
+  <NavBar />
+  <div class="box">
+    <div class="search">
+    <SearchField/>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -88,17 +90,20 @@ export default {
 };
 </script>
 
-<style>
-.home {
+<style scoped>
+.box {
   /* The image used */
   background-image: url("~@/assets/search-bg.png");
 
   /* Control the height of the image */
-  min-height: 380px;
+  min-height: 500px;
 
   /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
+
+  height: 500px;
 }
+
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="search-area">
-    <h1 id="search-title">KamBond Search</h1>
+    <h1 id="search-title">KamBond</h1>
     <div class="search-bar">
       <input
         type="text"
         id="inputbox"
         v-model.lazy="searchText"
         required=""
-        Placeholder="Search"
+        Placeholder="Search in KamBond"
       />
       <button id="searchbutton" type="button" v-on:click="search()">
         Search
@@ -51,7 +51,6 @@ export default {
   methods: {
     // Search
     async search() {
-      alert("Searching for...");
       console.log("searching");
       this.postlist = [];
       var regEx = new RegExp(this.searchText + "*", "i");
@@ -91,9 +90,9 @@ export default {
 }
 
 #search-title {
-  color: aliceblue; /* black */
+  color: rgb(0, 0, 0); /* black */
+  margin: auto;
   text-align: center;
-  text-shadow: 1px 1px black;
 }
 
 .search-bar {
@@ -109,9 +108,9 @@ export default {
 }
 
 #searchbutton {
-  margin: 15px 100px 10px 0px;
-  border: 1.5px solid black;
-  background-color: aliceblue;
+  margin: auto;
+  border: 1px solid black;
+  background-color: rgb(255, 255, 255);
   color: black;
   height: 37px;
   width: 80px;
@@ -119,15 +118,32 @@ export default {
 }
 
 #searchbutton:hover {
-  background-color: lightblue;
+  background-color: rgb(183, 237, 255);
   box-shadow: 1px 1px black;
 }
 
 #postModal {
   justify-content: center;
+    
+  /* The image used */
+  background-image: url("~@/assets/modal-bg3.jpg");
+
+  /* Control the height of the image */
+  min-height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+
+  border: 1px solid  rgba(0, 0, 0, 0.4);
+  padding: 0%;
+  margin: 1%;
 }
 
 .postList {
   display: inline-block;
+  width: 45vw;
+  /* border: 3px solid black; */
 }
 </style>

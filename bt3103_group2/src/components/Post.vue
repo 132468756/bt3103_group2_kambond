@@ -4,8 +4,8 @@
     <div class="flex-box">
       <div id = "title">{{ title }}</div>
       <div id = "statusbar">{{ status }}</div>
-      
     </div>
+
     <div id = "description"> {{ description }} </div>
     <div id = "category"> {{category}}</div>
     <hr />
@@ -36,6 +36,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   height:40%;
+
 }
 
 .borrow-button {
@@ -52,9 +53,11 @@ export default {
 }
 
 #title{
-  margin:0px;
-  font-size: 30px;
-  font-weight: 700;
+  text-align:left;
+  margin-right: 10%;
+  font-size: 2.3vw;
+  font-weight: bold;
+  text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.4);;
 }
 
 #owner {
@@ -71,8 +74,8 @@ export default {
 
 #post {
   display: inline-block;
-  border: 2px solid rgb(0, 0, 0);
-  width: 30vw;
+  border: 0px;
+  width: 40vw;
   height: 15vh;
   padding: 10px;
   margin: 10px;
@@ -82,7 +85,7 @@ export default {
   font-size: 13px;
   background-color:#ffecda;
   border-radius:3px;
-  border:2px solid;
+  border:1.5px solid;
   height:15px;
   width: 100px;
   
