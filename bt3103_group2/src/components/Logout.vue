@@ -37,18 +37,5 @@ export default {
 </script>
 
 <style>
-#btn{
-    width: 5%;
-    height: 5%;
-    background-color: rgb(186, 218, 224);
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-}
 
-#btn:hover{
-    background-color: aliceblue;
-    color:black;
-    box-shadow: 2px 2px grey;
-}
 </style>

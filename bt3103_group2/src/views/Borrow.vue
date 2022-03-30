@@ -10,25 +10,23 @@
 
   </div>
   <Modal
-        v-show="isModalVisible"
-        @close="closeModal"
-        :post = "modalData"
-      />
-  <div className = "postList" 
-    v-for= "post in posts"
-    :key = "post.id">
-    <button type="button"
-          id = "postModal"
-          @click="showModal(post)">
-      <Post className = "posts"
+    v-show="isModalVisible"
+    @close="closeModal"
+    :post = "modalData"
+  />
+  <div className = "postList" v-for= "post in posts" :key = "post.id">
+    <button 
+      type="button"
+      id = "postModal"
+      @click="showModal(post)"
+    >
+    <Post 
+      className = "posts"
       :owner = "post.userName"
       :title = "post.title"
-      :status = "post.status"/>
-      
+      :status = "post.status"
+    />
     </button>
-    
-      
-    
   </div>
   <div>
     
@@ -72,11 +70,11 @@ export default {
   },
   mounted(){
     const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+        }
+      })
         
     async function collectData(posts){
       let z = await getDocs(collection(db,"Posts"))
@@ -84,30 +82,27 @@ export default {
       posts.push(doc.data()))
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
-      console.log(docRef.data().username)
+      console.log(docRef.data().username);
 
       posts.forEach(async (post)=>{
         docRef = await getDoc(doc(db, "Users", post.user));
         console.log(docRef.data().username)
         post.userName = docRef.data().username
-       
-      })
+      
+      });
       return posts;
     }
     collectData(this.posts)
-
-    
   },
   methods:{
-     showModal(data) {
-        this.isModalVisible = true;
-        this.modalData = data;
-        console.log("isopen")
-      },
-  closeModal() {
-        this.isModalVisible = false;
-      },
-      
+    showModal(data){
+      this.isModalVisible = true;
+      this.modalData = data;
+      console.log("isopen")
+    },
+    closeModal(){
+      this.isModalVisible = false;
+    },  
   }
 };
 

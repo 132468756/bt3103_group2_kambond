@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import {getAuth, onAuthStateChanged} from "firebase/auth"
 import { getDoc, doc, getFirestore } from '@firebase/firestore'
 import firebaseApp from '../../firebase'
 
@@ -30,16 +29,20 @@ export default {
         }
     },
 
+    props:{
+        user:String
+    },
+
     mounted(){
-        const auth = getAuth()
-        onAuthStateChanged(auth, (user) => {
-            if(user){
-                this.email = user.email
-                display(this, user.email)
-            }else{
-                display(this, "10086")
-            }
-        })
+        async function update(self){
+            self.email = self.user
+            let user_info = await getDoc(doc(db, "Users", self.user))
+            self.username = user_info.data().username
+            self.bio = user_info.data().bio
+            self.likes = user_info.data().likes
+            self.creditPoint = user_info.data().creditPoint
+        }
+        update(this)
 
         async function display(self){
             let user = await getDoc(doc(db, "Users", self.email))

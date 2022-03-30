@@ -1,10 +1,10 @@
 <template>
 <div style="text-align:center;" v-if="user">
     <NavBar/>
+    <button @click="toSideBar()">sidebar</button>
     <!-- <h1>This is a sample of My_Profile</h1> -->
     <div id="TopElement">
-        <div id = "emptyDiv">        
-        </div>
+        <div id = "emptyDiv"></div>
         <div id="TopLeft">
             <userInfo id="MyInfo"/>
         </div>
@@ -55,6 +55,12 @@ export default {
             }
         })
     },
+
+    methods:{
+        toSideBar(){
+            this.$router.push({ path:"/sideBar"})
+        }
+    }
 }
 </script>
 
@@ -75,7 +81,6 @@ export default {
         width:20vw;
     }
 
-
     #RightFunction {
         width:20vw;
         margin-right:1.9vw;
@@ -83,7 +88,7 @@ export default {
 
     .InnerText {
         color: rgb(0, 0, 0);
-        font-size: 13px;
+        font-size: 20px;
     }
 
     #BottomElement{

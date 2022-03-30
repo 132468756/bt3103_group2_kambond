@@ -10,9 +10,9 @@
           class="modal-header"
           id="modalTitle"
         >
-          <slot name="header">
+          <section name="header">
             {{post.title}}
-          </slot>
+          </section>
           <button
             type="button"
             class="btn-close"
@@ -39,14 +39,19 @@
           <div classname="body">
             Time: {{post.postDate}} 
           </div>
+          <div classname="body">
+            Catogory: {{post.category}} 
+          </div>
+          
+          
 
         </section>
 
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
-            <router-link to="/user/:id" :id = post.user :test = "test">
-            {{post.userName}}
+            <router-link :to= "{name:'Profile', params:{id: post.user}}">
+              {{post.userName}}
             </router-link>
           </div>
           <button
@@ -186,8 +191,8 @@ const db = getFirestore(firebaseApp);
     right: 0;
     background-color: rgba(0, 0, 0, 0.3);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content:center;
+    align-items:center;
   }
 
   .modal {
@@ -204,12 +209,14 @@ const db = getFirestore(firebaseApp);
     padding: 15px;
     display: flex;
     height: 10%;
+    margin-top: 0;
     font-size: 7vh;
     text-decoration: underline;
     position: relative;
     border-bottom: 1px solid #eeeeee;
     color: #4AAE9B;
     justify-content: space-between;
+    font-family:'Times New Roman', Times, serif;
   }
 
   .modal-footer {
@@ -217,6 +224,7 @@ const db = getFirestore(firebaseApp);
     display: flex;
     border-top: 1px solid #eeeeee;
     flex-direction: column;
+    font-family:'Times New Roman', Times, serif;
     font-size:4vh;
   }
 
@@ -225,7 +233,9 @@ const db = getFirestore(firebaseApp);
     padding: 20px 10px;
     display:flex;
     flex-direction: column;
-    font-size:4vh;
+    font-size:3.5vh;
+    text-align: left;
+    font-family: 'Times New Roman', Times, serif;
   }
 
   .btn-close {
@@ -233,11 +243,12 @@ const db = getFirestore(firebaseApp);
     top: 0;
     right: 0;
     border: none;
-    font-size: 20px;
-    padding: 10px;
+    font-size: 25px;
+    margin-top: 2px;
+    margin-right: 5px;
     cursor: pointer;
     font-weight: bold;
-    color: #4AAE9B;
+    color:black;
     background: transparent;
   }
 
@@ -246,14 +257,20 @@ const db = getFirestore(firebaseApp);
     background: #4AAE9B;
     border: 1px solid #4AAE9B;
     border-radius: 2px;
-    margin-top:1%;
+    margin-top:2%;
     margin-bottom:1%;
+    height: 30px;
+    width: 300px;
+    margin-left: 420px;
   }
 
   .borrowButton{
     border-radius: 2px;
     margin-top:1%;
-    margin-bottom:1%;
+    margin-bottom:2%;
+    height: 30px;
+    width: 300px;
+    margin-left: 420px;
   }
 
   .modal-fade-enter,

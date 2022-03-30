@@ -10,7 +10,8 @@ import MyDeal from "../views/MyDeals.vue";
 import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
 import Chats from "../views/Chats";
-import Profile from "../views/Profile.vue"
+import Profile from "../views/Profile.vue";
+import SideBar from "../components/profile/ProfileSideBar.vue";
 
 const routes = [
   {
@@ -77,9 +78,19 @@ const routes = [
     name: "Chats",
     component: Chats,
   },
-  { path: '/user/:id', 
-  component: Profile, 
-  props: true },
+
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    props: true,
+  },
+
+  {
+    path: "/sideBar",
+    name: "sideBar",
+    component: SideBar,
+  },
 ];
 
 const router = new createRouter({
