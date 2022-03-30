@@ -1,10 +1,10 @@
 <template>
     <div id="nav">
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/borrow">Borrow</router-link> |
-      <router-link to="/lend">Lend</router-link> |
+      <router-link to="/home">Home</router-link> &nbsp; | &nbsp;
+      <router-link to="/borrow">Borrow</router-link> &nbsp; | &nbsp;
+      <router-link to="/lend">Lend</router-link> &nbsp; | &nbsp;
       <router-link to="/myprofile">Profile</router-link>
-      <hr />
+      <br><br>
     </div>
 </template>
 
@@ -16,8 +16,11 @@ export default {
 
 <style>
 #nav {
-  padding: 30px;
-  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  padding-right: 60px;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 #nav a {
   font-weight: bold;

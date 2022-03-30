@@ -28,6 +28,7 @@
     </div>
 
     <div id="displayInfo">
+        <br><br>
         <SettingsTable id="settingTable" v-if="this.showSettingTable" />
         <MyPostTable id="MyPosts" v-if="this.showPosts" />
         <MyRequestTable id="MyRequests" v-if="this.showRequests" />
@@ -108,12 +109,12 @@ export default {
             this.showChats=false
             this.showSettingTable=true
 
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
             document.getElementById("settingBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -126,12 +127,12 @@ export default {
             this.showSettingTable=false
             this.showPosts=true
 
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
             document.getElementById("postBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -144,12 +145,12 @@ export default {
             this.showPosts=false
             this.showRequests=true
 
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
             document.getElementById("requestBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -162,12 +163,12 @@ export default {
             this.showRequests=false
             this.showDeals=true
 
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
             document.getElementById("dealBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -180,12 +181,12 @@ export default {
             this.showDeals=false
             this.showProfile=true
 
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
             document.getElementById("userBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -198,12 +199,12 @@ export default {
             this.showProfile=false
             this.showChats=true
 
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("createBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
+            document.getElementById("createBtn").style.backgroundColor="transparent"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
             document.getElementById("openChatBtn").style.backgroundColor="rgb(233, 233, 233)"
         },
 
@@ -216,12 +217,12 @@ export default {
             this.showChats=false
             this.showCreate=true
 
-            document.getElementById("settingBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("postBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("requestBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("dealBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("userBtn").style.backgroundColor="rgb(70, 70, 70)"
-            document.getElementById("openChatBtn").style.backgroundColor="rgb(70, 70, 70)"
+            document.getElementById("settingBtn").style.backgroundColor="transparent"
+            document.getElementById("postBtn").style.backgroundColor="transparent"
+            document.getElementById("requestBtn").style.backgroundColor="transparent"
+            document.getElementById("dealBtn").style.backgroundColor="transparent"
+            document.getElementById("userBtn").style.backgroundColor="transparent"
+            document.getElementById("openChatBtn").style.backgroundColor="transparent"
             document.getElementById("createBtn").style.backgroundColor="rgb(233, 233, 233)"
         }
 
@@ -234,13 +235,14 @@ export default {
 #sideBar {
     height: 100%;
     width: 15vw;
-    background-color: rgb(70, 70, 70);
+    background-color: rgba(255, 255, 255, 0.8);
     float: left;
     border-radius: 10px;
+    margin-top: 30px;
 }
 
 .sideBarText{
-    color: rgb(106, 149, 243);
+    color: rgb(87, 180, 194);
 }
 
 .sideBarBtn {
@@ -251,11 +253,12 @@ export default {
 }
 
 .sideBarBtn:hover {
+    transition: 0.5s;
     cursor: pointer;
 }
 
 #userBtn {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(255, 255, 255);
 }
 
 #sideProfilePic {
@@ -276,15 +279,18 @@ export default {
 #displayInfo {
     float: right;
     width: 75%;
-    height: 400px;
-    margin-top: 5%;
+    height: 742px;
+    margin-top: 30px;
     margin-right: 5%;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
 }
 
 #settingTable {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 350px;
+    margin-left: 10%;
 }
 
 #MyPosts {
@@ -292,9 +298,9 @@ export default {
 }
 
 #btn{
-    margin-left: 3.5%;
+    margin-left: 3%;
     width: 10%;
-    height: 10%;
+    height: 4%;
     background-color:rgb(233, 233, 233);
     border: 1px gray solid;
     border-radius: 10px;
@@ -302,8 +308,7 @@ export default {
 }
 
 #btn:hover{
-    background-color: gray;
-    font-weight: bold;
+    background-color: rgb(199, 199, 199);
     transition: 0.3s;
 }
 

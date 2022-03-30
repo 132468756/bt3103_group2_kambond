@@ -190,7 +190,7 @@ export default {
 
 <style>
     #SettingTable, .settingRow, .leftCol, .rightCol, .midCol{
-        border: 1px solid white;
+        border: 1px solid rgba(255, 255, 255, 0.9);
         border-collapse: collapse;
     }
 
@@ -204,10 +204,10 @@ export default {
         text-align: center;
     }
     .settingRow:nth-child(odd) {
-        background-color: rgba(206, 255, 249, 0.63);
+        background-color: rgba(206, 255, 249, 0.9);
     }
     .settingRow:nth-child(even) {
-        background-color: rgba(251, 253, 253, 0.507);
+        background-color: rgba(251, 253, 253, 0.9);
     }
     .settingRow {
         border-collapse: collapse;

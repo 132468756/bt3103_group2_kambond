@@ -54,25 +54,28 @@
               {{post.userName}}
             </router-link>
           </div>
-          <button
-            type="button"
-            class="btn-green"
-            @click="close"
-            aria-label="Close modal"
-          >
-            Close
-          </button>
-          <div v-if= "post.purpose == 'Borrowing'">
-            <button @click = "toBorrow(this)"
-            class = "borrowButton"> Lend</button>
-          </div>
-          <div v-else>
-            <button @click = "toBorrow(this)"
-            class = "borrowButton"> Borrow </button>
+            <div id="buttons">
+            <div v-if= "post.purpose == 'Borrowing'">
+              <button @click = "toBorrow(this)"
+              class = "borrowButton"> Lend</button>
+            </div>
+            <div v-else>
+              <button @click = "toBorrow(this)"
+              class = "borrowButton"> Borrow </button>
+            </div>
+
+            <button
+              type="button"
+              class="btn-big-close"
+              @click="close"
+              aria-label="Close modal"
+            >
+              Close
+            </button>
           </div>
         </footer>
       </div>
-    </div>
+    </div> <!-- modal-backgrop -->
   </transition>
 </template>
 
@@ -190,9 +193,22 @@ const db = getFirestore(firebaseApp);
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.3);
+
     display: flex;
     justify-content:center;
     align-items:center;
+
+    /* The image used */
+    background-image: url("~@/assets/modal-bg3.jpg");
+
+    /* Control the height of the image */
+    min-height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+
   }
 
   .modal {
@@ -203,6 +219,8 @@ const db = getFirestore(firebaseApp);
     flex-direction: column;
     width: 80%;
     height:80%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
   }
 
   .modal-header{
@@ -211,12 +229,24 @@ const db = getFirestore(firebaseApp);
     height: 10%;
     margin-top: 0;
     font-size: 7vh;
-    text-decoration: underline;
+    font-weight: bold;
+    /* text-decoration-line: overline underline;
+    text-decoration-style: solid; */
     position: relative;
     border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    color: rgb(17, 46, 90);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
     justify-content: space-between;
-    font-family:'Times New Roman', Times, serif;
+    /* The image used */
+    background-image: url("~@/assets/watercolor-pink.jpg");
+
+    /* Control the height of the image */
+    min-height: 10%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
   }
 
   .modal-footer {
@@ -224,18 +254,17 @@ const db = getFirestore(firebaseApp);
     display: flex;
     border-top: 1px solid #eeeeee;
     flex-direction: column;
-    font-family:'Times New Roman', Times, serif;
-    font-size:4vh;
+    font-size:3vh;
+    align-content: center;
   }
 
   .modal-body {
     position: relative;
-    padding: 20px 10px;
+    padding: 20px 10px 20px 100px;
     display:flex;
     flex-direction: column;
-    font-size:3.5vh;
+    font-size:3vh;
     text-align: left;
-    font-family: 'Times New Roman', Times, serif;
   }
 
   .btn-close {
@@ -248,29 +277,32 @@ const db = getFirestore(firebaseApp);
     margin-right: 5px;
     cursor: pointer;
     font-weight: bold;
-    color:black;
+    color: rgba(17, 46, 90, 0.719);
     background: transparent;
   }
 
-  .btn-green {
-    color: white;
-    background: #4AAE9B;
-    border: 1px solid #4AAE9B;
-    border-radius: 2px;
-    margin-top:2%;
-    margin-bottom:1%;
-    height: 30px;
-    width: 300px;
-    margin-left: 420px;
+  .btn-close:hover{
+    color:rgb(17, 46, 90);
+    transition: 0.5s;
+  }
+
+  #buttons{
+    margin-top:20%;
   }
 
   .borrowButton{
+    color: white;
+    background:#e6709d; 
+    border:0px;
     border-radius: 2px;
-    margin-top:1%;
-    margin-bottom:2%;
     height: 30px;
     width: 300px;
-    margin-left: 420px;
+    margin: auto;
+  }
+
+  .borrowButton:hover{
+    background:#df1e68;
+    transition:1s;
   }
 
   .modal-fade-enter,
@@ -283,6 +315,19 @@ const db = getFirestore(firebaseApp);
     transition: opacity .5s ease;
   }
 
+
+  .btn-big-close {
+    border:0px;
+    border-radius: 2px;
+    height: 30px;
+    width: 300px;
+    margin: auto;
+  }
+
+  .btn-big-close:hover{
+    background: rgb(184, 223, 233);
+    transition: 1s;
+  }
   #picprofile {
   width: 4vw;
   height: 4vw;

@@ -1,7 +1,7 @@
 <template>
     <div id="userInfo">
         <div class="profilePicDiv">
-            <img src="@/assets/profilephoto.jpeg" id="profilePic">
+            <img src="@/assets/profile.png" id="profilePic">
         </div>
         <h2 id="username">{{username}}</h2>
         <div class="userInfoDetail">

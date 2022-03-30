@@ -106,7 +106,6 @@ export default {
 
 .whole {
   display: flex;
-  font-family:'Times New Roman', Times, serif;
 }
 
 #checked {
