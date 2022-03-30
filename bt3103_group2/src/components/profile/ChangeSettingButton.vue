@@ -23,11 +23,11 @@ export default {
 
 .changeSettingBtn:hover {
     font-weight: bold;
-    background-color: rgb(15, 252, 220);
+    background-color: rgba(15, 252, 220, 0.7);
     transition: 0.5s;
 }
 
 .changeSettingBtn:active {
-    background-color: rgb(15, 179, 157);
+    background-color: rgba(15, 179, 157, 0.7);
 }
 </style>

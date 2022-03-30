@@ -137,6 +137,9 @@ export default {
     .MyPostRow:nth-child(odd) {
         background-color: rgb(227, 247, 253);
     }
+    .MyPostRow:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
     .MyPostTitle {
         background-color: rgb(194, 240, 255);
     }

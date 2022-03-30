@@ -143,10 +143,11 @@ export default {
 
 <style scoped>
 #createpostform {
-  background: rgb(205, 243, 213);
+  background: rgba(205, 243, 213, 0.9);
   padding-bottom: 80px;
-  border-radius: 10px;
   justify-content:center;
+  width: 80%;
+  margin-left: 10%;
 }
 .postlabel {
   color: rgb(31, 34, 34);
@@ -176,15 +177,15 @@ input,select {
     margin-left:30%;
 }
 .submitRow{
-    margin-left:60%;
+    text-align: left;
     padding:1%;
 }
 .submit {
     position:absolute;
     text-align: center;
-    background-color: blue;
+    background-color: rgba(0, 0, 255, 0.719);
     border:0;
-    padding:10px 20px;
+    margin-left: 24.54%;
     margin-top:20px;
     color:aliceblue;
     border-radius: 20px;
