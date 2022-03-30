@@ -9,76 +9,29 @@
         required=""
         Placeholder="Search in KamBond"
       />
-      <button id="searchbutton" type="button" v-on:click="search()">
+      <button id="searchbutton" type="button" v-on:click="newSearch()">
         Search
       </button>
     </div>
   </div>
-  <div className="postList" v-if="searchText">
-     <Modal v-show="isModalVisible" @close="closeModal" :post="modalData" />
-    <div className="postList" v-for="post in postlist" :key="post.id">
-      <button type="button" id="postModal" @click="showModal(post)">
-        <Post
-          className="posts"
-          :owner="post.userName"
-          :title="post.title"
-          :status="post.status"
-        />
-      </button>
-    </div>
-   
-  </div>
 </template>
 
 <script>
-import firebaseApp from "../../firebase.js";
-import Modal from "../Modal.vue";
-import Post from "../Post.vue";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-
-const db = getFirestore(firebaseApp);
 export default {
   name: "SearchField",
-  components: { Modal, Post },
+  components: {},
+  // Emits to pass data from child to parent
+  // Register what is emitting
+  emits:["search"],
   data() {
     return {
-      postlist: [],
       searchText: "",
-      isModalVisible: false,
-      modalData: {},
     };
   },
   methods: {
-    // Search
-    async search() {
-      console.log("searching");
-      this.postlist = [];
-      var regEx = new RegExp(this.searchText + "*", "i");
-      const querySnapshotTitle = await getDocs(collection(db, "Posts"));
-      const querySnapshotUser = await getDocs(collection(db, "Users"));
-      querySnapshotTitle.forEach((post) => {
-        if (regEx.test(post.data().title)) {
-          this.postlist.push(post.data());
-        }
-      });
-
-      querySnapshotUser.forEach((post) => {
-        if (regEx.test(post.data().username)) {
-          this.postlist.push(post.data());
-        }
-        if (regEx.test(post.data().email)) {
-          this.postlist.push(post.data());
-        }
-      });
-      console.log(this.postlist);
-    },
-    showModal(data) {
-      this.isModalVisible = true;
-      this.modalData = data;
-      console.log("isopen");
-    },
-    closeModal() {
-      this.isModalVisible = false;
+    newSearch(){
+      // this.$emit(the event which runs on parent, data to pass)
+      this.$emit('search', this.searchText);
     },
   },
 };
@@ -93,6 +46,7 @@ export default {
   color: rgb(0, 0, 0); /* black */
   margin: auto;
   text-align: center;
+  text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.4)
 }
 
 .search-bar {
@@ -120,30 +74,5 @@ export default {
 #searchbutton:hover {
   background-color: rgb(183, 237, 255);
   box-shadow: 1px 1px black;
-}
-
-#postModal {
-  justify-content: center;
-    
-  /* The image used */
-  background-image: url("~@/assets/modal-bg3.jpg");
-
-  /* Control the height of the image */
-  min-height: 100%;
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size:cover;
-
-  border: 1px solid  rgba(0, 0, 0, 0.4);
-  padding: 0%;
-  margin: 1%;
-}
-
-.postList {
-  display: inline-block;
-  width: 45vw;
-  /* border: 3px solid black; */
 }
 </style>
