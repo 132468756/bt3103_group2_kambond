@@ -235,6 +235,9 @@ export default {
     .MyRequestRow:nth-child(odd) {
         background-color: rgb(223, 255, 223);
     }
+    .MyRequestRow:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
 
     .MyRequestTitle {
         background-color: rgb(212, 240, 212);

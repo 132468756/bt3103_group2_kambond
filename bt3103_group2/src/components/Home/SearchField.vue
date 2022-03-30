@@ -1,6 +1,7 @@
 <template>
   <div class="search-area">
     <h1 id="search-title">KamBond</h1>
+    <br><br>
     <div class="search-bar">
       <input
         type="text"
@@ -14,6 +15,7 @@
       </button>
     </div>
   </div>
+
   <div className="postList" v-if="searchText">
      <Modal v-show="isModalVisible" @close="closeModal" :post="modalData" />
     <div className="postList" v-for="post in postlist" :key="post.id">
@@ -87,12 +89,14 @@ export default {
 <style>
 .search-area {
   position:sticky;
+  margin-top: 6%;
 }
 
 #search-title {
-  color: rgb(0, 0, 0); /* black */
+  color: rgb(26, 70, 87); /* black */
   margin: auto;
   text-align: center;
+  font-size: 80px;
 }
 
 .search-bar {
@@ -103,23 +107,32 @@ export default {
 }
 #inputbox {
   margin: 10px;
-  width: 60%;
-  height: 30px;
+  width: 35%;
+  height: 45px;
+  border-radius: 50px;
+  border: transparent;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#inputbox:focus {
+  outline: none;
 }
 
 #searchbutton {
   margin: auto;
   border: 1px solid black;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(25, 64, 80);
   color: black;
-  height: 37px;
+  height: 45px;
   width: 80px;
-  border-radius: 3px;
+  border-radius: 50px;
+  border: transparent;
+  color:white
 }
 
 #searchbutton:hover {
-  background-color: rgb(183, 237, 255);
-  box-shadow: 1px 1px black;
+  font-weight: bold;
+  outline: none;
 }
 
 #postModal {
