@@ -209,6 +209,9 @@ export default {
     .MyDealRow:nth-child(odd) {
         background-color: rgb(255, 219, 255);
     }
+    .MyDealRow:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
 
     .MyDealTitle {
         background-color: rgba(241, 205, 225, 0.767);

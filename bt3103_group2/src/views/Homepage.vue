@@ -1,4 +1,5 @@
 <template>
+
   <div class="home" v-if="user">
     <NavBar />
     <div class="box">
@@ -147,19 +148,12 @@ export default {
 </script>
 
 <style scoped>
-.box {
-  /* The image used */
+.home {
   background-image: url("~@/assets/search-bg.png");
-
-  /* Control the height of the image */
-  min-height: 500px;
-
-  /* Center and scale the image nicely */
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
-
-  height: 500px;
+  height: 880px;
 }
 
 
