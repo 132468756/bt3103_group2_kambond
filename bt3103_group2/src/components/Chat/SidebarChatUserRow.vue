@@ -1,7 +1,7 @@
 <template>
   <div class='sidebarChat' v-if="!addNewChat"  @click="updateChatView()">
     <md-avatar>
-      <img :src="room.user.picture">
+      <img src="@/assets/profilephoto.jpeg" />
     </md-avatar>
     <div class='sidebarChat__info'>
       <h2>{{room.user.email}}</h2>
@@ -15,13 +15,35 @@
 </template>
 
 <script>
+import firebaseApp from "../../firebase.js";
+import {
+  getFirestore,
+  doc,
+  //collection,
+  getDoc,
+} from "firebase/firestore";
+const db = getFirestore(firebaseApp);
+
 export default {
   name: "SidebarChatUserRow",
   props : ['addNewChat', "room"],
+  emits:["chatroom"],
+  data() {
+    return {
+      chatroom:null,
+    }
+  },
   methods : {
     updateChatView() {
-      this.$root.$emit('updateChatViewEvent', this.room);
+      this.$emit('viewroom', this.chatroom);
     }
+  },
+  mounted() {
+    async function getChatRoom(self) {
+       self.chatroom = await getDoc(doc(db,"Chats",self.room));
+       console.log("room details",self.room)
+    }
+    getChatRoom(this);  
   }
 }
 </script>

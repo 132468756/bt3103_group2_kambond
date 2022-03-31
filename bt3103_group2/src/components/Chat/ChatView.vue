@@ -3,7 +3,7 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img :src="avatar" />
+        <img id ="chatimg" src="@/assets/profilephoto.jpeg" />
       </md-avatar>
       <div class="chat__headerInfo">
         <h3>{{ friend.email }}</h3>
@@ -91,10 +91,8 @@ export default {
     },
 
     async getRoomName(room) {
-      console.log("room name is ", room);
-      
-      //this.getPreviousChats(room1);
-      //this.getPreviousChats(room2);
+      console.log("room name is ", room);     
+      this.getPreviousChats(room);
     },
     displayFirstRoom() {
       if (this.room.data().user1 != this.myemail) {
@@ -107,12 +105,12 @@ export default {
     },
   },
   mounted() {
-    console.log("Chatview",this.room.data());
+    console.log("Chatview",this.room);
     var container = this.$el.querySelector("#container");
     container.scrollTop = container.scrollHeight;
     this.$root.$on('updateChatViewEvent', room => {
           console.log("retriving", room);
-          this.roomFirst = room;
+          //this.room = room;
           this.friend = room.user;
           this.getRoomName(room.meetingRoom);
           this.avatar = this.friend.picture;
@@ -126,6 +124,10 @@ export default {
 </script>
 
 <style scoped>
+#chatimg {
+  width:30px;
+  height: 30px;
+}
 .chat {
   flex: 0.7;
   display: flex;
