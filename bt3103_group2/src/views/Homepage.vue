@@ -57,18 +57,20 @@ export default {
       postlist: [],
       isModalVisible: false,
       modalData: {},
+      searchText:"",
     };
   },
 
   methods:{
     // Search
     async search(text) {
-      console.log("searching");
+      console.log("searching"+ text);
       this.postlist = [];
       var regEx = new RegExp(text + "*", "i");
       const querySnapshotTitle = await getDocs(collection(db, "Posts"));
       const querySnapshotUser = await getDocs(collection(db, "Users"));
-      querySnapshotTitle.forEach((post) => {
+      try{
+        querySnapshotTitle.forEach((post) => {
         if (regEx.test(post.data().title)) {
           this.postlist.push(post.data());
         }
@@ -81,7 +83,13 @@ export default {
           this.postlist.push(post.data());
         }
       });
-      console.log(this.postlist);
+      console.log(this.postlist[0].status);
+      console.log(this.searchText)
+      }
+      catch(error){
+        console.error("Error searching:", error);
+      }
+      this.searchText = text;
     },
 
     showModal(data) {
