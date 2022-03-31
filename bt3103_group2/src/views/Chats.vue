@@ -1,8 +1,8 @@
 <template>
   <div v-if="fetched" class="app">
     <div class="app__body">
-      <ChatSideBar/>
-      <ChatView />
+      <ChatSideBar  @update="update($event)"/>
+      <ChatView v-if="showChats" :room="emitRoom"/>
     </div>
   </div>
   <div v-else>
@@ -37,6 +37,8 @@ export default {
       rooms: [],
       firstRoom: {},
       user: "",
+      emitRoom:"",
+      showChats:false,
     };
   },
   methods: {
@@ -45,6 +47,11 @@ export default {
       this.friends = docRef.data().chatrooms;
       console.log("friends", this.friends);
     },
+    async update(text) {
+      console.log(text);
+      this.showChats = true;
+      this.emitRoom = text;
+    }
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
@@ -53,6 +60,8 @@ export default {
         this.fetched=true;
       }
     });
+
+    
   },
 };
 </script>

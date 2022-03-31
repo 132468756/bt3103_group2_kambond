@@ -1,21 +1,18 @@
 <template>
-  <div class='sidebarChat' v-if="!addNewChat"  @click="updateChatView()">
+  <div class='sidebarChat'  @click="updateChatView()">
     <md-avatar>
-      <img src="@/assets/profilephoto.jpeg" />
+      <img id ="chatimg" src="@/assets/profilephoto.jpeg" />
     </md-avatar>
     <div class='sidebarChat__info'>
-      <h2>{{room.user.email}}</h2>
+      <h2>{{chatroom}}</h2>
       <p>Last message...</p>
     </div>
-  </div>
-
-  <div class='sidebarChat' v-else onClick={createChat()} >
-    <h2>Add new chat</h2>
   </div>
 </template>
 
 <script>
 import firebaseApp from "../../firebase.js";
+import {getAuth} from "firebase/auth"
 import {
   getFirestore,
   doc,
@@ -23,11 +20,11 @@ import {
   getDoc,
 } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-
+const auth = getAuth();
 export default {
   name: "SidebarChatUserRow",
-  props : ['addNewChat', "room"],
-  emits:["chatroom"],
+  props : ["room"],
+  emits:["room"],
   data() {
     return {
       chatroom:null,
@@ -35,13 +32,19 @@ export default {
   },
   methods : {
     updateChatView() {
-      this.$emit('viewroom', this.chatroom);
+      console.log("emit")
+      this.$emit("update",this.room);
     }
   },
   mounted() {
     async function getChatRoom(self) {
-       self.chatroom = await getDoc(doc(db,"Chats",self.room));
-       console.log("room details",self.room)
+      let chat = await getDoc(doc(db,"Chats",self.room));
+      if (chat.data().user1 == auth.currentUser.email) {
+        self.chatroom = chat.data().user2;
+      } else {
+        self.chatroom = chat.data().user1;
+      }
+       console.log("room details",self.chatroom)
     }
     getChatRoom(this);  
   }
@@ -49,6 +52,10 @@ export default {
 </script>
 
 <style scoped>
+#chatimg {
+  width:30px;
+  height: 30px;
+}
 .sidebarChat {
   display: flex;
   padding: 20px;

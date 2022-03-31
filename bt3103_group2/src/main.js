@@ -13,5 +13,4 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(fas)
 
 const app = createApp(App);
-
 app.use(router).component("font-awesome-icon", FontAwesomeIcon).mount("#app");

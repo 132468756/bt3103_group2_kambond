@@ -3,7 +3,7 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img id ="chatimg" src="@/assets/profilephoto.jpeg" />
+        <img id="chatimg" src="@/assets/profilephoto.jpeg" />
       </md-avatar>
       <div class="chat__headerInfo">
         <h3>{{ friend.email }}</h3>
@@ -22,8 +22,8 @@
         </md-button>
       </div>
     </div>
-    <div class="chat__body" id="container">
-      <div v-for="chat in chats" :key="chat.key">
+    <div class="chat__body" v-if="fetched">
+      <div v-for="chat in previouschats" :key="chat.id">     
         <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
           {{ chat.message }}
         </p>
@@ -59,73 +59,53 @@ export default {
   props: ["room"],
   data() {
     return {
-      chats: [],
+      fetched:false,
+      previouschats: [],
       roomid: null,
       avatar: null,
       friend: {},
-      myemail:auth.currentUser.email,
     };
   },
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
       console.log("msg on submit", msg);
-      let newData = await updateDoc(doc(db, "Chats", this.roomid), {
-        chats: arrayUnion(msg),
+      const mychat={user:auth.currentUser.email,message:msg};
+      await updateDoc(doc(db, "Chats", this.room), {
+        chats: arrayUnion(mychat)
       });
-      console.log(newData);
+       
       document.getElementById("inputMsg").value = "";
     },
-    isMe(chat) {
-      return chat.user == this.email;
-    },
-    async getPreviousChats(roomId) {
-      let docRef = await getDoc(doc(db, "Chats", roomId));
-      let previous = docRef.data().chats;
-      console.log(docRef);
-      previous.forEach((doc) => {
-        let item = doc.val();
-        this.chats.push(item);
-      });
-      console.log("chats", this.chats);
-    },
 
-    async getRoomName(room) {
-      console.log("room name is ", room);     
-      this.getPreviousChats(room);
-    },
-    displayFirstRoom() {
-      if (this.room.data().user1 != this.myemail) {
-        this.friend = this.room.data().user2;
-      } else {
-        this.friend = this.room.data().user1;
-      }
-      this.getRoomName(this.room.data().chatRoomName);
-      this.avatar = this.room.data().profile_picture;
+    isMe(chat) {
+      console.log(chat.user)
+      return chat.user == auth.currentUser.email;
     },
   },
+
   mounted() {
-    console.log("Chatview",this.room);
-    var container = this.$el.querySelector("#container");
-    container.scrollTop = container.scrollHeight;
-    this.$root.$on('updateChatViewEvent', room => {
-          console.log("retriving", room);
-          //this.room = room;
-          this.friend = room.user;
-          this.getRoomName(room.meetingRoom);
-          this.avatar = this.friend.picture;
-          var container = this.$el.querySelector("#container");
-          container.scrollTop = container.scrollHeight;
-      });
-    this.displayFirstRoom();
-    // this.email = auth.currentUser.email;
+    console.log("Chatview", this.room);
+    async function getPreviousChats(roomId, self) {
+      let docRef = await getDoc(doc(db, "Chats", roomId));
+      let previous = docRef.data().chats;
+      console.log(previous.length);
+      if (previous.length != 0) {
+        previous.forEach((doc) => {
+          self.previouschats.push(doc);
+        });
+        console.log("chats", self.previouschats);
+      }
+      self.fetched = true;
+    }
+    getPreviousChats(this.room, this);
   },
 };
 </script>
 
 <style scoped>
 #chatimg {
-  width:30px;
+  width: 30px;
   height: 30px;
 }
 .chat {
