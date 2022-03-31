@@ -2,11 +2,9 @@
 <div style="text-align:center;" v-if="user">
   <NavBar/>
   <div id="filter">
-    <Filter1 />
+    <Filter1 @change = "newFilter1" />
 
-    <Filter2 />
-
-    <Filter3 />
+    <Filter2 @change = "newFilter2" />
 
   </div>
   <Modal
@@ -37,7 +35,6 @@
 <script>
 import Filter1 from "@/components/Filter/Filter1.vue";
 import Filter2 from "@/components/Filter/Filter2.vue";
-import Filter3 from "@/components/Filter/Filter3.vue";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
 import Modal from "../components/Modal.vue"
@@ -45,7 +42,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 import firebaseApp from "@/firebase.js";
 import {getFirestore} from "firebase/firestore";
-import {collection, getDocs, getDoc, doc} from "firebase/firestore";
+import {collection, getDocs, getDoc, doc, where, query} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 
@@ -58,12 +55,13 @@ export default {
       isModalVisible:false,
       modalData:{},
       posts:[],
+      filter:{},
+      filter2:{},
     };
   },
   components: {
     Filter1,
     Filter2,
-    Filter3,
     Post,
     NavBar,
     Modal,
@@ -77,19 +75,27 @@ export default {
       })
         
     async function collectData(posts){
-      let z = await getDocs(collection(db,"Posts"))
+      /*let z = await getDocs(collection(db,"Posts"))
       z.forEach((doc)=> 
       { if(doc.data().status == "Want to borrow" ){
           posts.push(doc.data()) }
       }
-      )
+      )*/
+      var qTitle = query(
+        collection(db, "Posts"),
+        where("status","==","Want to borrow")
+        );
+        
+      const queryTitle = await getDocs(qTitle)
+      queryTitle.forEach((doc) => {
+          posts.push(doc.data())
+        })
+      
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
-      console.log(docRef.data().username);
 
       posts.forEach(async (post)=>{
         docRef = await getDoc(doc(db, "Users", post.user));
-        console.log(docRef.data().username)
         post.userName = docRef.data().username
       
       });
@@ -106,7 +112,51 @@ export default {
     closeModal(){
       this.isModalVisible = false;
     },  
-  }
+    newFilter1(value){
+      this.filter = value;
+      console.log(this.filter);
+      this.posts= [];
+      this.collectData()
+    },
+    newFilter2(value){
+      this.filter2 = value;
+      console.log(this.filter2);
+      this.posts= [];
+      this.collectData()
+    },
+    async collectData(){
+      var f1 = Object.keys(this.filter).length
+      var f2 = Object.keys(this.filter2).length
+      if (f1!= 0 && f2 !=0){
+        var qTitle = query(
+        collection(db, "Posts"),
+        where("category", "in", this.filter),where("status","==","Want to borrow")
+        );
+        
+      }
+      else {
+        qTitle = query(
+        collection(db, "Posts"),
+        where("status","==","Want to borrow")
+        );
+        console.log("detect no filter")
+      }
+      
+      const queryTitle = await getDocs(qTitle)
+      queryTitle.forEach((doc) => {
+          this.posts.push(doc.data())
+        })
+      
+      let docRef = await getDoc(doc(db, "Users", "12345"));
+
+      this.posts.forEach(async (post)=>{
+        docRef = await getDoc(doc(db, "Users", post.user));
+        post.userName = docRef.data().username
+      
+      });
+      console.log(this.posts)
+    }
+  },
 };
 
 </script>
