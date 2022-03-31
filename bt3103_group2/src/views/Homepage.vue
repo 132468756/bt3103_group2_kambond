@@ -160,8 +160,8 @@ export default {
   /* background-image: url("~@/assets/search-bg.png");
   background-position: center;
   background-repeat: no-repeat;
-  background-size:cover;
-  height: 880px; */
+  background-size:cover;*/
+  height: 880px; 
 }
 
 

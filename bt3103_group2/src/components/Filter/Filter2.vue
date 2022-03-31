@@ -6,6 +6,11 @@ export default {
       checkedNames: [],
     };
   },
+  watch: {
+    checkedNames() {
+      this.$emit('change', this.checkedNames)
+    }
+  },
 };
 </script>
 
