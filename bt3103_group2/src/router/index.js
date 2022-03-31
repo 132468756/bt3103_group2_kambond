@@ -7,9 +7,9 @@ import CreatePost from "../views/CreatePost.vue";
 import MyPost from "../views/MyPosts.vue";
 import MyRequest from "../views/MyRequests.vue";
 import MyDeal from "../views/MyDeals.vue";
-import MyProfile from "../components/profile/ProfileSideBar.vue";
+import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
-import Chats from "../views/Chats";
+import Chats from "../views/Chats.vue";
 import Profile from "../views/Profile.vue";
 import SideBar from "../components/profile/ProfileSideBar.vue";
 
