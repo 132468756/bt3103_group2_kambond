@@ -41,7 +41,8 @@ export default {
 
 .borrow-button {
   background-color: black;
-  color: white;
+  background-color: rgba(233,233,233,0.8);
+  border-radius: 10px;
   text-align: right;
   font-size: 11px;
   border: 10px;

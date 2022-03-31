@@ -73,7 +73,7 @@ export default {
                 otherUserBtn.innerHTML = dealInfo[4]
                 otherUserBtn.onclick = function(){
                     self.$router.push({ name:"Profile", params:{id: dealInfo[6]}})
-                    }
+                }
                 cell5.appendChild(otherUserBtn)
                 cell6.innerHTML = dealInfo[5]
 

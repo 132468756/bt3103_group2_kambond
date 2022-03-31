@@ -14,12 +14,12 @@
         </md-button>
       </div>
     </div>
-    <!-- <div class='sidebar__search'>
+    <div class='sidebar__search'>
       <div class='sidebar__searchContainer'>
         <md-icon>search</md-icon>
         <input placeholder="start new chat"/>
-      </div>c
-    </div> -->
+      </div>
+    </div>
     <div class="sidebar__chat">
       <div v-for="room in rooms" :key="room.id">
         <!-- <p> room </p> -->
