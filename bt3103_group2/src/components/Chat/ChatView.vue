@@ -47,7 +47,6 @@ import {
   doc,
   updateDoc,
   arrayUnion,
-  collection,
   getDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -108,7 +107,7 @@ export default {
     container.scrollTop = container.scrollHeight;
     this.$root.$on('updateChatViewEvent', room => {
           console.log("retriving", room);
-          this.room = room;
+          // this.room = room;
           this.friend = room.user;
           this.getRoomName(room.meetingRoom);
           this.avatar = this.friend.picture;

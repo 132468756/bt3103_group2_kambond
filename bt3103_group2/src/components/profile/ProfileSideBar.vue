@@ -36,6 +36,7 @@
         <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
         <CreatePost id="createpostform" v-if="this.showCreate" />
         <LogOut v-if="this.showProfile"/>
+        <Chat v-if="this.showChats"/>
     </div>
 </div>
 </template>
@@ -53,6 +54,7 @@ import MyDealTable from "../profile/MyDealsTable.vue"
 import UserInfoDisplay from "../profile/UserInfoDisplay.vue"
 import CreatePost from "../profile/CreatePostForm.vue"
 import LogOut from "../Logout.vue"
+import Chat from "../../views/Chats.vue"
 
 const db = getFirestore(firebaseApp)
 
@@ -67,7 +69,8 @@ export default {
         MyDealTable,
         UserInfoDisplay,
         CreatePost,
-        LogOut
+        LogOut,
+        Chat
     },
     data(){
         return{
