@@ -150,11 +150,11 @@ export default {
                 //Change the post status back to previous state
                 if(post_info.data().purpose == "Borrowing"){
                     await updateDoc(post, {
-                        status:"Want to Borrow"
+                        status:"Want to borrow"
                     })
                 } else {
                     await updateDoc(post, {
-                        status:"Want to Lend"
+                        status:"Want to lend"
                     })
                 }
                 // Re-render the request table

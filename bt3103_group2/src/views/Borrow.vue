@@ -112,6 +112,8 @@ export default {
 <style scoped>
 #postModal{
   justify-content:center;
+  background-color: rgba(233,233,233,0.8);
+  border-radius: 10px;
 }
 
 .postList{

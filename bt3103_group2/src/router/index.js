@@ -9,7 +9,7 @@ import MyRequest from "../views/MyRequests.vue";
 import MyDeal from "../views/MyDeals.vue";
 import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
-import Chats from "../views/Chats.vue";
+import Chats from "../components/Chat/ChatView.vue";
 import Profile from "../views/Profile.vue";
 import SideBar from "../components/profile/ProfileSideBar.vue";
 
@@ -77,6 +77,7 @@ const routes = [
     path: "/chats",
     name: "Chats",
     component: Chats,
+    props: true,
   },
 
   {

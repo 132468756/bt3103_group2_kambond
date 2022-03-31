@@ -7,7 +7,8 @@
 
   <div>
     <otherUserProfileTable :id="this.user" />
-    <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+    <!-- <button id="chatBtn" @click="createChatRoom(this)">Chat</button> -->
+    <button id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
     <likeBtn />
   </div>
 </template>
@@ -38,7 +39,7 @@ export default {
   },
   data() {
     return {
-      user: this.id,
+      user: '',
     };
   },
   methods: {
@@ -70,9 +71,15 @@ export default {
         console.log(docNew);
       }
     },
+
+    // chatWithUser(){
+    //   console.log("profile page: ",this.user)
+    //   this.$router.push({ name:"Chats", params:{id: this.user}})
+    // }
   },
   mounted() {
     console.log(this.id);
+    this.user = this.id
   },
 
   components: {

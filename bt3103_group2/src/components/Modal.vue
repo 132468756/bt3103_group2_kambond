@@ -212,7 +212,8 @@ const db = getFirestore(firebaseApp);
   }
 
   .modal {
-    background: #FFFFFF;
+    background-color: rgba(233,233,233,0.8);
+    border-radius: 10px;
     box-shadow: 2px 2px 20px 1px;
     overflow-x: auto;
     display: flex;
