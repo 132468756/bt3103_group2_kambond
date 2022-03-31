@@ -1,17 +1,16 @@
 <template>
   <div v-if="fetched" class="app">
     <div class="app__body">
-      <ChatSideBar :rooms="rooms"/>
-      <ChatView :room="firstRoom" />
+      <ChatSideBar/>
+      <ChatView />
     </div>
   </div>
   <div v-else>
     <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-  </div> -->
+  </div>
 </template>
 
 <script>
-import {ref} from 'vue'
 import ChatView from "../components/Chat/ChatView.vue";
 import ChatSideBar from "../components/Chat/ChatSideBar.vue";
 // import ListFriends from "../components/Chat/ListFriends.vue";
@@ -21,8 +20,8 @@ import {
   getFirestore,
   getDoc,
   doc,
-  collection,
-  getDocs,
+  //collection,
+  //getDocs,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
@@ -46,34 +45,12 @@ export default {
       this.friends = docRef.data().chatrooms;
       console.log("friends", this.friends);
     },
-    async getRooms() {
-      this.fetched = true;
-      const docNow = await getDocs(collection(db, "Chats"));
-      
-      docNow.forEach((doc) => {
-        console.log(doc.data().user2 == String(auth.currentUser.displayName));
-        if (
-          (doc.data().user1 == String(auth.currentUser.email)) |
-          (doc.data().user2 == String(auth.currentUser.email))
-        ) {
-          this.rooms.push(doc.data().chatRoomName);
-        }
-      });
-      console.log("rooms", this.rooms);
-      console.log(ref(this.rooms))
-      if (this.rooms.length > 0) {
-        console.log("update chatview by first room", this.rooms[0]);
-        this.firstRoom = this.rooms[0];
-      }
-    },
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user.email;
-        console.log(user.email);
-        console.log(this.user);
-        this.getRooms();
+        this.fetched=true;
       }
     });
   },
