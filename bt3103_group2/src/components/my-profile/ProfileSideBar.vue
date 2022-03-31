@@ -37,6 +37,7 @@
         <CreatePost id="createpostform" v-if="this.showCreate" />
         <Chats id="chats" v-if="this.showChats" />
         <LogOut v-if="this.showProfile"/>
+        <Chats v-if="this.showChats"/>
     </div>
 </div>
 </template>

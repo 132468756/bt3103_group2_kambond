@@ -3,6 +3,11 @@
     <div class="app__body">
       <ChatSideBar  @update="update($event)"/>
       <ChatView v-if="showChats" :room="emitRoom"/>
+
+      <!-- <ChatSideBar/>
+      <ChatView/> -->
+      <!-- <ListFriends/>
+      <ListUsers/> -->
     </div>
   </div>
   <div v-else>
@@ -28,8 +33,7 @@ const db = getFirestore(firebaseApp);
 const auth = getAuth();
 export default {
   name: "Chat",
-  //components: { ChatSideBar, ChatView, ListFriends, ListUsers },
-  components: { ChatView, ChatSideBar},
+  components: { ChatSideBar, ChatView},
   data() {
     return {
       fetched: false,

@@ -4,7 +4,6 @@
     <NavBar />
     <div class="box">
       <div class="search">
-        <br><br><br><br><br><br><br><br>
       <SearchField @search="search($event)"/>
       </div>
     </div>
@@ -57,7 +56,7 @@ export default {
       postlist: [],
       isModalVisible: false,
       modalData: {},
-      searchText:"",
+      searchText :''，
     };
   },
 
@@ -169,19 +168,21 @@ export default {
   justify-content: center;
     
   /* The image used */
-  background-image: url("~@/assets/modal-bg3.jpg");
+  /* background-image: url("~@/assets/modal-bg3.jpg"); */
 
   /* Control the height of the image */
   min-height: 100%;
 
   /* Center and scale the image nicely */
-  background-position: center;
+  /* background-position: center;
   background-repeat: no-repeat;
-  background-size:cover;
+  background-size:cover; */
 
   border: 1px solid  rgba(0, 0, 0, 0.4);
   padding: 0%;
   margin: 1%;
+  background-color: rgba(233,233,233,0.8);
+  border-radius: 10px;
 }
 
 .postList {
