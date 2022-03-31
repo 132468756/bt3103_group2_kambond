@@ -143,14 +143,14 @@ export default {
 
 <style scoped>
 #createpostform {
-  background: rgba(205, 243, 213, 0.9);
-  padding-bottom: 80px;
-  justify-content:center;
-  width: 80%;
-  margin-left: 10%;
+    background: transparent;
+    padding-bottom: 80px;
+    justify-content:center;
+    width: 80%;
+    margin-left: 10%;
 }
 .postlabel {
-  color: rgb(31, 34, 34);
+  color: rgb(82, 179, 218);
   display: flex;
   justify-content:left;
   margin-top:2%;
@@ -166,9 +166,10 @@ input,select {
   padding: 10px 6px;
   width: 100%;
   box-sizing: border-box;
-  border: none;
   border-bottom: 1px solid #ddd;
   color: #555;
+  border: none;
+  box-shadow: 2px 2px 2px 2px rgba(82, 179, 218, 0.2);
 }
 .row{
     display:flex;
@@ -183,21 +184,23 @@ input,select {
 .submit {
     position:absolute;
     text-align: center;
-    background-color: rgba(0, 0, 255, 0.719);
+    background-color: orange;
     border:0;
-    margin-left: 24.54%;
+    margin-left: 24%;
     margin-top:20px;
     color:aliceblue;
     border-radius: 20px;
-    width:10%;
+    width: 10vw;
     height:7%;
     cursor: pointer;
+    font-size: 17px;
 }
 .submit:hover{
   outline-color: transparent;
   outline-style: solid;
   box-shadow: 0 0 0 1px lightblue;
   transition: 0.5s;
+  font-weight: bold;
 }
 .submit:active{
   background-color: lightblue;
