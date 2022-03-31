@@ -22,7 +22,8 @@
     </div> -->
     <div class="sidebar__chat">
       <div v-for="room in rooms" :key="room.id">
-        <SidebarChatUserRow :room="room" />
+        <!-- <p> room </p> -->
+        <SidebarChatUserRow :room="room" @update="update($event)" />
       </div>
     </div>
   </div>
@@ -42,9 +43,18 @@ const auth = getAuth();
 export default {
   name: "ChatSideBar",
   components: { SidebarChatUserRow },
+  emit:['emitRoom'],
   data() {
     return {
       rooms:[],
+      emitRoom:"",
+    }
+  },
+  methods: {
+    async update(text) {
+      console.log(text);
+      this.emitRoom = text;
+      this.$emit('update',this.emitRoom);
     }
   },
   mounted() {

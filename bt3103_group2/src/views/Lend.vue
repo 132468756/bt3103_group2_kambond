@@ -1,10 +1,10 @@
-template>
+<template>
 <div style="text-align:center;" v-if="user">
   <NavBar/>
   <div id="filter">
     <Filter1 @change = "newFilter1" />
 
-    <Filter2 />
+    <Filter2 @change = "newFilter2"/>
 
   </div>
   <Modal
@@ -56,6 +56,7 @@ export default {
       modalData:{},
       posts:[],
       filter:{},
+      filter2:[],
     };
   },
   components: {
@@ -115,10 +116,21 @@ export default {
       this.filter = value;
       console.log(this.filter);
       this.posts= [];
-      this.collectData(this, this.posts)
+      this.collectData()
+    },
+    newFilter2(value){
+      this.filter2 = []
+      for (const key in value){
+        this.filter2.push(value[key])
+      }
+      console.log(this.filter2[0]);
+      this.posts= [];
+      this.collectData()
     },
     async collectData(){
-      if (Object.keys(this.filter).length != 0){
+      var f1 = Object.keys(this.filter).length
+      var f2 = this.filter2.length
+      if (f1!= 0){
         var qTitle = query(
         collection(db, "Posts"),
         where("category", "in", this.filter),where("status","==","Want to lend")
@@ -137,6 +149,11 @@ export default {
       queryTitle.forEach((doc) => {
           this.posts.push(doc.data())
         })
+      
+      if(f2!= 0){
+        this.posts = this.posts.filter(post => this.filter2.includes(post.location))
+        console.log(this.filter2.includes(this.posts[0].location))
+      }
       
       let docRef = await getDoc(doc(db, "Users", "12345"));
 
