@@ -55,13 +55,16 @@
             </router-link>
           </div>
             <div id="buttons">
-            <div v-if= "post.purpose == 'Borrowing'">
+            <div v-if= "post.status == 'Want to borrow'">
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Lend</button>
             </div>
-            <div v-else>
+            <div v-else-if = "post.status == 'Want to lend'">
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Borrow </button>
+            </div>
+            <div v-else>
+              <button class = "borrowButton">Unavailable </button>
             </div>
 
             <button
@@ -285,7 +288,7 @@ const db = getFirestore(firebaseApp);
   }
 
   #buttons{
-    margin-top:20%;
+    margin-top:2%;
   }
 
   .borrowButton{

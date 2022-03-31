@@ -75,6 +75,7 @@ export default {
         });
         console.log(docNew);
       }
+      this.$router.push({name:'MyProfile'});
     },
   },
   mounted() {
