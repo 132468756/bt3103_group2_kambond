@@ -1,8 +1,8 @@
 <template>
-  <div class='sidebar'>
-    <div class='sidebar__header'>
-      <md-avatar/>
-      <div class='sidebar__headerRight'>
+  <div class="sidebar">
+    <div class="sidebar__header">
+      <md-avatar />
+      <div class="sidebar__headerRight">
         <md-button class="md-icon-button">
           <md-icon>donut_large</md-icon>
         </md-button>
@@ -20,8 +20,8 @@
         <input placeholder="start new chat"/>
       </div>c
     </div> -->
-    <div class='sidebar__chat'>
-      <div v-for="(room, id) in rooms" :key="id">
+    <div class="sidebar__chat">
+      <div v-for="room in rooms" :key="room.id">
         <SidebarChatUserRow :room="room" />
       </div>
     </div>
@@ -29,19 +29,49 @@
 </template>
 
 <script>
+import firebaseApp from "../../firebase.js";
 import SidebarChatUserRow from "./SidebarChatUserRow.vue";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+const db = getFirestore(firebaseApp);
+const auth = getAuth();
 export default {
   name: "ChatSideBar",
-  components : { SidebarChatUserRow },
-  props : ['rooms'],
-}
+  components: { SidebarChatUserRow },
+  data() {
+    return {
+      rooms:[],
+    }
+  },
+  mounted() {
+   async function getRooms(self) {
+      const docNow = await getDocs(collection(db, "Chats"));
+      
+      docNow.forEach((doc) => {
+        console.log(doc.data().user2 == String(auth.currentUser.displayName));
+        if (
+          (doc.data().user1 == String(auth.currentUser.email)) |
+          (doc.data().user2 == String(auth.currentUser.email))
+        ) {
+          self.rooms.push(doc.data().chatRoomName);
+        }
+      });
+      console.log("rooms", self.rooms);
+    }
+    getRooms(this);
+  },
+};
 </script>
 
 <style scoped>
-.sidebar{
+.sidebar {
   display: flex;
   flex-direction: column;
-  flex: 0.30;
+  flex: 0.3;
 }
 .sidebar__header {
   display: flex;
@@ -49,11 +79,11 @@ export default {
   padding: 20px;
   border-right: 1px solid lightgrey;
 }
-.sidebar__headerRight{
+.sidebar__headerRight {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width:  10vw;
+  min-width: 10vw;
 }
 .sidebar__headerRight > i {
   margin-right: 2vw;
@@ -78,7 +108,7 @@ export default {
   border: none;
   margin-left: 10px;
 }
-.sidebar__searchContainer > .md-icon{
+.sidebar__searchContainer > .md-icon {
   margin: unset;
   color: gray;
 }

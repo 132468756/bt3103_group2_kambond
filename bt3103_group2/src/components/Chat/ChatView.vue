@@ -3,7 +3,7 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img :src="avatar" />
+        <img id ="chatimg" src="@/assets/profilephoto.jpeg" />
       </md-avatar>
       <div class="chat__headerInfo">
         <h3>{{ friend.email }}</h3>
@@ -62,6 +62,7 @@ export default {
       roomid: null,
       avatar: null,
       friend: {},
+      myemail:auth.currentUser.email,
     };
   },
   methods: {
@@ -88,21 +89,22 @@ export default {
       console.log("chats", this.chats);
     },
 
-    getRoomName(room) {
-      console.log("room name is ", room);
-      let otherUser = auth.currentUser.email;
-      const room1 = String(otherUser + room);
-      const room2 = String(room + otherUser);
-      this.getPreviousChats(room1);
-      this.getPreviousChats(room2);
+    async getRoomName(room) {
+      console.log("room name is ", room);     
+      this.getPreviousChats(room);
     },
     displayFirstRoom() {
-      this.friend = this.room.user;
-      this.getRoomName(this.room.meetingRoom);
-      this.avatar = this.friend.picture;
+      if (this.room.data().user1 != this.myemail) {
+        this.friend = this.room.data().user2;
+      } else {
+        this.friend = this.room.data().user1;
+      }
+      this.getRoomName(this.room.data().chatRoomName);
+      this.avatar = this.room.data().profile_picture;
     },
   },
   mounted() {
+    console.log("Chatview",this.room);
     var container = this.$el.querySelector("#container");
     container.scrollTop = container.scrollHeight;
     this.$root.$on('updateChatViewEvent', room => {
@@ -115,12 +117,16 @@ export default {
           container.scrollTop = container.scrollHeight;
       });
     this.displayFirstRoom();
-    this.email = auth.currentUser.email;
+    // this.email = auth.currentUser.email;
   },
 };
 </script>
 
 <style scoped>
+#chatimg {
+  width:30px;
+  height: 30px;
+}
 .chat {
   flex: 0.7;
   display: flex;

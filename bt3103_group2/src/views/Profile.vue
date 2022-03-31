@@ -57,6 +57,7 @@ export default {
           user2:String(userId),
           profile_picture: String(chatUser.data().photoURL),
           chats: [],
+          chatRoomName:String(chatRoomId),
         });
         console.log(docNow);
         const docRef = await updateDoc(doc(db, "Users", String(userId)), {
