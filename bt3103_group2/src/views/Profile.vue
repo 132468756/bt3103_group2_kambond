@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <NavBar />
-    <backBtn />
-    <userInfo :user="this.id" />
-  </div>
+<div class="otherProfile">
+  <NavBar />
+  <div class="otherInfoDis">
+    <div class="otherInfoDisUp">
+      <userInfo id="otherUserInfo" :user="this.id" />
+      <div class="Btns" id="otherUserBtns">
+        <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+        <likeBtn id="likeBtn" :user="this.id"/>
+        <backBtn id="backBtn"/>
+      </div>
+    </div>
 
-  <div>
-    <otherUserProfileTable :id="this.user" />
-    <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-    <likeBtn />
+    <div>
+      <otherUserProfileTable :id="this.user" />
+    </div>
+  </div>
   </div>
 </template>
 
@@ -97,4 +103,29 @@ export default {
   border: none;
   margin-left: 10%;
 }
+/* .otherProfile{
+  justify-items: center;
+} */
+.otherInfoDis{
+  width: 80%;
+  height: 742px;
+  margin-top: 30px;
+  margin-left: 10%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+
+  background-image: url("~@/assets/hand-paint.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+/* #otherUserInfo, #otherUserBtns{
+  float: left;
+} */
+
+.otherInfoDisUp{
+  display:inline-flex;
+}
+
 </style>

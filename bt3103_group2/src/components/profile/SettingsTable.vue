@@ -213,10 +213,12 @@ export default {
         border-collapse: collapse;
         border-width: 1px 0;
     }
-    #confirmChangeUsername,#confirmChangeTelegram,#confirmChangeBio,#confirmChangeContact {
-        margin-left: 10%;
-    }
     #usernameContent,#emailContent,#telegramContent,#bioContent,#contactContent {
         width: 60%;
+    }
+
+    .changeSettingBtn{
+        margin: 0px;
+        text-align:center;
     }
 </style>

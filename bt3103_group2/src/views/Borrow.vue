@@ -355,11 +355,23 @@ methods: {
 <style scoped>
 #postModal{
   justify-content:center;
+    
+  /* The image used */
+  background-image: url("~@/assets/modal-bg3.jpg");
+
+  /* Control the height of the image */
+  min-height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
 }
 
 .postList{
   display:inline-block;
 }
+
 #createpostform {
   background: rgb(205, 243, 213);
   padding-bottom: 80px;
@@ -441,6 +453,7 @@ input,select {
   width: 2000px;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
+  display: flexbox;
 }
 
 .whole {
