@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import backBtn from "../components/profile/BackButton.vue"
-import dealTable from "../components/profile/MyDealsTable.vue"
+import backBtn from "../components/other-profile/BackButton.vue"
+import dealTable from "../components/my-profile/MyDealsTable.vue"
 import NavBar from "../components/NavBar.vue"
 export default {
     name: "MyDeals",

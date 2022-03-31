@@ -9,9 +9,9 @@
 <script>
 
 import NavBar from "../components/NavBar.vue"
-import backBtn from "../components/profile/BackButton.vue"
+import backBtn from "../components/other-profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import createPostForm from "../components/profile/CreatePostForm.vue"
+import createPostForm from "../components/my-profile/CreatePostForm.vue"
 
 export default {
   name: "CreatePost",

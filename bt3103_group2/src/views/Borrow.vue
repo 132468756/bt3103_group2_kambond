@@ -273,7 +273,7 @@ import { doc} from "firebase/firestore";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
 import Modal from "../components/Modal.vue"
-import backBtn from "../components/profile/BackButton.vue"
+import backBtn from "../components/other-profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {collection, getDocs, getDoc, query, where} from "firebase/firestore";
 const db = getFirestore(firebaseApp);

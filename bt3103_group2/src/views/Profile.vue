@@ -20,10 +20,10 @@
 
 <script>
 // import Logout from "../components/Logout.vue"
-import backBtn from "../components/profile/BackButton.vue";
-import otherUserProfileTable from "../components/OtherUserProfileTable.vue";
-import userInfo from "../components/profile/OtherUserInfoDisplay.vue";
-import likeBtn from "../components/profile/LikeButton.vue";
+import backBtn from "../components/other-profile/BackButton.vue";
+import otherUserProfileTable from "../components/other-profile/OtherUserProfileTable.vue";
+import userInfo from "../components/other-profile/OtherUserInfoDisplay.vue";
+import likeBtn from "../components/other-profile/LikeButton.vue";
 import NavBar from "../components/NavBar.vue";
 import {
   getFirestore,
@@ -95,14 +95,14 @@ export default {
 
 <style>
 #chatBtn {
-  width: 60px;
+  /* width: 60px;
   height: 30px;
   background-color: rgb(184, 240, 192);
   color: white;
   cursor: pointer;
   border-radius: 12px;
   border: none;
-  margin-left: 10%;
+  margin-left: 10%; */
 }
 /* .otherProfile{
   justify-items: center;

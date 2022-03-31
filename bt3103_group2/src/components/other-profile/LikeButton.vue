@@ -7,7 +7,7 @@
 <script>
 // import {getAuth} from "firebase/auth"
 import firebaseApp from "@/firebase.js";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 // const auth = getAuth();
 
@@ -18,13 +18,11 @@ export default {
     },
     methods:{
         async like(self) {
-            self.email = self.user;
-            let user_info = await getDoc(doc(db,"Users", self.user));
-            console.log("Number"+user_info.data().likes);
-            let number = await user_info.data().likes+1;
-            await updateDoc(user_info, {
-                likes: number
+            await updateDoc(doc(db,"Users", self.user), {
+                likes: this.likes++
             });
+            // console.log("Number"+user_info.data().likes);
+            // let number = await user_info.data().likes+1;
             console.log("Likes++");
         }
     }

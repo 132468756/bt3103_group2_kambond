@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import  firebaseApp from "../firebase.js"
+import  firebaseApp from "../../firebase.js"
 import { getFirestore} from "firebase/firestore"
 import{getDoc, doc} from "firebase/firestore"
-import Modal from "../components/Modal.vue"
+import Modal from "@/components/Modal.vue"
 
 const db = getFirestore(firebaseApp)
 export default {

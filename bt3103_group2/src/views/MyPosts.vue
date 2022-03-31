@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import backBtn from "../components/profile/BackButton.vue"
-import postTable from "../components/profile/MyPostsTable.vue"
+import backBtn from "../components/other-profile/BackButton.vue"
+import postTable from "../components/my-profile/MyPostsTable.vue"
 import NavBar from "../components/NavBar.vue"
 
 export default {
