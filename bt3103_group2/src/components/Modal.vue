@@ -287,7 +287,7 @@ const db = getFirestore(firebaseApp);
   }
 
   #buttons{
-    margin-top:20%;
+    margin-top:2%;
   }
 
   .borrowButton{

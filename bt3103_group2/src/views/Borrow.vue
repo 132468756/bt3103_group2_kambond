@@ -79,7 +79,10 @@ export default {
     async function collectData(posts){
       let z = await getDocs(collection(db,"Posts"))
       z.forEach((doc)=> 
-      posts.push(doc.data()))
+      { if(doc.data().status == "Want to borrow" ){
+          posts.push(doc.data()) }
+      }
+      )
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
       console.log(docRef.data().username);
