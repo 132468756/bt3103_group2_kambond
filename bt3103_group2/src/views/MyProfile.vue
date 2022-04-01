@@ -20,7 +20,7 @@
         <bottomEle/>
     </div>
     <LogOut/>
-</div>
+
 </template>
 
 <script>
@@ -29,6 +29,7 @@ import settingChat from "../components/profile/SettingsChatsButton.vue"
 import bottomEle from "../components/profile/MyProfileBottomEle.vue"
 import NavBar from "../components/NavBar.vue"
 import LogOut from "../components/Logout.vue"
+import ChangeProfileIcon from "../components/profile/ChangeProfileIcon.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 export default {
@@ -38,7 +39,8 @@ export default {
         LogOut,
         userInfo,
         settingChat,
-        bottomEle
+        bottomEle,
+        ChangeProfileIcon,
     },
 
     data(){

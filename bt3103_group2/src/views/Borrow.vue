@@ -1,17 +1,10 @@
 <template>
+<script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
 <div style="text-align:center;" v-if="user"> 
   <NavBar/>
   <backBtn/>
   <div class = "filter" id="createpostform">
 
-    <div className ="row">
-    <label className = "postlabel"> Status </label>
-    <select required v-model="post.status" id = "post.status">
-      <option>Want to lend</option>
-      <option>Requested</option>
-      <option>Completed</option>
-    </select>
-    </div>
 
 <div id="checked">Filtered status: {{ this.selectedstatus }}</div>
   <div class="whole">
@@ -19,13 +12,15 @@
       <h3>Status</h3>
     </div>
     <div id="checkboxes">
+      <th>Select All<input type="checkbox" @click="selectAll" v-model="allSelected"></th>
       <input
         type="checkbox"
         id="wtl"
         value="Want to lend"
+        @click = "select"
         v-model="selectedstatus"
       />
-      <label for="wtl">Want to lend</label>
+      <label for="wtl" >Want to lend</label>
 
       <input type="checkbox" id="rq" value="Requested" v-model="selectedstatus" />
       <label for="rq">Requested</label>
@@ -304,6 +299,7 @@ export default {
       selectedstatus: [],
       selectedcategory: [],
       selectedlocation: [],
+      allSelected: false,
     };
   },
   mounted() {
@@ -333,6 +329,18 @@ export default {
 
   },
 methods: {
+  selectAll: function() {
+    this.selectedstatus = [];
+    if(this.allSelected) {
+      for (post in posts){
+        this.selectedstatus,push("Wants to lend");
+      }
+    }
+
+  },
+  selected: function() {
+    this.allSelected = false;
+  },
    
   showModal(data) {
         this.isModalVisible = true;
@@ -360,75 +368,19 @@ methods: {
 .postList{
   display:inline-block;
 }
-#createpostform {
-  background: rgb(205, 243, 213);
-  padding-bottom: 80px;
-  border-radius: 10px;
-  justify-content:center;
-}
-.postlabel {
-  color: rgb(31, 34, 34);
-  display: flex;
-  justify-content:left;
-  margin-top:2%;
-  margin-bottom:2%;
-  width:100%;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-input,select {
-  display: flex;
-  justify-content:center;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-}
-.row{
-    display:flex;
-    flex-direction:column;
-    width:40%;
-    margin-left:30%;
-}
-.submitRow{
-    margin-left:60%;
-    padding:1%;
-}
-.submit {
-    position:absolute;
-    text-align: center;
-    background-color: blue;
-    border:0;
-    padding:10px 20px;
-    margin-top:20px;
-    color:aliceblue;
-    border-radius: 20px;
-    width:10%;
-    height:7%;
-    cursor: pointer;
-}
-.submit:hover{
-  outline-color: transparent;
-  outline-style: solid;
-  box-shadow: 0 0 0 1px lightblue;
-  transition: 0.5s;
-}
-.submit:active{
-  background-color: lightblue;
-}
+
 #checkboxes input {
-  margin: 10px 1px 10px 10px;
+  margin: 10px 10px 10px 10px;
+  display: inline-block;
 }
 
 #checkboxes label {
-  margin: 10px 20px 10px 5px;
+  margin: 10px 10px 10px 5px;
+  display: inline-block;
 }
 
 #name {
-  background-color: rgba(177, 178, 248, 0.699);
+  background-color: rgba(179, 180, 247, 0.699);
   text-align: center;
   width: 180px;
   border-bottom: 1px solid black;
@@ -436,7 +388,7 @@ input,select {
 }
 
 #checkboxes {
-  background-color: rgba(218, 217, 245, 0.911);
+  background-color: rgba(225, 217, 245, 0.925);
   padding: 10px;
   width: 2000px;
   border-bottom: 1px solid black;
@@ -448,7 +400,7 @@ input,select {
 }
 
 #checked {
-  background-color: rgba(241, 238, 255, 0.582);
+  background-color: rgba(254, 238, 255, 0.842);
   padding: 5px;
   border: 1px solid black;
 }
