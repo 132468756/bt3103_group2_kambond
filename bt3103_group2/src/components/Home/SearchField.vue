@@ -9,6 +9,7 @@
         v-model.lazy="searchText"
         required=""
         Placeholder="    Search in KamBond"
+        @keydown.enter="newSearch"
       />
       <button id="searchbutton" type="button" v-on:click="newSearch()">
         Search
