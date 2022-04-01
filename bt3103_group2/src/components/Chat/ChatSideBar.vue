@@ -106,6 +106,7 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 0.3;
+  width:10vh;
 }
 .sidebar__header {
   display: flex;

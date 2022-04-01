@@ -84,18 +84,15 @@ export default {
   display: grid;
   place-items: center;
   background-color: #dadbd3;
-  height: 100vh;
+  height: 700px;
 }
 
 .app__body {
   display: flex;
   background-color: #ededed;
   height: 90vh;
-  width: 90vw;
+  width: 70vw;
   box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
 }
 
-.md-progress-spinner {
-  place-self: center;
-}
 </style>
