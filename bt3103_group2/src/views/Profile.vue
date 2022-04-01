@@ -1,17 +1,16 @@
 <template>
-<div class="otherProfile">
-  <NavBar />
-  <div class="otherInfoDis">
-    <div class="otherInfoDisUp">
-      <userInfo id="otherUserInfo" :user="this.id" />
-      <div class="Btns" id="otherUserBtns">
-        <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-        <likeBtn id="likeBtn" :user="this.id"/>
-        <backBtn id="backBtn"/>
+  <div class="otherProfile">
+    <NavBar/>
+    <div class="otherInfoDis">
+      <div class="otherInfoDisUp">
+        <userInfo id="otherUserInfo" :user="this.id" />
+        <div class="Btns" id="otherUserBtns">
+          <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+          <likeBtn id="likeBtn" :user="this.id"/>
+          <backBtn id="backBtn"/>
+        </div>
       </div>
     </div>
-
-  <div>
     <otherUserProfileTable :id="this.user" />
     <!-- <button id="chatBtn" @click="createChatRoom(this)">Chat</button> -->
     <button id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
