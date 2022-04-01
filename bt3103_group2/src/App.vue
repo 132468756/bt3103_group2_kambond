@@ -15,6 +15,7 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css?family=Material+Icons");
 #app {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -30,6 +31,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
+  background-attachment: fixed;
 
   height: 870px;
 }

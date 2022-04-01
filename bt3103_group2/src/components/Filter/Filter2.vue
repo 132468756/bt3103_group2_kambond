@@ -6,11 +6,16 @@ export default {
       checkedNames: [],
     };
   },
+  watch: {
+    checkedNames() {
+      this.$emit('change', this.checkedNames)
+    }
+  },
 };
 </script>
 
 <template>
-  <div id="checked">Checked names: {{ checkedNames }}</div>
+  <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
   <div class="whole">
       <div id="name">
       <h3>Location</h3>
@@ -89,19 +94,20 @@ export default {
 }
 
 #name {
-  background-color: rgba(177, 178, 248, 0.699);
+  background-color: rgba(188, 221, 236, 0.9);
   text-align: center;
   width: 180px;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
+  border: transparent;
+  border-bottom-left-radius: 10px;
 }
 
 #checkboxes {
-  background-color: rgba(218, 217, 245, 0.911);
+  background-color: rgba(200, 238, 255, 0.7);
   padding: 10px;
   width: 2000px;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
+  border: transparent;
+  text-align: left;
+  border-bottom-right-radius: 10px;
 }
 
 .whole {
@@ -111,7 +117,6 @@ export default {
 #checked {
   background-color: rgba(241, 238, 255, 0.582);
   padding: 5px;
-  border: 1px solid black;
-  border-top: 0px;
+  border: transparent;
 }
 </style>

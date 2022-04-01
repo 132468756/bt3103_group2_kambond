@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style>
-    #BackBtn {
+    /* #BackBtn {
         width: 60px;
         height: 30px;
         background-color: rgb(0, 0, 0);
@@ -21,5 +21,5 @@ export default {
         border-radius: 12px;
         border: none;
         margin-left: 10%;
-    }
+    } */
 </style>

@@ -7,11 +7,11 @@ import CreatePost from "../views/CreatePost.vue";
 import MyPost from "../views/MyPosts.vue";
 import MyRequest from "../views/MyRequests.vue";
 import MyDeal from "../views/MyDeals.vue";
-import MyProfile from "../components/profile/ProfileSideBar.vue";
+import MyProfile from "../components/my-profile/ProfileSideBar.vue";
 import Settings from "../views/Settings";
-import Chats from "../views/Chats";
+import Chats from "../components/Chat/ChatView.vue";
 import Profile from "../views/Profile.vue";
-import SideBar from "../components/profile/ProfileSideBar.vue";
+import SideBar from "../components/my-profile/ProfileSideBar.vue";
 
 const routes = [
   {
@@ -77,13 +77,14 @@ const routes = [
     path: "/chats",
     name: "Chats",
     component: Chats,
+    props: true,
   },
 
   {
-    path: "/profile",
+    path: "/profile/:id",
     name: "Profile",
     component: Profile,
-    props: true,
+    props:true,
   },
 
   {

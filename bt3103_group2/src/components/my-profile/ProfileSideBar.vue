@@ -37,6 +37,7 @@
         <CreatePost id="createpostform" v-if="this.showCreate" />
         <Chats id="chats" v-if="this.showChats" />
         <LogOut v-if="this.showProfile"/>
+        <Chats v-if="this.showChats"/>
     </div>
 </div>
 </template>
@@ -47,12 +48,12 @@ import {getFirestore} from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import{getDoc, doc} from "firebase/firestore"
 import NavBar from "../NavBar.vue"
-import SettingsTable from "../profile/SettingsTable.vue"
-import MyPostTable from "../profile/MyPostsTable.vue"
-import MyRequestTable from "../profile/MyRequestsTable.vue"
-import MyDealTable from "../profile/MyDealsTable.vue"
-import UserInfoDisplay from "../profile/UserInfoDisplay.vue"
-import CreatePost from "../profile/CreatePostForm.vue"
+import SettingsTable from "../my-profile/SettingsTable.vue"
+import MyPostTable from "../my-profile/MyPostsTable.vue"
+import MyRequestTable from "../my-profile/MyRequestsTable.vue"
+import MyDealTable from "../my-profile/MyDealsTable.vue"
+import UserInfoDisplay from "../my-profile/UserInfoDisplay.vue"
+import CreatePost from "../my-profile/CreatePostForm.vue"
 import Chats from '../../views/Chats.vue'
 import LogOut from "../Logout.vue"
 

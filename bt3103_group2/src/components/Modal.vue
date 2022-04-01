@@ -50,18 +50,22 @@
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
-            <router-link :to= "{name:'Profile', params:{id: post.user}}">
+            <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
+            <router-link :to = "'/profile/' + post.user " :id = post.user>
               {{post.userName}}
             </router-link>
           </div>
             <div id="buttons">
-            <div v-if= "post.purpose == 'Borrowing'">
+            <div v-if= "post.status == 'Want to borrow'">
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Lend</button>
             </div>
-            <div v-else>
+            <div v-else-if = "post.status == 'Want to lend'">
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Borrow </button>
+            </div>
+            <div v-else>
+              <button class = "borrowButton">Unavailable </button>
             </div>
 
             <button
@@ -210,7 +214,8 @@ const db = getFirestore(firebaseApp);
   }
 
   .modal {
-    background: #FFFFFF;
+    background-color: rgba(233,233,233,0.8);
+    border-radius: 10px;
     box-shadow: 2px 2px 20px 1px;
     overflow-x: auto;
     display: flex;
@@ -285,7 +290,7 @@ const db = getFirestore(firebaseApp);
   }
 
   #buttons{
-    margin-top:20%;
+    margin-top:2%;
   }
 
   .borrowButton{

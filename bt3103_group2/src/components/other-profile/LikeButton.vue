@@ -7,20 +7,22 @@
 <script>
 // import {getAuth} from "firebase/auth"
 import firebaseApp from "@/firebase.js";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 // const auth = getAuth();
 
 export default {
     name:"Like",
+    props:{
+        user:String
+    },
     methods:{
         async like(self) {
-            let user_info = await getDoc(doc(db,"Users",String(self.user)))
-            console.log(user_info.data());
-            let number = user_info.data().likes+1;
-            updateDoc(user_info,{
-                likes: number
+            await updateDoc(doc(db,"Users", self.user), {
+                likes: this.likes++
             });
+            // console.log("Number"+user_info.data().likes);
+            // let number = await user_info.data().likes+1;
             console.log("Likes++");
         }
     }
@@ -28,7 +30,7 @@ export default {
 </script>
 
 <style>
-    #likeBtn {
+    /* #likeBtn {
         width: 60px;
         height: 30px;
         background-color: rgb(240, 184, 221);
@@ -37,5 +39,5 @@ export default {
         border-radius: 12px;
         border: none;
         margin-left: 10%;
-    }
+    } */
 </style>

@@ -28,6 +28,7 @@ const db = getFirestore(firebaseApp);
 const auth = getAuth();
 export default {
   name: "Chat",
+
   //components: { ChatSideBar, ChatView, ListFriends, ListUsers },
   components: { ChatView, ChatSideBar},
   prop:["onUpdate"],

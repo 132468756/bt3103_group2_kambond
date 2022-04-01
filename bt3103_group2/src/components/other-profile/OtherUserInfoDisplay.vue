@@ -50,6 +50,7 @@ export default {
             self.bio = user.data().bio
             self.creditPoint = user.data().creditPoint
             self.likes = user.data().likes
+            console.log("Self likes = ")
             console.log(self.likes)
         }
         display(this)

@@ -4,7 +4,6 @@
     <NavBar />
     <div class="box">
       <div class="search">
-        <br><br><br><br><br><br><br><br>
       <SearchField @search="search($event)"/>
       </div>
     </div>
@@ -57,7 +56,7 @@ export default {
       postlist: [],
       isModalVisible: false,
       modalData: {},
-      searchText:"",
+      searchText :''
     };
   },
 
@@ -142,7 +141,8 @@ export default {
           // Create user only if this is a new user
           const docNow = await setDoc(doc(db, "Users", self.user), data);
           console.log(docNow);
-          self.$router.push({ path:"/settings"})
+          self.$router.push({ path:"/myprofile"})
+          alert("PLease update your personal info in Settings before proceeding.")
         }
         // } catch (error) {
         //   console.error("Error adding document:", error);
@@ -160,8 +160,8 @@ export default {
   /* background-image: url("~@/assets/search-bg.png");
   background-position: center;
   background-repeat: no-repeat;
-  background-size:cover;
-  height: 880px; */
+  background-size:cover;*/
+  height: 880px; 
 }
 
 
@@ -169,19 +169,21 @@ export default {
   justify-content: center;
     
   /* The image used */
-  background-image: url("~@/assets/modal-bg3.jpg");
+  /* background-image: url("~@/assets/modal-bg3.jpg"); */
 
   /* Control the height of the image */
   min-height: 100%;
 
   /* Center and scale the image nicely */
-  background-position: center;
+  /* background-position: center;
   background-repeat: no-repeat;
-  background-size:cover;
+  background-size:cover; */
 
   border: 1px solid  rgba(0, 0, 0, 0.4);
   padding: 0%;
   margin: 1%;
+  background-color: rgba(233,233,233,0.8);
+  border-radius: 10px;
 }
 
 .postList {

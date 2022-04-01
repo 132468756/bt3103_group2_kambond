@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <NavBar />
-    <backBtn />
-    <userInfo :user="this.id" />
-  </div>
-
-  <div>
+  <div class="otherProfile">
+    <NavBar/>
+    <div class="otherInfoDis">
+      <div class="otherInfoDisUp">
+        <userInfo id="otherUserInfo" :user="this.id" />
+        <div class="Btns" id="otherUserBtns">
+          <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+          <likeBtn id="likeBtn" :user="this.id"/>
+          <backBtn id="backBtn"/>
+        </div>
+      </div>
+    </div>
     <otherUserProfileTable :id="this.user" />
-    <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
+    <!-- <button id="chatBtn" @click="createChatRoom(this)">Chat</button> -->
+    <button id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
     <likeBtn />
   </div>
 </template>
 
 <script>
 // import Logout from "../components/Logout.vue"
-import backBtn from "../components/profile/BackButton.vue";
-import otherUserProfileTable from "../components/OtherUserProfileTable.vue";
-import userInfo from "../components/profile/OtherUserInfoDisplay.vue";
-import likeBtn from "../components/profile/LikeButton.vue";
+import backBtn from "../components/other-profile/BackButton.vue";
+import otherUserProfileTable from "../components/other-profile/OtherUserProfileTable.vue";
+import userInfo from "../components/other-profile/OtherUserInfoDisplay.vue";
+import likeBtn from "../components/other-profile/LikeButton.vue";
 import NavBar from "../components/NavBar.vue";
 import {
   getFirestore,
@@ -38,7 +44,7 @@ export default {
   },
   data() {
     return {
-      user: this.id,
+      user: '',
     };
   },
   methods: {
@@ -71,9 +77,15 @@ export default {
       }
       this.$router.push({name:'MyProfile'});
     },
+
+    // chatWithUser(){
+    //   console.log("profile page: ",this.user)
+    //   this.$router.push({ name:"Chats", params:{id: this.user}})
+    // }
   },
   mounted() {
     console.log(this.id);
+    this.user = this.id
   },
 
   components: {
@@ -89,13 +101,38 @@ export default {
 
 <style>
 #chatBtn {
-  width: 60px;
+  /* width: 60px;
   height: 30px;
   background-color: rgb(184, 240, 192);
   color: white;
   cursor: pointer;
   border-radius: 12px;
   border: none;
-  margin-left: 10%;
+  margin-left: 10%; */
 }
+/* .otherProfile{
+  justify-items: center;
+} */
+.otherInfoDis{
+  width: 80%;
+  height: 742px;
+  margin-top: 30px;
+  margin-left: 10%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+
+  background-image: url("~@/assets/hand-paint.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+/* #otherUserInfo, #otherUserBtns{
+  float: left;
+} */
+
+.otherInfoDisUp{
+  display:inline-flex;
+}
+
 </style>
