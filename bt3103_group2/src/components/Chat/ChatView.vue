@@ -63,8 +63,13 @@ export default {
       roomid: null,
       avatar: null,
       friend: {},
+      timer:'',
     };
   },
+  created() {  
+    this.getPreviousChats();  
+    this.timer = setInterval(this.getPreviousChats, 5000);  
+  },  
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
@@ -75,7 +80,9 @@ export default {
       });
 
       document.getElementById("inputMsg").value = "";
-      this.getPreviousChats();
+  
+     this.getPreviousChats();
+     
     },
 
     isMe(chat) {
