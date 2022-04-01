@@ -2,17 +2,12 @@
   <div v-if="fetched" class="app">
     <div class="app__body">
       <ChatSideBar  @update="update($event)"/>
-      <ChatView v-if="showChats" :room="emitRoom"/>
-
-      <!-- <ChatSideBar/>
-      <ChatView/> -->
-      <!-- <ListFriends/>
-      <ListUsers/> -->
+      <ChatView v-if="showChats" :room="emitRoom" :key="refresh"/>
     </div>
   </div>
-  <div v-else>
+  <!-- <div v-else>
     <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -33,7 +28,10 @@ const db = getFirestore(firebaseApp);
 const auth = getAuth();
 export default {
   name: "Chat",
-  components: { ChatSideBar, ChatView},
+
+  //components: { ChatSideBar, ChatView, ListFriends, ListUsers },
+  components: { ChatView, ChatSideBar},
+  prop:["onUpdate"],
   data() {
     return {
       fetched: false,
@@ -43,6 +41,7 @@ export default {
       user: "",
       emitRoom:"",
       showChats:false,
+      refresh:0,
     };
   },
   methods: {
@@ -52,10 +51,21 @@ export default {
       console.log("friends", this.friends);
     },
     async update(text) {
-      console.log(text);
-      this.showChats = true;
+      console.log("inChats",text);
       this.emitRoom = text;
-    }
+      this.onUpdate = text;
+      console.log("inChatsupdate",this.onUpdate)
+      this.onUpdateFunction()
+    },
+     async onUpdateFunction() {
+      this.refresh +=1;
+      //console.log("fresh",this.refresh)
+      this.showChats = false;
+      //console.log("turn show chats false")
+      this.emitRoom = this.onUpdate;
+      this.showChats=true;
+      //console.log("turn show chats true")
+    },
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
@@ -75,18 +85,15 @@ export default {
   display: grid;
   place-items: center;
   background-color: #dadbd3;
-  height: 100vh;
+  height: 700px;
 }
 
 .app__body {
   display: flex;
   background-color: #ededed;
   height: 90vh;
-  width: 90vw;
+  width: 70vw;
   box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
 }
 
-.md-progress-spinner {
-  place-self: center;
-}
 </style>

@@ -4,8 +4,8 @@
       <img id ="chatimg" src="@/assets/profilephoto.jpeg" />
     </md-avatar>
     <div class='sidebarChat__info'>
-      <h2>{{chatroom}}</h2>
-      <p>Last message...</p>
+      <h2>{{otherName}}</h2>
+      <p>{{otherEmail}}</p>
     </div>
   </div>
 </template>
@@ -24,17 +24,21 @@ const auth = getAuth();
 export default {
   name: "SidebarChatUserRow",
   props : ["room"],
-  emits:["room"],
+  emits:["emitRoom"],
   data() {
     return {
       chatroom:null,
+      otherName:"",
+      otherEmail:"",
+      emitRoom:"",
     }
   },
   methods : {
     updateChatView() {
-      console.log("emit")
-      this.$emit("update",this.room);
-    }
+      console.log("emit",this.room)
+      this.emitRoom = this.room;
+      this.$emit("update",this.emitRoom);
+    },
   },
   mounted() {
     async function getChatRoom(self) {
@@ -44,10 +48,12 @@ export default {
       } else {
         self.chatroom = chat.data().user1;
       }
-       console.log("room details",self.chatroom)
+      let user = await getDoc(doc(db,"Users",self.chatroom));
+      self.otherName = user.data().username;
+      self.otherEmail = user.data().email;
     }
     getChatRoom(this);  
-  }
+  },
 }
 </script>
 
