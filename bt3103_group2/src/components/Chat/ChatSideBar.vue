@@ -3,7 +3,7 @@
     <div class="sidebar__header">
       <md-avatar />
       <div class="sidebar__headerRight">
-        <md-button class="md-icon-button">
+        <!-- <md-button class="md-icon-button">
           <md-icon>donut_large</md-icon>
         </md-button>
         <md-button class="md-icon-button">
@@ -11,7 +11,7 @@
         </md-button>
         <md-button class="md-icon-button">
           <md-icon>more_vert</md-icon>
-        </md-button>
+        </md-button> -->
       </div>
     </div>
     <!-- <div class='sidebar__search'>
@@ -23,6 +23,7 @@
     <div class="sidebar__chat">
       <div v-for="room in rooms" :key="room.id">
         <!-- <p> room </p> -->
+        <!-- <p>onupate:{{onUpdate}}</p> -->
         <SidebarChatUserRow :room="room" @update="update($event)" />
       </div>
     </div>
@@ -43,7 +44,8 @@ const auth = getAuth();
 export default {
   name: "ChatSideBar",
   components: { SidebarChatUserRow },
-  emit:['emitRoom'],
+  prop:["onUpdate"],
+  emits:['emitRoom'],
   data() {
     return {
       rooms:[],
@@ -52,10 +54,31 @@ export default {
   },
   methods: {
     async update(text) {
-      console.log(text);
+      console.log("inSideBar",text);
       this.emitRoom = text;
+      this.onUpdate = text;
+      console.log("sidebarupdate",this.onUpdate)
+      //this.getRooms();
       this.$emit('update',this.emitRoom);
-    }
+    },
+
+    // async getRooms() {
+    //   if(this.rooms.length != 0) {
+    //     this.rooms.splice(0);
+    //   }
+    //   const docNow = await getDocs(collection(db, "Chats"));
+      
+    //   docNow.forEach((doc) => {
+    //     console.log(doc.data().user2 == String(auth.currentUser.displayName));
+    //     if (
+    //       (doc.data().user1 == String(auth.currentUser.email)) |
+    //       (doc.data().user2 == String(auth.currentUser.email))
+    //     ) {
+    //       this.rooms.push(doc.data().chatRoomName);
+    //     }
+    //   });
+    //   console.log("rooms", this.rooms);
+    // }
   },
   mounted() {
    async function getRooms(self) {
@@ -73,7 +96,8 @@ export default {
       console.log("rooms", self.rooms);
     }
     getRooms(this);
-  },
+  },  
+  
 };
 </script>
 
