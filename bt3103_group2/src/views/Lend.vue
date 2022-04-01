@@ -7,25 +7,27 @@
     <Filter2 @change = "newFilter2"/>
 
   </div>
-  <Modal
-    v-show="isModalVisible"
-    @close="closeModal"
-    :post = "modalData"
-  />
-  <div className = "postList" v-for= "post in posts" :key = "post.id">
-    <button 
-      type="button"
-      id = "postModal"
-      @click="showModal(post)"
-    >
-    <Post 
-      className = "posts"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"
-    />
-    </button>
-  </div>
+    <div id="postView">
+      <Modal
+        v-show="isModalVisible"
+        @close="closeModal"
+        :post = "modalData"
+      />
+      <div className = "postList" v-for= "post in posts" :key = "post.id">
+        <button 
+          type="button"
+          id = "postModal"
+          @click="showModal(post)"
+        >
+        <Post 
+          className = "posts"
+          :owner = "post.userName"
+          :title = "post.title"
+          :status = "post.status"
+        />
+        </button>
+      </div>
+    </div>
   <div>
     
   </div>
@@ -173,11 +175,30 @@ export default {
 <style scoped>
 #postModal{
   justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.8);
+  margin: 5px 5px 5px 5px;
+  border: solid 1px gray;
 }
 
 .postList{
   display:inline-block;
+  /* overflow-y: scroll; */
 }
 
+#postView{
+  overflow-y: scroll;
+  width: 100%;
+  height: 490px;
+  margin-top: 20px;
+}
+
+#postView::-webkit-scrollbar {
+  display: none;
+}
+
+#filter{
+  border-radius: 10px;
+}
 
 </style>
