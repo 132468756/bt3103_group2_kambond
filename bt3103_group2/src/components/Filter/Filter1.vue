@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-  <div id="checked">Checked names: {{ checkedNames }}</div>
+  <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
    
   <div class="whole">
     <div id="name">
@@ -90,8 +90,8 @@ export default {
         value="Mobile Phones & Gadgets"
         v-model="checkedNames"
       />
-      <label for="MG">Mobile Phones & Gadgets</label>
-
+      <label for="MG">Mobile Phones & Gadgets</label> 
+      <div></div>
       <input
         type="checkbox"
         id="PG"
@@ -107,7 +107,7 @@ export default {
         v-model="checkedNames"
       />
       <label for="SE">Sports Equipment</label>
-      <br />
+
       <input
         type="checkbox"
         id="TV"
@@ -150,7 +150,7 @@ export default {
         v-model="checkedNames"
       />
       <label for="MI">Musical Instrument</label>
-
+      <br>
       <input
         type="checkbox"
         id="others"
@@ -172,19 +172,20 @@ export default {
 }
 
 #name {
-  background-color: rgba(177, 178, 248, 0.699);
+  background-color: rgba(239, 220, 198, 0.9);
   text-align: center;
   width: 180px;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
+  border: transparent;
+  border-top-left-radius: 10px;
 }
 
 #checkboxes {
-  background-color: rgba(218, 217, 245, 0.911);
+  background-color: rgba(253, 231, 208, 0.7);
   padding: 10px;
   width: 2000px;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
+  border: transparent;
+  text-align: left;
+  border-top-right-radius: 10px;
 }
 
 .whole {
@@ -194,6 +195,6 @@ export default {
 #checked {
   background-color: rgba(241, 238, 255, 0.582);
   padding: 5px;
-  border: 1px solid black;
+  border: transparent;
 }
 </style>
