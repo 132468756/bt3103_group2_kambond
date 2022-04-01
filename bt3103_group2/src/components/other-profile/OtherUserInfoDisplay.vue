@@ -53,15 +53,15 @@ export default {
             console.log(self.likes)
         },
 
-        emitUpdate() {
-            this.$emit("updateDisplay", {
+        emitInterface() {
+            this.$emit("interface", {
                 update: () => this.update(this)
             });
         }
     },
 
     mounted(){
-        this.emitUpdate();
+        this.emitInterface();
         // async function update(self){
         //     self.email = self.user
         //     let user_info = await getDoc(doc(db, "Users", self.user))
