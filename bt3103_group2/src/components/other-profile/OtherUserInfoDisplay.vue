@@ -21,39 +21,68 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return {
-            username:'Username',
-            bio:'Bio',
-            creditPoint:0,
-            likes:0,
+            username:'',
+            bio:'',
+            creditPoint:'',
+            likes:'',
             email:''
         }
     },
 
     props:{
-        user:String
+        user:String,
     },
 
-    mounted(){
-        async function update(self){
+    methods:{
+        async update(self){
             self.email = self.user
             let user_info = await getDoc(doc(db, "Users", self.user))
             self.username = user_info.data().username
             self.bio = user_info.data().bio
             self.likes = user_info.data().likes
             self.creditPoint = user_info.data().creditPoint
-        }
-        update(this)
+        },
 
-        async function display(self){
-            let user = await getDoc(doc(db, "Users", self.email))
+        async display(self){
+            let user = await getDoc(doc(db, "Users", self.user))
             self.username = user.data().username
             self.bio = user.data().bio
             self.creditPoint = user.data().creditPoint
             self.likes = user.data().likes
-            console.log("Self likes = ")
+            console.log("in meth Self likes = ")
             console.log(self.likes)
+        },
+
+        emitUpdate() {
+            this.$emit("updateDisplay", {
+                update: () => this.update(this)
+            });
         }
-        display(this)
+    },
+
+    mounted(){
+        this.emitUpdate();
+        // async function update(self){
+        //     self.email = self.user
+        //     let user_info = await getDoc(doc(db, "Users", self.user))
+        //     self.username = user_info.data().username
+        //     self.bio = user_info.data().bio
+        //     self.likes = user_info.data().likes
+        //     self.creditPoint = user_info.data().creditPoint
+        // }
+
+        this.update(this)
+
+        // async function display(self){
+        //     let user = await getDoc(doc(db, "Users", self.user))
+        //     self.username = user.data().username
+        //     self.bio = user.data().bio
+        //     self.creditPoint = user.data().creditPoint
+        //     self.likes = user.data().likes
+        //     console.log("mounted Self likes = ")
+        //     console.log(self.likes)
+        // }
+        this.display(this)
     }
 
 }
