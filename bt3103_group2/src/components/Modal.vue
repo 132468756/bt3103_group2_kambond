@@ -37,7 +37,7 @@
             Description: {{post.description}}  
           </div>
           <div classname="body">
-            Time: {{post.postTime}} 
+            Time: {{post.postDate}} 
           </div>
           <div classname="body">
             Catogory: {{post.category}} 

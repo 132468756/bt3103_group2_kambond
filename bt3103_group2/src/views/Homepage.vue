@@ -7,7 +7,7 @@
       <SearchField @search="search($event)"/>
       </div>
     </div>
-    <div className="postList" v-if="searchText">
+    <div className="postList" v-if="searchText" id="postView">
       <Modal v-show="isModalVisible" @close="closeModal" :post="modalData" />
       <div className="postList" v-for="post in postlist" :key="post.id">
         <button type="button" id="postModal" @click="showModal(post)">
@@ -166,30 +166,27 @@ export default {
 
 
 #postModal {
-  justify-content: center;
-    
-  /* The image used */
-  /* background-image: url("~@/assets/modal-bg3.jpg"); */
-
-  /* Control the height of the image */
-  min-height: 100%;
-
-  /* Center and scale the image nicely */
-  /* background-position: center;
-  background-repeat: no-repeat;
-  background-size:cover; */
-
-  border: 1px solid  rgba(0, 0, 0, 0.4);
-  padding: 0%;
-  margin: 1%;
-  background-color: rgba(233,233,233,0.8);
-  border-radius: 10px;
+    justify-content:center;
+    border-radius: 10px;
+    background-color: rgba(233,233,233,0.8);
+    margin: 5px 5px 5px 5px;
+    border: solid 1px gray;
+    margin-left: 12%;
 }
 
 .postList {
   display: inline-block;
-  width: 45vw;
   /* border: 3px solid black; */
 }
 
+#postView{
+  overflow-y: scroll;
+  width: 100%;
+  height: 440px;
+  margin-top: 20px;
+}
+
+#postView::-webkit-scrollbar {
+  display: none;
+}
 </style>
