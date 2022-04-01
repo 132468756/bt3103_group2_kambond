@@ -11,9 +11,9 @@
         Placeholder="    Search in KamBond"
         @keydown.enter="newSearch"
       />
-      <button id="searchbutton" type="button" v-on:click="newSearch()">
+      <!-- <button id="searchbutton" type="button" v-on:click="newSearch()">
         Search
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -67,6 +67,7 @@ export default {
   /* border: transparent; */
   border: 0.5px solid rgba(0, 0, 0, 0.37);
   background-color: rgba(255, 255, 255, 0.959);
+  font-size: 20px
 }
 
 #inputbox:focus {
