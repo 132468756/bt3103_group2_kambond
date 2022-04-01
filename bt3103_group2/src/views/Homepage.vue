@@ -56,7 +56,7 @@ export default {
       postlist: [],
       isModalVisible: false,
       modalData: {},
-      searchText :''，
+      searchText :''
     };
   },
 
@@ -141,7 +141,8 @@ export default {
           // Create user only if this is a new user
           const docNow = await setDoc(doc(db, "Users", self.user), data);
           console.log(docNow);
-          self.$router.push({ path:"/settings"})
+          self.$router.push({ path:"/myprofile"})
+          alert("PLease update your personal info in Settings before proceeding.")
         }
         // } catch (error) {
         //   console.error("Error adding document:", error);

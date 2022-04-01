@@ -3,7 +3,7 @@
     <table id="SettingTable" border=1 frame=void rules=rows>
         <tr class="settingRow">
             <td class="leftCol">User Name</td>
-            <td id="usernameContent" class="midCol">{{username}}</td>
+            <td id="usernameContent" class="midCol" @keydown.esc="abortChangeUsername">{{username}}</td>
             <td class="rightCol" id="changeUsernameBtn" v-if="this.usernameStatus == 'static'"><changeBtn @click="changeUsername()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeUsername" @click="confirmChangeUsername()">Confirm Change</button></td>
         </tr>
@@ -14,19 +14,19 @@
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Telegram</td>
-            <td id="telegramContent" class="midCol">{{telegram}}</td>
+            <td id="telegramContent" class="midCol" @keydown.esc="abortChangeTele">{{telegram}}</td>
             <td class="rightCol" v-if="this.telegramStatus == 'static'"><changeBtn @click="changeTelegram()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeTelegram" @click="confirmChangeTelegram()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Bio</td>
-            <td id="bioContent" class="midCol">{{bio}}</td>
+            <td id="bioContent" class="midCol" @keydown.esc="abortChangeBio">{{bio}}</td>
             <td class="rightCol" v-if="this.bioStatus == 'static'"><changeBtn @click="changeBio()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeBio" @click="confirmChangeBio()">Confirm Change</button></td>
         </tr>
         <tr class="settingRow">
             <td class="leftCol">Contact Number</td>
-            <td id="contactContent" class="midCol">{{contactNumber}}</td>
+            <td id="contactContent" class="midCol" @keydown.esc="abortChangeContact">{{contactNumber}}</td>
             <td class="rightCol" v-if="this.contactStatus == 'static'"><changeBtn @click="changeContact()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeContact" @click="confirmChangeContact()">Confirm Change</button></td>
         </tr>
@@ -88,23 +88,29 @@ export default {
             document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername' ref='newUsername'>"
             this.usernameStatus="changing"
         },
+        abortChangeUsername: function(){
+            document.getElementById("usernameContent").innerHTML=this.username
+            this.usernameStatus="static"
+            this.displayUserInfo(this.userID)
+        },
         confirmChangeUsername: async function(){
             var newUsername = document.getElementById("newUsername").value
             if (newUsername != '') {
-                this.username = newUsername
-                document.getElementById("usernameContent").innerHTML="'{{username}}'"
-                this.usernameStatus="static"
-                try{
-                    const docRef = await updateDoc(doc(db, "Users", this.userID), {
-                        username: newUsername
-                    })
-                    console.log(docRef)
-                    location.reload()
-                }
-                catch(error){
-                    console.log("Failed updating username")
-                }
-            } else {
+                    this.username = newUsername
+                    document.getElementById("usernameContent").innerHTML=this.username
+                    this.usernameStatus="static"
+                    try{
+                        const docRef = await updateDoc(doc(db, "Users", this.userID), {
+                            username: newUsername
+                        })
+                        console.log(docRef)
+                        // location.reload()
+                        this.displayUserInfo(this.userID)
+                    }
+                    catch(error){
+                        console.log("Failed updating username")
+                    }
+            }else {
                 alert("Username Cannot Be Empty!")
             }
         },
@@ -112,20 +118,26 @@ export default {
             document.getElementById("telegramContent").innerHTML="<input type='text' id='newTelegram'>"
             this.telegramStatus="changing"
         },
+        abortChangeTele: function(){
+            document.getElementById("telegramContent").innerHTML=this.telegram
+            this.telegramStatus="static"
+            this.displayUserInfo(this.userID)
+        },
         confirmChangeTelegram: async function(){
             var newTelegram = document.getElementById("newTelegram").value
             var regExp = /^@/
             var ok = regExp.test(newTelegram)
             if(ok){
                 this.telegram = newTelegram
-                document.getElementById("telegramContent").innerHTML="'{{telegram}}'"
+                document.getElementById("telegramContent").innerHTML=this.telegram
                 this.passwordStatus="static"
                 try{
                     const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         telegramHandle: newTelegram
                     })
                     console.log(docRef)
-                    location.reload()
+                    // location.reload()
+                    this.displayUserInfo(this.userID)
                 }
                 catch(error){
                     console.log("Failed updating telegram handle")
@@ -138,6 +150,11 @@ export default {
             document.getElementById("bioContent").innerHTML="<input type='text' id='newBio'>"
             this.bioStatus="changing"
         },
+        abortChangeBio: function(){
+            document.getElementById("bioContent").innerHTML=this.bio
+            this.bioStatus="static"
+            this.displayUserInfo(this.userID)
+        },
         confirmChangeBio: async function(){
             var newBio = document.getElementById("newBio").value
             if (newBio != '') {
@@ -145,14 +162,15 @@ export default {
             } else {
                 this.bio = ' '
             }
-            document.getElementById("bioContent").innerHTML="'{{bio}}'"
+            document.getElementById("bioContent").innerHTML=this.bio
             this.bioStatus="static"
             try{
                 const docRef = await updateDoc(doc(db, "Users",this.userID), {
                     bio: newBio
                 })
                 console.log(docRef)
-                location.reload()
+                // location.reload()
+                this.displayUserInfo(this.userID)
                 }
                 catch(error){
                     console.log("Failed updating bio")
@@ -162,20 +180,26 @@ export default {
             document.getElementById("contactContent").innerHTML="<input type='text' id='newContact'>"
             this.contactStatus="changing"
         },
+        abortChangeContact: function(){
+            document.getElementById("contactContent").innerHTML=this.contactNumber
+            this.contactStatus="static"
+            this.displayUserInfo(this.userID)
+        },
         confirmChangeContact: async function(){
             var newContact = document.getElementById("newContact").value
             var regExp = /[0-9]{8}$/
             var ok = regExp.test(newContact)
             if(ok){
                 this.contactNumber = newContact
-                document.getElementById("contactContent").innerHTML="'{{contactNumber}}'"
+                document.getElementById("contactContent").innerHTML=this.contactNumber
                 this.contactStatus="static"
                 try{
                     const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         contactNumber: newContact
                     })
                     console.log(docRef)
-                    location.reload()
+                    // location.reload()
+                    this.displayUserInfo(this.userID)
                 }
                 catch(error){
                     console.log("Failed updating contactNumber")
@@ -183,6 +207,19 @@ export default {
             } else {
                 alert("Invalid Contact Number! Please use a Singapore phone number.")
             }
+        },
+
+        displayUserInfo: async function(userID){
+            // console.log(auth.currentUser.email)
+            let user_info = await getDoc(doc(db, "Users", userID))
+            // console.log(typeof(user))
+            // console.log(user.data())
+            this.userID = userID
+            this.username = user_info.data().username
+            this.email = user_info.data().email
+            this.telegram = user_info.data().telegramHandle
+            this.bio = user_info.data().bio
+            this.contactNumber = user_info.data().contactNumber
         }
     }
 }
