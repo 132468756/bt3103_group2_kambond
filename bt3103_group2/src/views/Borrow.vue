@@ -31,8 +31,10 @@
   </div>
  
   <div className = "showRow">
-      <button className="show" @click = "showpost()"> Show </button>
+    <button className = "borrow" @click = "showborrow()"> Show all items for Borrowing </button>
+    <button className="show" @click = "showpost()"> Filter all items for Borrowing</button>
     </div>
+
     
   
   <Modal
@@ -69,6 +71,21 @@
       
     </button> 
   </div>
+
+     <div className = "postList" 
+    v-for= "post in borrowingposts"
+    :key = "post.id"
+    v-show = "onlyborrow">
+    <button type="button"
+          id = "postModal"
+          @click="showModal(post)">
+      <Post className = "posts"
+      :owner = "post.userName"
+      :title = "post.title"
+      :status = "post.status"/>
+      
+    </button> 
+  </div>
   
 </template>
 
@@ -93,25 +110,20 @@ export default {
   data() {
     return {
       user: false,
-      post:{
-      title: "",
-      purpose: "",
-      desription: "",
-      category: "",
-      location: "",
-      },
       isModalVisible:false,
       showdata: false,
       originalshow: true,
       modalData:{},
       posts:[],
       filteredPosts:[],
+      borrowingposts:[],
       selectedstatus: [],
       selectedcategory: [],
       selectedlocation: [],
       statusallSelected: false,
       locationallSelected: false,
       categoryallSelected: false,
+      onlyborrow: false,
       statuses: [
         {id: "Want to lend"},
         {id: "Requested"},
@@ -171,20 +183,11 @@ export default {
         post.userName = docRef.data().username
       
       });
-      return posts;
+      return posts
     }
     collectData(this.posts)
-  },
+},
 methods: {
-  async statusselectAll() {
-    if(this.statusallSelected) {
-      const selectedstatus = this.statuses.map((status) => (status.id));
-      this.selectedstatus = selectedstatus;
-    }
-    else {
-      this.selectedstatus = [];
-    }
-  },
   async locationselectAll() {
     if(this.locationallSelected) {
       const selectedlocation = this.locations.map((location) => (location.id));
@@ -210,12 +213,19 @@ methods: {
         console.log("isopen")
   },
   showpost() {
-    this.filteredPosts = this.posts.filter(post => this.selectedcategory.includes(post.category)).filter(post => this.selectedlocation.includes(post.location));
+    this.filteredPosts = this.borrowingposts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location));
     this.originalshow = false;
-    this.showdata = true;  
+    this.showdata = true; 
+    this.onlyborrow = false;
   },
   closeModal() {
         this.isModalVisible = false;
+ },
+ showborrow() {
+   this.borrowingposts = this.posts.filter(post => post.purpose === "Lending");
+   this.originalshow = false;
+   this.showdata = false;
+   this.onlyborrow = true;
  }
 
 },
@@ -229,6 +239,10 @@ methods: {
 
 .postList{
   display:inline-block;
+}
+
+.showrRow {
+  align-self: center;
 }
 
 .filteredpostList{
