@@ -3,10 +3,10 @@
     <NavBar/>
     <div class="otherInfoDis">
       <div class="otherInfoDisUp">
-        <userInfo id="otherUserInfo" :user="this.id" />
+        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate" />
         <div class="Btns" id="otherUserBtns">
           <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-          <likeBtn id="likeBtn" :user="this.id"/>
+          <likeBtn id="likeBtn" :user="this.id" v-on:click="update"/>
           <backBtn id="backBtn"/>
         </div>
       </div>
@@ -42,11 +42,25 @@ export default {
   props: {
     id: String,
   },
+
   data() {
     return {
       user: '',
     };
   },
+
+  childInterface:{
+    update: () => {}
+  },
+
+  getUpdate(childInterface) {
+    this.$options.childInterface = childInterface;
+  },
+
+  update(){
+    this.$options.childInterface.update(this);
+  },
+
   methods: {
     async createChatRoom(self) {
       const userId = auth.currentUser.email;
@@ -78,15 +92,22 @@ export default {
       this.$router.push({name:'MyProfile'});
     },
 
+    updateDisplay(){
+
+    }
+
     // chatWithUser(){
     //   console.log("profile page: ",this.user)
     //   this.$router.push({ name:"Chats", params:{id: this.user}})
-    // }
+    // },
+
   },
+
   mounted() {
     console.log(this.id);
     this.user = this.id
   },
+
 
   components: {
     // Logout,

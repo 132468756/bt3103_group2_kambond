@@ -3,15 +3,14 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img id="chatimg" src="@/assets/profilephoto.jpeg" />
+        <img id="chatimg" src="@/assets/weblogo.png" />
       </md-avatar>
       <div class="chat__headerInfo">
-        <h3>{{ friend.email }}</h3>
-        <p>Last seen at ...</p>
+        <h3>Welcome to Kambond</h3>
       </div>
 
       <div class="chat__headerRight">
-        <md-button class="md-icon-button">
+        <!-- <md-button class="md-icon-button">
           <md-icon>search</md-icon>
         </md-button>
         <md-button class="md-icon-button">
@@ -19,23 +18,23 @@
         </md-button>
         <md-button class="md-icon-button">
           <md-icon>more_vert</md-icon>
-        </md-button>
+        </md-button> -->
       </div>
     </div>
     <div class="chat__body" v-if="fetched">
-      <div v-for="chat in previouschats" :key="chat.id">     
+      <div v-for="chat in previouschats" :key="chat.id">
         <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
           {{ chat.message }}
         </p>
       </div>
     </div>
     <div class="chat__footer">
-      <md-icon>insert_emoticon</md-icon>
+      <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
         <input type="text" id="inputMsg" />
         <button type="submit">send a message</button>
       </form>
-      <md-icon>mic</md-icon>
+      <!-- <md-icon>mic</md-icon> -->
     </div>
   </div>
 </template>
@@ -59,7 +58,7 @@ export default {
   props: ["room"],
   data() {
     return {
-      fetched:false,
+      fetched: false,
       previouschats: [],
       roomid: null,
       avatar: null,
@@ -70,18 +69,36 @@ export default {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
       console.log("msg on submit", msg);
-      const mychat={user:auth.currentUser.email,message:msg};
+      const mychat = { user: auth.currentUser.email, message: msg };
       await updateDoc(doc(db, "Chats", this.room), {
-        chats: arrayUnion(mychat)
+        chats: arrayUnion(mychat),
       });
-       
+
       document.getElementById("inputMsg").value = "";
+      this.getPreviousChats();
     },
 
     isMe(chat) {
-      console.log(chat.user)
+      //console.log(chat.user);
       return chat.user == auth.currentUser.email;
     },
+
+     async getPreviousChats() {
+      let docRef = await getDoc(doc(db, "Chats", this.room));
+      let previous = docRef.data().chats;
+      //console.log(this.previouschats.length);
+      this.previouschats.splice(0);
+      //console.log(this.previouschats.length);
+      if (previous.length != 0) {
+        previous.forEach((doc) => {
+          if (!this.previouschats.includes(doc)) {
+          this.previouschats.push(doc);
+          }
+        });
+        console.log("chats", this.previouschats);
+      }
+      self.fetched = true;
+    }
   },
 
   mounted() {
