@@ -235,6 +235,10 @@ methods: {
 <style scoped>
 #postModal{
   justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.9);
+  margin: 5px 5px 5px 5px;
+  border: solid 1px gray;
 }
 
 .postList{
@@ -259,23 +263,23 @@ methods: {
 }
 
 #locationname {
-  background-color: rgba(239, 220, 198, 0.9);
+  background-color: rgba(241, 187, 129, 0.9);
   text-align: center;
-  width: 180px;
+  width: 15vw;
   border: transparent;
-  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .whole {
   display: flex;
 }
 
 #locationcheckboxes {
-  background-color: rgba(253, 231, 208, 0.7);
+  background-color: rgba(244, 216, 187, 0.9);
   padding: 10px;
-  width: 2000px;
+  width: 85vw;
   border: transparent;
   text-align: left;
-  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 #categorycheckboxes input {
@@ -287,20 +291,20 @@ methods: {
 }
 
 #categoryname {
-  background-color: rgba(188, 221, 236, 0.9);
+  background-color: rgba(180, 219, 237, 0.9);
   text-align: center;
-  width: 180px;
+  width: 15vw;
   border: transparent;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 
 #categorycheckboxes {
-  background-color: rgba(200, 238, 255, 0.7);
+  background-color: rgba(209, 226, 234, 0.9);
   padding: 10px;
-  width: 2000px;
+  width: 85vw;
   border: transparent;
   text-align: left;
-  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 </style>

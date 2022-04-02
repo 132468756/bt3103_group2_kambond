@@ -103,7 +103,7 @@ export default {
 
     #myCreditPoint, #likes {
     text-align: center;
-    color: rgb(106, 202, 170);
+    color: rgb(82, 165, 136);
     }
 
     .profilePicDiv {

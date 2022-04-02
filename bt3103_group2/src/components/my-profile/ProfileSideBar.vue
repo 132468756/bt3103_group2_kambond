@@ -30,11 +30,11 @@
     <div id="displayInfo">
         <br><br>
         <SettingsTable id="settingTable" v-if="this.showSettingTable" />
-        <MyPostTable id="MyPosts" v-if="this.showPosts" />
+        <MyPostTable id="MyPosts" v-if="this.showPosts" @showPost="openPosts"/>
         <MyRequestTable id="MyRequests" v-if="this.showRequests" />
         <MyDealTable id="MyDeals" v-if="this.showDeals" />
         <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
-        <CreatePost id="createpostform" v-if="this.showCreate" />
+        <CreatePost id="createpostform" v-if="this.showCreate" @showPost="openPosts"/>
         <Chats id="chats" v-if="this.showChats" />
         <LogOut v-if="this.showProfile"/>
     </div>
@@ -316,7 +316,7 @@ export default {
 }
 
 #btn:hover{
-    background-color: rgb(199, 199, 199);
+    background-color: rgba(199, 199, 199);
     transition: 0.3s;
 }
 

@@ -94,17 +94,17 @@ export default {
 }
 
 #name {
-  background-color: rgba(188, 221, 236, 0.9);
+  background-color: rgba(241, 187, 129, 0.9);
   text-align: center;
-  width: 180px;
+  width: 15vw;
   border: transparent;
   border-bottom-left-radius: 10px;
 }
 
 #checkboxes {
-  background-color: rgba(200, 238, 255, 0.7);
+  background-color: rgba(244, 216, 187, 0.9);
   padding: 10px;
-  width: 2000px;
+  width: 85vw;
   border: transparent;
   text-align: left;
   border-bottom-right-radius: 10px;
