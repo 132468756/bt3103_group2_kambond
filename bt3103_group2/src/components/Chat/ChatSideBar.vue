@@ -5,8 +5,8 @@
     </div>
     <div class='sidebar__search'>
       <div class='sidebar__searchContainer'>
-        <md-icon>search</md-icon>
-        <input placeholder="start new chat"/>
+        <img src="../../assets/search.png" id="searchImg">
+        <input placeholder="Search" id="newChatInput"/>  
       </div>
     </div>
     <div class="sidebar__chat">
@@ -94,6 +94,7 @@ export default {
 #headerinfo {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
+  border-top-left-radius: 20px;
 }
 .sidebar {
   display: flex;
@@ -107,6 +108,7 @@ export default {
   padding: 3px;
   border-right: 1px solid lightgrey;
   background-color: rgba(165, 208, 245, 0.359);
+  border-top-left-radius: 20px;
 }
 .sidebar__headerRight {
   display: flex;
@@ -149,5 +151,25 @@ export default {
 }
 .sidebar__chat:hover {
   overflow-y: auto;
+}
+
+#newChatInput {
+  width: 100%;
+  height: 30px;
+  border-radius: 20px;
+  /* border: transparent; */
+  border:transparent;
+  background-color: transparent;
+  font-size: 20px
+}
+
+#newChatInput:focus{
+  outline: none;
+}
+
+#searchImg {
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
 }
 </style>

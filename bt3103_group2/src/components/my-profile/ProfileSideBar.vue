@@ -37,7 +37,6 @@
         <CreatePost id="createpostform" v-if="this.showCreate" />
         <Chats id="chats" v-if="this.showChats" />
         <LogOut v-if="this.showProfile"/>
-        <Chats v-if="this.showChats"/>
     </div>
 </div>
 </template>
@@ -323,5 +322,10 @@ export default {
 
 #btn:active{
     background-color: rgb(107, 107, 107);
+}
+
+#chats {
+    width: 90%;
+    margin-left: 2.5%;
 }
 </style>
