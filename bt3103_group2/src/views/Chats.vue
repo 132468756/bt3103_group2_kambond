@@ -5,9 +5,6 @@
       <ChatView v-if="showChats" :room="emitRoom" :key="refresh"/>
     </div>
   </div>
-  <!-- <div v-else>
-    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-  </div> -->
 </template>
 
 <script>
@@ -84,16 +81,18 @@ export default {
 .app {
   display: grid;
   place-items: center;
-  background-color: #dadbd3;
-  height: 700px;
+  /* background-color: #c7dd1f; */
+  height: 70vh;
 }
 
 .app__body {
   display: flex;
-  background-color: #ededed;
-  height: 90vh;
+  background-color: #dedbdb;
+  height: 70vh;
   width: 70vw;
-  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 4px 20px -6px rgba(111, 153, 226, 0.75);
+  border-radius:20px;
 }
+
 
 </style>
