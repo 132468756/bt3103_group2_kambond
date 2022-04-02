@@ -1,8 +1,6 @@
 <template>
     <!-- This is sample for the Back button -->
-    <div id="Back">
-        <input type="button" id="BackBtn" value="Back" onclick="window.history.back()">
-    </div>
+    <input type="button" id="BackBtn" value="Back" onclick="window.history.back()">
 </template>
 
 <script>

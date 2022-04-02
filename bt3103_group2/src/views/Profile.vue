@@ -1,21 +1,19 @@
 <template>
-  <div class="otherProfile">
-    <NavBar/>
-    <div class="otherInfoDis">
-      <div class="otherInfoDisUp">
-        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate" />
-        <div class="Btns" id="otherUserBtns">
-          <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-          <likeBtn id="likeBtn" :user="this.id" v-on:click="update"/>
-          <backBtn id="backBtn"/>
+<NavBar/>
+<div class="otherUserProfile">
+    <div class="otherInfoDisUp">
+        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate($event)" />
+        <div id="otherUserBtns">
+            <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
+            <br>
+            <likeBtn class="Btn" id="likeBtn" :user="this.id" @updateAfterLike="update"/>
+            <br>
+            <backBtn class="Btn" id="backBtn"/>
         </div>
-      </div>
     </div>
-    <otherUserProfileTable :id="this.user" />
-    <!-- <button id="chatBtn" @click="createChatRoom(this)">Chat</button> -->
-    <button id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
-    <likeBtn />
-  </div>
+
+    <otherUserProfileTable id="otherUserTable" :userid="this.user" />
+</div>
 </template>
 
 <script>
@@ -53,15 +51,27 @@ export default {
     update: () => {}
   },
 
-  getUpdate(childInterface) {
+  // getUpdate(childInterface) {
+  //   this.$options.childInterface = childInterface;
+  //   console.log("child interface got")
+  // },
+
+  // update(){
+  //   this.$options.childInterface.update(this);
+  //   console.log("updated");
+  // },
+
+  methods: {
+    getUpdate(childInterface) {
     this.$options.childInterface = childInterface;
+    console.log("child interface got")
   },
 
   update(){
     this.$options.childInterface.update(this);
+    console.log("updated");
   },
-
-  methods: {
+  
     async createChatRoom(self) {
       const userId = auth.currentUser.email;
       const chatUserId = self.id;
@@ -121,21 +131,39 @@ export default {
 </script>
 
 <style>
-#chatBtn {
-  /* width: 60px;
-  height: 30px;
-  background-color: rgb(184, 240, 192);
-  color: white;
-  cursor: pointer;
-  border-radius: 12px;
-  border: none;
-  margin-left: 10%; */
+.otherInfoDisUp{
+  display:flex;
 }
-/* .otherProfile{
-  justify-items: center;
-} */
-.otherInfoDis{
-  width: 80%;
+#otherUserInfo{
+  float:left;
+  width:60vw;
+  background-image: url("~@/assets/birds.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+  
+  margin-left:4vw;
+
+  border-radius:10px;
+}
+#otherUserBtns{
+  float:right;
+  width:10vw;
+  margin-top:17vh;
+  margin-left:2vw;
+}
+#backBtn, #likeBtn, #chatBtn {
+  width: 7vw;
+  border: 0.5px solid black;
+  border-radius: 10px;
+  background-color: rgb(240, 182, 169);
+  margin: 5px;
+}
+#otherUserTable{
+
+}
+.otherUserProfile{
+  width: 80vw;
   height: 742px;
   margin-top: 30px;
   margin-left: 10%;
@@ -151,9 +179,5 @@ export default {
 /* #otherUserInfo, #otherUserBtns{
   float: left;
 } */
-
-.otherInfoDisUp{
-  display:inline-flex;
-}
 
 </style>
