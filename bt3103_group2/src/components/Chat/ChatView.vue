@@ -83,7 +83,7 @@ export default {
       return chat.user == auth.currentUser.email;
     },
 
-     async getPreviousChats() {
+    async getPreviousChats() {
       let docRef = await getDoc(doc(db, "Chats", this.room));
       let previous = docRef.data().chats;
       //console.log(this.previouschats.length);

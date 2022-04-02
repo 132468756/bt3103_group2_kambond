@@ -2,7 +2,6 @@
 <!-- <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script> -->
 <div style="text-align:center;" v-if="user"> 
   <NavBar/>
-  <backBtn/>
   <div class = "filter" id="createpostform">
 
 
@@ -268,7 +267,6 @@ import { doc} from "firebase/firestore";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
 import Modal from "../components/Modal.vue"
-import backBtn from "../components/other-profile/BackButton.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {collection, getDocs, getDoc, query, where} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
@@ -277,7 +275,6 @@ export default {
   name: "CreatePost",
   components:{
     NavBar,
-    backBtn,
     Post,
     Modal,
   },
