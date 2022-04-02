@@ -4,7 +4,41 @@ export default {
   data() {
     return {
       checkedNames: [],
+      allSelected: false,
+      optionlist: [
+        {id: "PGP/PGPR"},
+        {id: "Utown"},
+        {id: "RVRC"},
+        {id: "Temasek Hall"},
+        {id: "Shears Hall"},
+        {id: "KEVII Hall"},
+        {id: "Eusoff Hall"},
+        {id: "Raffles Hall"},
+        {id: "Kent Ridge Hall"},
+        {id: "Others"},
+      ],
+
     };
+  },
+  methods: {
+  async selectAll() {
+    if(this.allSelected) {
+      const checkedNames = this.optionlist.map((option)=> (option.id));
+      this.checkedNames = checkedNames;
+    }
+    else {
+      this.checkedNames = [];
+    }
+  },
+
+  updateCheckall: function(){
+    if(this.optionlist.length == this.checkedNames.length){
+        this.allSelected= true;
+    }else{
+        this.allSelected = false;
+    }
+  },
+
   },
   watch: {
     checkedNames() {
@@ -16,71 +50,16 @@ export default {
 
 <template>
   <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
-  <div class="whole">
-      <div id="name">
-      <h3>Location</h3>
+   <div class="whole">
+    <div id="name">
+      <h3>Category</h3>
     </div>
-  <div id="checkboxes">
-    <input type="checkbox" id="pgp" value="PGP / PGPR" v-model="checkedNames" />
-    <label for="pgp">PGP / PGPR</label>
-
-    <input type="checkbox" id="ut" value="Utown" v-model="checkedNames" />
-    <label for="ut">Utown</label>
-
-    <input type="checkbox" id="rvrc" value="RVRC" v-model="checkedNames" />
-    <label for="rvrc">RVRC</label>
-
-    <input
-      type="checkbox"
-      id="temasek"
-      value="Temasek Hall"
-      v-model="checkedNames"
-    />
-    <label for="temasek">Temasek Hall</label>
-
-    <input
-      type="checkbox"
-      id="sheares"
-      value="Sheares Hall"
-      v-model="checkedNames"
-    />
-    <label for="sheares">Sheares Hall</label>
-
-    <input
-      type="checkbox"
-      id="kevii"
-      value="KEVII Hall"
-      v-model="checkedNames"
-    />
-    <label for="kevii">KEVII Hall </label>
-
-    <input
-      type="checkbox"
-      id="eusoff"
-      value="Eusoff Hall"
-      v-model="checkedNames"
-    />
-    <label for="eusoff">Eusoff Hall</label>
-
-    <input
-      type="checkbox"
-      id="raffles"
-      value="Raffles Hall"
-      v-model="checkedNames"
-    />
-    <label for="raffles">Raffles Hall</label>
-
-    <input
-      type="checkbox"
-      id="kentridge"
-      value="Kent Ridge Hall"
-      v-model="checkedNames"
-    />
-    <label for="kentridge">Kent Ridge Hall</label>
-
-    <input type="checkbox" id="others" value="Others" v-model="checkedNames" />
-    <label for="others">Others</label>
-  </div>
+  <div id = "checkboxes">
+  <input type="checkbox" @change="selectAll" v-model= "allSelected">Select All
+  <class v-for = "option of optionlist" :key = "option.id">
+          <label><input type = "checkbox" v-model = "checkedNames" :value = "option.id" @change="updateCheckall()" />{{option.id}}</label>
+      </class>
+    </div>
   </div>
 </template>
 
