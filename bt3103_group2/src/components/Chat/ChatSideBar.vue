@@ -1,18 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__header">
-      <md-avatar />
-      <div class="sidebar__headerRight">
-        <!-- <md-button class="md-icon-button">
-          <md-icon>donut_large</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>chat</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-        </md-button> -->
-      </div>
+      <p id="headerinfo"> Welcome to KamBond!</p>
     </div>
     <div class='sidebar__search'>
       <div class='sidebar__searchContainer'>
@@ -102,16 +91,22 @@ export default {
 </script>
 
 <style scoped>
+#headerinfo {
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 .sidebar {
   display: flex;
   flex-direction: column;
   flex: 0.3;
+  border-radius: 20px;
 }
 .sidebar__header {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
+  justify-content: center;
+  padding: 3px;
   border-right: 1px solid lightgrey;
+  background-color: rgba(165, 208, 245, 0.359);
 }
 .sidebar__headerRight {
   display: flex;
@@ -150,6 +145,7 @@ export default {
   flex: 1;
   background-color: white;
   overflow-y: hidden;
+  border-bottom-left-radius: 20px;
 }
 .sidebar__chat:hover {
   overflow-y: auto;
