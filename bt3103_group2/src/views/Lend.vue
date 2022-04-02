@@ -180,25 +180,20 @@ export default {
   margin: 5px 5px 5px 5px;
   border: solid 1px gray;
 }
-
 .postList{
   display:inline-block;
   /* overflow-y: scroll; */
 }
-
-/* #postView{
+#postView{
   overflow-y: scroll;
   width: 100%;
   height: 490px;
   margin-top: 20px;
-} */
-
-/* #postView::-webkit-scrollbar {
+}
+#postView::-webkit-scrollbar {
   display: none;
-} */
-
+}
 #filter{
   border-radius: 10px;
 }
-
 </style>

@@ -3,10 +3,10 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img id="chatimg" src="@/assets/weblogo.png" />
       </md-avatar>
       <div class="chat__headerInfo">
-        <h3>Welcome to Kambond</h3>
+        <!-- <h3>Welcome to Kambond</h3> -->
+        <h3>{{this.friend}}</h3>
       </div>
 
       <div class="chat__headerRight">
@@ -31,8 +31,8 @@
     <div class="chat__footer">
       <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
-        <input type="text" id="inputMsg" />
-        <button type="submit">send a message</button>
+        <input type="text" id="inputMsg" autocomplete="off" />
+        <button type="submit" id="submitBtn"> Send Message</button>
       </form>
       <!-- <md-icon>mic</md-icon> -->
     </div>
@@ -55,7 +55,7 @@ const auth = getAuth();
 
 export default {
   name: "Chat",
-  props: ["room"],
+  props: ["room", "friendName"],
   data() {
     return {
       fetched: false,
@@ -121,10 +121,6 @@ export default {
 </script>
 
 <style scoped>
-#chatimg {
-  width: 30px;
-  height: 30px;
-}
 .chat {
   flex: 0.7;
   display: flex;
@@ -146,6 +142,7 @@ export default {
 .chat__headerInfo > h3 {
   margin-bottom: 3px;
   font-weight: 500;
+  margin-left: 50px;
 }
 
 .chat__headerInfo > p {
@@ -164,6 +161,10 @@ export default {
     repeat center;
   padding: 30px;
   overflow-y: auto;
+}
+
+.chat__body::-webkit-scrollbar {
+  display: none;
 }
 
 .chat__message {
@@ -199,6 +200,8 @@ export default {
   align-items: center;
   height: 62px;
   border-top: 1px solid lightgray;
+  width: 88%;
+  margin-left: 8%;
 }
 
 .chat__footer > form {
@@ -213,10 +216,32 @@ export default {
   border: none;
 }
 .chat__footer > form > button {
-  display: none;
+  display: flex;
 }
 .chat__footer > md-icon {
   padding: 10px;
   color: gray;
+}
+
+#inputMsg:focus {
+  outline: none
+}
+
+#submitBtn {
+  height: 40px;
+  width: 80px;
+  border-radius: 20px;
+  border: transparent;
+  background-color:#45e445;
+  text-align: center;
+  margin-left: 3%;
+}
+
+#submitBtn:hover{
+  cursor: pointer;
+}
+
+#submitBtn:active{
+  background-color: #5cc05c;
 }
 </style>
