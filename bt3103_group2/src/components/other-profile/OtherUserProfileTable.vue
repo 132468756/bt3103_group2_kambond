@@ -21,7 +21,7 @@ import Modal from "@/components/Modal.vue"
 const db = getFirestore(firebaseApp)
 export default {
     props:{
-        id:String
+        userid:String
     },
 
     components:{
@@ -78,7 +78,7 @@ export default {
         while(tb.rows.length > 1){
             tb.deleteRow(1)
         }
-        display(this, this.id)
+        display(this, this.userid)
         async function findPostInfo(record){
             let thisPost = await getDoc(doc(db, "Posts", record))
             // let postID = thisPost.data().postID
@@ -108,8 +108,9 @@ export default {
 <style>
     #OtherPosts {
         text-align: center;
-        width: 80%;
-        margin-left: 10%;
+        width: 90%;
+        margin-left:5%;
+        margin-top:5%;
     }
     #OtherPosts,.OtherPostTitle {
         border: 3px rgb(255, 165, 179) solid;

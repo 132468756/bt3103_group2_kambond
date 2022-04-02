@@ -1,7 +1,5 @@
 <template>
-  <div id="Like">
-      <button id="likeBtn" @click="like(this)">Like</button>
-  </div>
+    <button id="likeBtn" @click="like(this)">Like</button>
 </template>
 
 <script>
