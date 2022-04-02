@@ -16,6 +16,7 @@ export default {
     props:{
         user:String
     },
+    emits:["updateAfterLike"],
     methods:{
         async like(self) {
             let user = await getDoc(doc(db,"Users", self.user));
@@ -30,6 +31,7 @@ export default {
             console.log("After Self likes = ");
             let newuser = await getDoc(doc(db,"Users", self.user))
             console.log(newuser.data().likes);
+            this.$emit("updateAfterLike", newuser.data().likes);
         }
     }
 }

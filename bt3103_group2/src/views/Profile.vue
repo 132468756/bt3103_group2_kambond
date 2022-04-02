@@ -3,10 +3,10 @@
     <NavBar/>
     <div class="otherInfoDis">
       <div class="otherInfoDisUp">
-        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate" />
+        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate($event)" />
         <div class="Btns" id="otherUserBtns">
           <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-          <likeBtn id="likeBtn" :user="this.id" v-on:click="update"/>
+          <likeBtn id="likeBtn" :user="this.id" @updateAfterLike="update"/>
           <backBtn id="backBtn"/>
         </div>
       </div>
@@ -53,15 +53,27 @@ export default {
     update: () => {}
   },
 
-  getUpdate(childInterface) {
+  // getUpdate(childInterface) {
+  //   this.$options.childInterface = childInterface;
+  //   console.log("child interface got")
+  // },
+
+  // update(){
+  //   this.$options.childInterface.update(this);
+  //   console.log("updated");
+  // },
+
+  methods: {
+    getUpdate(childInterface) {
     this.$options.childInterface = childInterface;
+    console.log("child interface got")
   },
 
   update(){
     this.$options.childInterface.update(this);
+    console.log("updated");
   },
-
-  methods: {
+  
     async createChatRoom(self) {
       const userId = auth.currentUser.email;
       const chatUserId = self.id;

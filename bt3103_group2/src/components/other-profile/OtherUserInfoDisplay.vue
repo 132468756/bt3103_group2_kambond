@@ -57,6 +57,7 @@ export default {
             this.$emit("interface", {
                 update: () => this.update(this)
             });
+            console.log("interface emitted")
         }
     },
 
