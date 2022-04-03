@@ -5,7 +5,47 @@ export default {
   data() {
     return {
       checkedNames: [],
+      allSelected: false,
+      optionlist: [
+        {id: "Beauty & Personal Care"},
+        {id: "Bulletin Board"},
+        {id: "Computers & Tech"},
+        {id: "Food & Drinks"},
+        {id: "Health & Nutrition"},
+        {id: "Hobbies & Toys"},
+        {id: "Mobile Phones & Gadgets"},
+        {id: "Photography"},
+        {id: "Sports Equipment"},
+        {id: "Tickets & Vouchers"},
+        {id: "Learning & Enrichment"},
+        {id: "Video Gaming"},
+        {id: "Fashion"},
+        {id: "Exchange Currency"},
+        {id: "Musical Instrument"},
+        {id: "Others"},
+      ],
+
     };
+  },
+  methods: {
+  async selectAll() {
+    if(this.allSelected) {
+      const checkedNames = this.optionlist.map((option)=> (option.id));
+      this.checkedNames = checkedNames;
+    }
+    else {
+      this.checkedNames = [];
+    }
+  },
+
+  updateCheckall: function(){
+    if(this.optionlist.length == this.checkedNames.length){
+        this.allSelected= true;
+    }else{
+        this.allSelected = false;
+    }
+  },
+
   },
   watch: {
     async checkedNames() {
@@ -28,136 +68,15 @@ export default {
 
 <template>
   <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
-   
   <div class="whole">
     <div id="name">
       <h3>Category</h3>
     </div>
-
-    <div id="checkboxes">
-      <input
-        type="checkbox"
-        id="BP"
-        value="Beauty & Personal Care"
-        v-model="checkedNames"
-      />
-
-      <label for="BP">Beauty & Personal Care</label>
-
-      <input
-        type="checkbox"
-        id="BB"
-        value="Bulletin Board"
-        v-model="checkedNames"
-      />
-      <label for="BB">Bulletin Board</label>
-
-      <input
-        type="checkbox"
-        id="CT"
-        value="Computers & Tech"
-        v-model="checkedNames"
-      />
-      <label for="CT">Computers & Tech</label>
-
-      <input
-        type="checkbox"
-        id="FD"
-        value="Food & Drinks"
-        v-model="checkedNames"
-      />
-      <label for="FD">Food & Drinks</label>
-
-      <input
-        type="checkbox"
-        id="HN"
-        value="Health & Nutrition"
-        v-model="checkedNames"
-      />
-      <label for="HN">Health & Nutrition</label>
-
-      <input
-        type="checkbox"
-        id="HT"
-        value="Hobbies & Toys"
-        v-model="checkedNames"
-      />
-      <label for="HT">Hobbies & Toys</label>
-
-      <input
-        type="checkbox"
-        id="MG"
-        value="Mobile Phones & Gadgets"
-        v-model="checkedNames"
-      />
-      <label for="MG">Mobile Phones & Gadgets</label> 
-      <div></div>
-      <input
-        type="checkbox"
-        id="PG"
-        value="Photography"
-        v-model="checkedNames"
-      />
-      <label for="PG">Photography</label>
-
-      <input
-        type="checkbox"
-        id="SE"
-        value="Sports Equipment"
-        v-model="checkedNames"
-      />
-      <label for="SE">Sports Equipment</label>
-
-      <input
-        type="checkbox"
-        id="TV"
-        value="Tickets & Vouchers"
-        v-model="checkedNames"
-      />
-      <label for="TV">Tickets & Vouchers</label>
-
-      <input
-        type="checkbox"
-        id="LE"
-        value="Learning & Enrichment"
-        v-model="checkedNames"
-      />
-      <label for="LE">Learning & Enrichment</label>
-
-      <input
-        type="checkbox"
-        id="VG"
-        value="Video Gaming"
-        v-model="checkedNames"
-      />
-      <label for="VG">Video Gaming</label>
-
-      <input type="checkbox" id="FS" value="Fashion" v-model="checkedNames" />
-      <label for="FS">Fashion</label>
-
-      <input
-        type="checkbox"
-        id="EC"
-        value="Exchange Currency"
-        v-model="checkedNames"
-      />
-      <label for="EC">Exchange Currency</label>
-
-      <input
-        type="checkbox"
-        id="MI"
-        value="Musical Instrument"
-        v-model="checkedNames"
-      />
-      <label for="MI">Musical Instrument</label>
-      <br>
-      <input
-        type="checkbox"
-        id="others"
-        value="Others"
-        v-model="checkedNames"
-      />
-      <label for="others">Others</label>
+  <div id = "checkboxes">
+  <input type="checkbox" @change="selectAll" v-model= "allSelected">Select All
+  <class v-for = "option of optionlist" :key = "option.id">
+          <label><input type = "checkbox" v-model = "checkedNames" :value = "option.id" @change="updateCheckall()" />{{option.id}}</label>
+      </class>
     </div>
   </div>
 </template>
