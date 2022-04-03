@@ -7,25 +7,27 @@
     <Filter2 @change = "newFilter2"/>
 
   </div>
-  <Modal
-    v-show="isModalVisible"
-    @close="closeModal"
-    :post = "modalData"
-  />
-  <div className = "postList" v-for= "post in posts" :key = "post.id">
-    <button 
-      type="button"
-      id = "postModal"
-      @click="showModal(post)"
-    >
-    <Post 
-      className = "posts"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"
-    />
-    </button>
-  </div>
+    <div id="postView">
+      <Modal
+        v-show="isModalVisible"
+        @close="closeModal"
+        :post = "modalData"
+      />
+      <div className = "postList" v-for= "post in posts" :key = "post.id">
+        <button 
+          type="button"
+          id = "postModal"
+          @click="showModal(post)"
+        >
+        <Post 
+          className = "posts"
+          :owner = "post.userName"
+          :title = "post.title"
+          :status = "post.status"
+        />
+        </button>
+      </div>
+    </div>
   <div>
     
   </div>
@@ -55,8 +57,8 @@ export default {
       isModalVisible:false,
       modalData:{},
       posts:[],
-      filter:{},
-      filter2:[],
+      filter:[],
+      filter2:{},
     };
   },
   components: {
@@ -113,27 +115,26 @@ export default {
       this.isModalVisible = false;
     },  
     newFilter1(value){
-      this.filter = value;
-      console.log(this.filter);
+      this.filter = []
+      for (const key in value){
+        this.filter.push(value[key])
+      }
       this.posts= [];
       this.collectData()
     },
     newFilter2(value){
-      this.filter2 = []
-      for (const key in value){
-        this.filter2.push(value[key])
-      }
-      console.log(this.filter2[0]);
+      this.filter2 = value
       this.posts= [];
       this.collectData()
     },
     async collectData(){
-      var f1 = Object.keys(this.filter).length
-      var f2 = this.filter2.length
-      if (f1!= 0){
+      var f1 = this.filter.length
+      var f2 = Object.keys(this.filter2).length
+      console.log("after adding many filters " + this.filter2 )
+      if (f2!= 0){
         var qTitle = query(
         collection(db, "Posts"),
-        where("category", "in", this.filter),where("status","==","Want to lend")
+        where("location", "in", this.filter2),where("status","==","Want to lend")
         );
         
       }
@@ -150,9 +151,9 @@ export default {
           this.posts.push(doc.data())
         })
       
-      if(f2!= 0){
-        this.posts = this.posts.filter(post => this.filter2.includes(post.location))
-        console.log(this.filter2.includes(this.posts[0].location))
+      if(f1!= 0){
+        this.posts = this.posts.filter(post => this.filter.includes(post.Category))
+        console.log(this.posts[0].Category)
       }
       
       let docRef = await getDoc(doc(db, "Users", "12345"));
@@ -173,11 +174,25 @@ export default {
 <style scoped>
 #postModal{
   justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.9);
+  margin: 5px 5px 5px 5px;
+  border: solid 1px gray;
 }
-
 .postList{
   display:inline-block;
+  /* overflow-y: scroll; */
 }
-
-
+#postView{
+  overflow-y: scroll;
+  width: 100%;
+  height: 490px;
+  margin-top: 20px;
+}
+#postView::-webkit-scrollbar {
+  display: none;
+}
+#filter{
+  border-radius: 10px;
+}
 </style>

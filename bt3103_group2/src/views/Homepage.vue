@@ -1,14 +1,13 @@
 <template>
 
-  <div class="home" v-if="user">
+ <div class="home" v-if="user">
     <NavBar />
     <div class="box">
       <div class="search">
-        <br><br><br><br><br><br><br><br>
       <SearchField @search="search($event)"/>
       </div>
     </div>
-    <div className="postList" v-if="searchText">
+    <div className="postList" v-if="searchText" id="postView">
       <Modal v-show="isModalVisible" @close="closeModal" :post="modalData" />
       <div className="postList" v-for="post in postlist" :key="post.id">
         <button type="button" id="postModal" @click="showModal(post)">
@@ -88,8 +87,8 @@ export default {
       this.postlist.forEach(async (post)=>{
         let docRef = await getDoc(doc(db, "Users", post.user));
         post.userName = docRef.data().username
-      
       });
+
       console.log(this.postlist[0].status);
       console.log(this.searchText)
       }

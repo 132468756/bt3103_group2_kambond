@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import userInfo from "../components/profile/UserInfoDisplay.vue"
-import settingChat from "../components/profile/SettingsChatsButton.vue"
-import bottomEle from "../components/profile/MyProfileBottomEle.vue"
+import userInfo from "../components/my-profile/UserInfoDisplay.vue"
+import settingChat from "../components/my-profile/SettingsChatsButton.vue"
+import bottomEle from "../components/my-profile/MyProfileBottomEle.vue"
 import NavBar from "../components/NavBar.vue"
 import LogOut from "../components/Logout.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
@@ -38,7 +38,7 @@ export default {
         LogOut,
         userInfo,
         settingChat,
-        bottomEle
+        bottomEle,
     },
 
     data(){

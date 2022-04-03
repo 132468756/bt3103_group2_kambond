@@ -88,7 +88,7 @@ export default {
             console.log('Room Exists');
             snapshot.forEach((doc) => {
               console.log(doc.key);
-              this.$router.push({name: 'Chat',
+              this.$router.push({name: 'Chats',
                 params: {
                   nickname: localStorage.getItem('username'),
                   roomid: doc.key,

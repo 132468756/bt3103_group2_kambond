@@ -1,23 +1,27 @@
 <template>
-  <div>
-    <NavBar />
-    <backBtn />
-    <userInfo :user="this.id" />
-  </div>
+<NavBar/>
+<div class="otherUserProfile">
+    <div class="otherInfoDisUp">
+        <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate($event)" />
+        <div id="otherUserBtns">
+            <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
+            <br>
+            <likeBtn class="Btn" id="likeBtn" :user="this.id" @updateAfterLike="update"/>
+            <br>
+            <backBtn class="Btn" id="backBtn"/>
+        </div>
+    </div>
 
-  <div>
-    <otherUserProfileTable :id="this.user" />
-    <button id="chatBtn" @click="createChatRoom(this)">Chat</button>
-    <likeBtn />
-  </div>
+    <otherUserProfileTable id="otherUserTable" :userid="this.id" />
+</div>
 </template>
 
 <script>
 // import Logout from "../components/Logout.vue"
-import backBtn from "../components/profile/BackButton.vue";
-import otherUserProfileTable from "../components/OtherUserProfileTable.vue";
-import userInfo from "../components/profile/OtherUserInfoDisplay.vue";
-import likeBtn from "../components/profile/LikeButton.vue";
+import backBtn from "../components/other-profile/BackButton.vue";
+import otherUserProfileTable from "../components/other-profile/OtherUserProfileTable.vue";
+import userInfo from "../components/other-profile/OtherUserInfoDisplay.vue";
+import likeBtn from "../components/other-profile/LikeButton.vue";
 import NavBar from "../components/NavBar.vue";
 import {
   getFirestore,
@@ -36,12 +40,38 @@ export default {
   props: {
     id: String,
   },
+
   data() {
     return {
-      user: this.id,
+      user: '',
     };
   },
+
+  childInterface:{
+    update: () => {}
+  },
+
+  // getUpdate(childInterface) {
+  //   this.$options.childInterface = childInterface;
+  //   console.log("child interface got")
+  // },
+
+  // update(){
+  //   this.$options.childInterface.update(this);
+  //   console.log("updated");
+  // },
+
   methods: {
+    getUpdate(childInterface) {
+    this.$options.childInterface = childInterface;
+    console.log("child interface got")
+  },
+
+  update(){
+    this.$options.childInterface.update(this);
+    console.log("updated");
+  },
+  
     async createChatRoom(self) {
       const userId = auth.currentUser.email;
       const chatUserId = self.id;
@@ -71,10 +101,23 @@ export default {
       }
       this.$router.push({name:'MyProfile'});
     },
+
+    updateDisplay(){
+
+    }
+
+    // chatWithUser(){
+    //   console.log("profile page: ",this.user)
+    //   this.$router.push({ name:"Chats", params:{id: this.user}})
+    // },
+
   },
+
   mounted() {
     console.log(this.id);
+    this.user = this.id
   },
+
 
   components: {
     // Logout,
@@ -88,14 +131,58 @@ export default {
 </script>
 
 <style>
-#chatBtn {
-  width: 60px;
-  height: 30px;
-  background-color: rgb(184, 240, 192);
-  color: white;
-  cursor: pointer;
-  border-radius: 12px;
-  border: none;
-  margin-left: 10%;
+.otherInfoDisUp{
+  display:flex;
 }
+#otherUserInfo{
+  float:left;
+  width:60vw;
+  background-image: url("~@/assets/grey.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+  
+  margin-left:4vw;
+
+  border-radius:10px;
+}
+#otherUserBtns{
+  float:right;
+  width:10vw;
+  margin-top:14vh;
+  margin-left:2vw;
+}
+#backBtn, #likeBtn, #chatBtn {
+  width: 7vw;
+  border: 1.5px solid rgba(159, 204, 183);
+  border-radius: 10px;
+  background-color:rgb(214, 241, 238);
+  margin: 5px;
+}
+#backBtn:hover, #likeBtn:hover, #chatBtn:hover{
+  background-color:rgba(159, 204, 183);
+  transition:0.5s;
+}
+
+#otherUserTable{
+
+}
+.otherUserProfile{
+  width: 80vw;
+  height: 742px;
+  margin-top: 30px;
+  margin-left: 10%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+
+  background-image: url("~@/assets/hand-paint.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+/* #otherUserInfo, #otherUserBtns{
+  float: left;
+} */
+
 </style>

@@ -3,15 +3,14 @@
     <div class="chat__header">
       <md-avatar class="md-large">
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-        <img id="chatimg" src="@/assets/profilephoto.jpeg" />
       </md-avatar>
       <div class="chat__headerInfo">
-        <h3>{{ friend.email }}</h3>
-        <p>Last seen at ...</p>
+        <!-- <h3>Welcome to Kambond</h3> -->
+        <h3>{{ this.friend }}</h3>
       </div>
 
       <div class="chat__headerRight">
-        <md-button class="md-icon-button">
+        <!-- <md-button class="md-icon-button">
           <md-icon>search</md-icon>
         </md-button>
         <md-button class="md-icon-button">
@@ -19,23 +18,23 @@
         </md-button>
         <md-button class="md-icon-button">
           <md-icon>more_vert</md-icon>
-        </md-button>
+        </md-button> -->
       </div>
     </div>
     <div class="chat__body" v-if="fetched">
-      <div v-for="chat in previouschats" :key="chat.id">     
+      <div v-for="chat in previouschats" :key="chat.id">
         <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
           {{ chat.message }}
         </p>
       </div>
     </div>
     <div class="chat__footer">
-      <md-icon>insert_emoticon</md-icon>
+      <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
-        <input type="text" id="inputMsg" />
-        <button type="submit">send a message</button>
+        <input type="text" id="inputMsg" autocomplete="off" />
+        <button type="submit" id="submitBtn"> Send </button>
       </form>
-      <md-icon>mic</md-icon>
+      <!-- <md-icon>mic</md-icon> -->
     </div>
   </div>
 </template>
@@ -56,32 +55,50 @@ const auth = getAuth();
 
 export default {
   name: "Chat",
-  props: ["room"],
+  props: ["room", "friendName"],
   data() {
     return {
-      fetched:false,
+      fetched: false,
       previouschats: [],
       roomid: null,
       avatar: null,
-      friend: {},
+      friend: "",
     };
   },
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
       console.log("msg on submit", msg);
-      const mychat={user:auth.currentUser.email,message:msg};
+      const mychat = { user: auth.currentUser.email, message: msg };
       await updateDoc(doc(db, "Chats", this.room), {
-        chats: arrayUnion(mychat)
+        chats: arrayUnion(mychat),
       });
-       
+
       document.getElementById("inputMsg").value = "";
+      this.getPreviousChats();
     },
 
     isMe(chat) {
-      console.log(chat.user)
+      //console.log(chat.user);
       return chat.user == auth.currentUser.email;
     },
+
+     async getPreviousChats() {
+      let docRef = await getDoc(doc(db, "Chats", this.room));
+      let previous = docRef.data().chats;
+      //console.log(this.previouschats.length);
+      this.previouschats.splice(0);
+      //console.log(this.previouschats.length);
+      if (previous.length != 0) {
+        previous.forEach((doc) => {
+          if (!this.previouschats.includes(doc)) {
+          this.previouschats.push(doc);
+          }
+        });
+        console.log("chats", this.previouschats);
+      }
+      self.fetched = true;
+    }
   },
 
   mounted() {
@@ -104,10 +121,6 @@ export default {
 </script>
 
 <style scoped>
-#chatimg {
-  width: 30px;
-  height: 30px;
-}
 .chat {
   flex: 0.7;
   display: flex;
@@ -129,6 +142,7 @@ export default {
 .chat__headerInfo > h3 {
   margin-bottom: 3px;
   font-weight: 500;
+  margin-left: 50px;
 }
 
 .chat__headerInfo > p {
@@ -147,6 +161,10 @@ export default {
     repeat center;
   padding: 30px;
   overflow-y: auto;
+}
+
+.chat__body::-webkit-scrollbar {
+  display: none;
 }
 
 .chat__message {
@@ -182,6 +200,8 @@ export default {
   align-items: center;
   height: 62px;
   border-top: 1px solid lightgray;
+  width: 88%;
+  margin-left: 8%;
 }
 
 .chat__footer > form {
@@ -196,10 +216,34 @@ export default {
   border: none;
 }
 .chat__footer > form > button {
-  display: none;
+  display: flex;
 }
 .chat__footer > md-icon {
   padding: 10px;
   color: gray;
+}
+
+#inputMsg:focus {
+  outline: none
+}
+
+#submitBtn {
+  display: block;
+  height: 40px;
+  width: 80px;
+  border-radius: 20px;
+  border: transparent;
+  background-color: rgb(179, 249, 185);
+  text-align:center;
+  font-weight: bold;
+  margin-left: 3%;
+}
+
+#submitBtn:hover{
+  cursor: pointer;
+}
+
+#submitBtn:active{
+  background-color: #7bb67d;
 }
 </style>

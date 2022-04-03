@@ -8,11 +8,12 @@
         id="inputbox"
         v-model.lazy="searchText"
         required=""
-        Placeholder="    Search in KamBond"
+        Placeholder="    Enter to Search in KamBond"
+        @keydown.enter="newSearch"
       />
-      <button id="searchbutton" type="button" v-on:click="newSearch()">
+      <!-- <button id="searchbutton" type="button" v-on:click="newSearch()">
         Search
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -60,12 +61,13 @@ export default {
 }
 #inputbox {
   margin: 10px;
-  width: 35%;
+  width: 60vw;
   height: 40px;
   border-radius: 50px;
   /* border: transparent; */
   border: 0.5px solid rgba(0, 0, 0, 0.37);
   background-color: rgba(255, 255, 255, 0.959);
+  font-size: 16px
 }
 
 #inputbox:focus {
