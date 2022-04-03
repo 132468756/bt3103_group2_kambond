@@ -25,6 +25,7 @@ export default {
             userID:''
         }
     },
+    emits:["showPost"],
     mounted(){
         const auth = getAuth()
         onAuthStateChanged(auth, (user) => {
@@ -113,7 +114,9 @@ export default {
                     posts:arrayRemove(record)
                 })
                 // Re-render the page
-                location.reload()
+                // location.reload()
+                this.$emit("showPost")
+                display(this)
             }
         }
     }

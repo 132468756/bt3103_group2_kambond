@@ -84,6 +84,7 @@ export default {
             },
         };
     },
+    emits:["showPost"],
     mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -135,7 +136,8 @@ export default {
             posts: arrayUnion(postID)
         })
         }
-        history.back()
+        
+        this.$emit("showPost");
     }
     }
 }
@@ -174,9 +176,11 @@ input,select {
 .row{
     display:flex;
     flex-direction:column;
-    width:40%;
-    margin-left:30%;
+    width:50vw;
+    margin-left:4vw;
+    margin-top:2vh;
 }
+
 .submitRow{
     text-align: left;
     padding:1%;
@@ -184,25 +188,24 @@ input,select {
 .submit {
     position:absolute;
     text-align: center;
-    background-color: orange;
+    font-weight: bold;
+    background-color: rgb(154, 213, 232);
     border:0;
     margin-left: 24%;
-    margin-top:20px;
-    color:aliceblue;
-    border-radius: 20px;
+    margin-top:5vh;
+    color:white;
+    border-radius: 10px;
     width: 10vw;
-    height:7%;
+    height:4vh;
     cursor: pointer;
-    font-size: 17px;
 }
 .submit:hover{
   outline-color: transparent;
   outline-style: solid;
-  box-shadow: 0 0 0 1px lightblue;
+  box-shadow: 0 0 0 1px rgb(117, 169, 186);
   transition: 0.5s;
-  font-weight: bold;
 }
 .submit:active{
-  background-color: lightblue;
+  background-color: rgb(79, 192, 230);
 }
 </style>
