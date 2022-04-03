@@ -10,7 +10,8 @@ import MyDeal from "../views/MyDeals.vue";
 import MyProfile from "../components/my-profile/ProfileSideBar.vue";
 // import MyProfile from "../views/MyProfile.vue";
 import Settings from "../views/Settings";
-import Chats from "../components/Chat/ChatView.vue";
+import Chats from "../views/Chats.vue";
+// import Chats from "../components/Chat/chat_alternative.vue";
 import Profile from "../views/Profile.vue";
 import SideBar from "../components/my-profile/ProfileSideBar.vue";
 

@@ -90,7 +90,7 @@ export default {
                 if(dealInfo[5]=="Requested"){
                     dealBtn.innerHTML="Send"
                     dealBtn.onclick=function(){
-                        confirmDeal(record)
+                        confirmDeal(record, self)
                     }
                     cell7.appendChild(dealBtn)
                 }else if(dealInfo[5]=="Sent Out"){
@@ -102,13 +102,13 @@ export default {
                 }else if(dealInfo[5]=="Returned"){
                     dealBtn.innerHTML="Complete"
                     dealBtn.onclick=function(){
-                        completeDeal(record)
+                        completeDeal(record, self)
                     }
                     cell7.appendChild(dealBtn)
                 }else{
                     dealBtn.innerHTML="Delete"
                     dealBtn.onclick=function(){
-                        deleteDeal(record)
+                        deleteDeal(record, self)
                     }
                     cell7.appendChild(dealBtn)
                 }
@@ -135,19 +135,24 @@ export default {
             return dealInfo
         }
 
-        async function confirmDeal(record){
+        async function confirmDeal(record, self){
             if(confirm("Please confirm that you want to lend the item in this post." )){
                 // Update status in both Deals and Posts tables
                 const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
                     status: "Sent Out"
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyDeals")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
 
-        async function completeDeal(record){
+        async function completeDeal(record, self){
             if(confirm("Please confirm the borrower has returned your item.")){
                 // Update the post status to completed
                 const docRef = doc(db, "Posts", record)
@@ -168,12 +173,17 @@ export default {
                 await updateDoc(ownerInfo, {
                     creditPoint: increment(10)
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyDeals")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
 
-        async function deleteDeal(record){
+        async function deleteDeal(record, self){
             if(confirm("Please confirm that you want to delete this transaction history from your Deal record.")){
                 // Delete from user table
                 let myID = auth.currentUser.email
@@ -181,8 +191,13 @@ export default {
                 await updateDoc(myInfo, {
                     deals:arrayRemove(record)
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyDeals")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
     }

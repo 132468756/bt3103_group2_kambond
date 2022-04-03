@@ -1,8 +1,9 @@
+
 <template>
     <form @submit.prevent="onSubmit" method="post" id="createpostform">
         <div className ="row">
         <label className = "postlabel"> Title </label>
-        <input type="title" required v-model="post.title" id = "post.title"/>
+        <input type="title" required v-model="post.title" id = "post.title" autocomplete="off"/>
         </div>
 
         <div className ="row">
@@ -15,7 +16,7 @@
 
         <div className ="row">
         <label className = "postlabel"> Description </label>
-        <input type="desription" required v-model="post.description" id = "post.description"/>
+        <input type="desription" required v-model="post.description" id = "post.description" autocomplete="off"/>
         </div>
 
         <div className ="row">
@@ -68,7 +69,6 @@ import firebaseApp from "../../firebase.js";
 import {arrayUnion, getFirestore} from "firebase/firestore";
 import { doc, setDoc, updateDoc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-
 const db = getFirestore(firebaseApp);
 const auth = getAuth()
 export default {
@@ -84,7 +84,6 @@ export default {
             },
         };
     },
-    emits:["showPost"],
     mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -94,51 +93,53 @@ export default {
         })
     },
     methods: {
-    async createPost() {
-        var a = document.getElementById("post.title").value
-        var b = document.getElementById("post.purpose").value
-        var c = document.getElementById("post.description").value
-        var d = document.getElementById("post.category").value
-        var f = document.getElementById("post.location").value
-        var email = auth.currentUser.email
-        var status = b
-        if(b == "Borrowing"){
-            status = "Want to borrow"
+        async createPost() {
+            var a = document.getElementById("post.title").value
+            var b = document.getElementById("post.purpose").value
+            var c = document.getElementById("post.description").value
+            var d = document.getElementById("post.category").value
+            var f = document.getElementById("post.location").value
+            var email = auth.currentUser.email
+            var status = b
+            if(b == "Borrowing"){
+                status = "Want to borrow"
+            }else{
+                status = "Want to lend"
+            }
+            var sysTime = new Date()
+            var timeStamp = sysTime.getTime()
+            var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
+                                " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
+            var postID = email + a + timeStamp
+            if (confirm("creating post : " + a) == true){
+                try{
+                    const docRef = await setDoc(doc(db, "Posts", postID), {
+                        title:a,
+                        purpose:b,
+                        description:c,
+                        category:d,
+                        location:f,
+                        status: status,
+                        user:email,
+                        postID:postID,
+                        postDate:timeFormatted
+                    })
+                    console.log(docRef);
+                }catch(error){
+                    console.error("Error adding document:", error);
+                }
+                let user_info = doc(db, "Users", String(this.user.email))
+                await updateDoc(user_info, {
+                    posts: arrayUnion(postID)
+                })
+            }
+            // Reset all fields
+            this.post.title=''
+            this.post.purpose=''
+            this.post.description=''
+            this.post.location=''
+            this.post.category=''
         }
-        else{
-            status = "Want to lend"
-        }
-        var sysTime = new Date()
-        var timeStamp = sysTime.getTime()
-        var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
-                            " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
-        var postID = email + a + timeStamp
-        if (confirm("creating post : " + a) == true){
-        try{
-            const docRef = await setDoc(doc(db, "Posts", postID), {
-                title:a,
-                purpose:b,
-                description:c,
-                category:d,
-                location:f,
-                status: status,
-                user:email,
-                postID:postID,
-                postDate:timeFormatted
-            })
-            console.log(docRef);
-        }
-        catch(error){
-            console.error("Error adding document:", error);
-        }
-        let user_info = doc(db, "Users", String(this.user.email))
-        await updateDoc(user_info, {
-            posts: arrayUnion(postID)
-        })
-        }
-        
-        this.$emit("showPost");
-    }
     }
 }
 </script>
@@ -176,11 +177,9 @@ input,select {
 .row{
     display:flex;
     flex-direction:column;
-    width:50vw;
-    margin-left:4vw;
-    margin-top:2vh;
+    width:40%;
+    margin-left:30%;
 }
-
 .submitRow{
     text-align: left;
     padding:1%;
@@ -188,24 +187,25 @@ input,select {
 .submit {
     position:absolute;
     text-align: center;
-    font-weight: bold;
-    background-color: rgb(154, 213, 232);
+    background-color: orange;
     border:0;
     margin-left: 24%;
-    margin-top:5vh;
-    color:white;
-    border-radius: 10px;
+    margin-top:20px;
+    color:aliceblue;
+    border-radius: 20px;
     width: 10vw;
-    height:4vh;
+    height:7%;
     cursor: pointer;
+    font-size: 17px;
 }
 .submit:hover{
   outline-color: transparent;
   outline-style: solid;
-  box-shadow: 0 0 0 1px rgb(117, 169, 186);
+  box-shadow: 0 0 0 1px lightblue;
   transition: 0.5s;
+  font-weight: bold;
 }
 .submit:active{
-  background-color: rgb(79, 192, 230);
+  background-color: lightblue;
 }
 </style>
