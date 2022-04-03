@@ -37,6 +37,7 @@ import {
   doc,
   getDocs,
   collection,
+  getDoc,
 } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
@@ -82,6 +83,12 @@ export default {
         } else if (regEx.test(post.data().email)) {
           this.postlist.push(post.data());
         }
+      });
+
+      this.postlist.forEach(async (post)=>{
+        let docRef = await getDoc(doc(db, "Users", post.user));
+        post.userName = docRef.data().username
+      
       });
       console.log(this.postlist[0].status);
       console.log(this.searchText)
@@ -187,6 +194,8 @@ export default {
 .postList {
   display: inline-block;
   width: 45vw;
+  justify-content:center;
+  margin-left:18%;
   /* border: 3px solid black; */
 }
 
