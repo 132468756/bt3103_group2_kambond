@@ -5,7 +5,6 @@
         <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
       </md-avatar>
       <div class="chat__headerInfo">
-        <!-- <h3>Welcome to Kambond</h3> -->
         <h3>{{ this.friend }}</h3>
       </div>
 
@@ -32,7 +31,7 @@
       <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
         <input type="text" id="inputMsg" autocomplete="off" />
-        <button type="submit" id="submitBtn"> Send </button>
+        <button type="submit" id="submitBtn">Send</button>
       </form>
       <!-- <md-icon>mic</md-icon> -->
     </div>
@@ -55,7 +54,7 @@ const auth = getAuth();
 
 export default {
   name: "Chat",
-  props: ["room", "friendName"],
+  props: ["room"],
   data() {
     return {
       fetched: false,
@@ -83,7 +82,7 @@ export default {
       return chat.user == auth.currentUser.email;
     },
 
-     async getPreviousChats() {
+    async getPreviousChats() {
       let docRef = await getDoc(doc(db, "Chats", this.room));
       let previous = docRef.data().chats;
       //console.log(this.previouschats.length);
@@ -92,30 +91,54 @@ export default {
       if (previous.length != 0) {
         previous.forEach((doc) => {
           if (!this.previouschats.includes(doc)) {
-          this.previouschats.push(doc);
+            this.previouschats.push(doc);
           }
         });
-        console.log("chats", this.previouschats);
+        //console.log("chats", this.previouschats);
       }
       self.fetched = true;
-    }
+    },
+
+    async listFriends() {
+      const docRef = await getDoc(doc(db, "Chats", this.room));
+      if (docRef.data().user1 == String(auth.currentUser.email)) {
+        this.friend = docRef.data().user2;
+      } else {
+        this.friend = docRef.data().user1;
+      }
+      //console.log(this.friend);
+    },
   },
 
   mounted() {
-    console.log("Chatview", this.room);
+    //console.log("Chatview", this.room);
     async function getPreviousChats(roomId, self) {
       let docRef = await getDoc(doc(db, "Chats", roomId));
       let previous = docRef.data().chats;
-      console.log(previous.length);
+      //console.log(previous.length);
       if (previous.length != 0) {
         previous.forEach((doc) => {
           self.previouschats.push(doc);
         });
-        console.log("chats", self.previouschats);
+        //console.log("chats", self.previouschats);
       }
       self.fetched = true;
     }
     getPreviousChats(this.room, this);
+
+    async function listFriends(self) {
+      const docRef = await getDoc(doc(db, "Chats", self.room));
+      let friendName = "";
+      if (docRef.data().user1 == String(auth.currentUser.email)) {
+        friendName = docRef.data().user2;
+      } else {
+        friendName = docRef.data().user1;
+      }
+      const docNow = await getDoc(doc(db, "Users", friendName));
+      self.friend = docNow.data().username;
+      //console.log(self.friend);
+    }
+    listFriends(this);
   },
 };
 </script>
@@ -160,11 +183,13 @@ export default {
   background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
     repeat center;
   padding: 30px;
-  overflow-y: auto;
+  overflow-y: scroll;
+
 }
 
 .chat__body::-webkit-scrollbar {
   display: none;
+  bottom:0;
 }
 
 .chat__message {
@@ -224,7 +249,7 @@ export default {
 }
 
 #inputMsg:focus {
-  outline: none
+  outline: none;
 }
 
 #submitBtn {
@@ -234,16 +259,16 @@ export default {
   border-radius: 20px;
   border: transparent;
   background-color: rgb(179, 249, 185);
-  text-align:center;
+  text-align: center;
   font-weight: bold;
   margin-left: 3%;
 }
 
-#submitBtn:hover{
+#submitBtn:hover {
   cursor: pointer;
 }
 
-#submitBtn:active{
+#submitBtn:active {
   background-color: #7bb67d;
 }
 </style>
