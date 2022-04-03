@@ -3,38 +3,38 @@ export default {
   name: "filter2",
   data() {
     return {
-      checkedNames: [],
+      checkedLocation: [],
     };
   },
   watch: {
-    checkedNames() {
-      this.$emit('change', this.checkedNames)
+    checkedLocation() {
+      this.$emit('change', this.checkedLocation)
     }
   },
 };
 </script>
 
 <template>
-  <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
+  <div id="checked">Checked location: {{ checkedLocation }}</div> 
   <div class="whole">
       <div id="name">
       <h3>Location</h3>
     </div>
   <div id="checkboxes">
-    <input type="checkbox" id="pgp" value="PGP / PGPR" v-model="checkedNames" />
+    <input type="checkbox" id="pgp" value="PGP / PGPR" v-model="checkedLocation" />
     <label for="pgp">PGP / PGPR</label>
 
-    <input type="checkbox" id="ut" value="Utown" v-model="checkedNames" />
+    <input type="checkbox" id="ut" value="Utown" v-model="checkedLocation" />
     <label for="ut">Utown</label>
 
-    <input type="checkbox" id="rvrc" value="RVRC" v-model="checkedNames" />
+    <input type="checkbox" id="rvrc" value="RVRC" v-model="checkedLocation" />
     <label for="rvrc">RVRC</label>
 
     <input
       type="checkbox"
       id="temasek"
       value="Temasek Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="temasek">Temasek Hall</label>
 
@@ -42,7 +42,7 @@ export default {
       type="checkbox"
       id="sheares"
       value="Sheares Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="sheares">Sheares Hall</label>
 
@@ -50,7 +50,7 @@ export default {
       type="checkbox"
       id="kevii"
       value="KEVII Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="kevii">KEVII Hall </label>
 
@@ -58,7 +58,7 @@ export default {
       type="checkbox"
       id="eusoff"
       value="Eusoff Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="eusoff">Eusoff Hall</label>
 
@@ -66,7 +66,7 @@ export default {
       type="checkbox"
       id="raffles"
       value="Raffles Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="raffles">Raffles Hall</label>
 
@@ -74,11 +74,11 @@ export default {
       type="checkbox"
       id="kentridge"
       value="Kent Ridge Hall"
-      v-model="checkedNames"
+      v-model="checkedLocation"
     />
     <label for="kentridge">Kent Ridge Hall</label>
 
-    <input type="checkbox" id="others" value="Others" v-model="checkedNames" />
+    <input type="checkbox" id="others" value="Others" v-model="checkedLocation" />
     <label for="others">Others</label>
   </div>
   </div>
@@ -116,7 +116,8 @@ export default {
 
 #checked {
   background-color: rgba(241, 238, 255, 0.582);
-  padding: 5px;
   border: transparent;
+  height:0px;
+  color:transparent;
 }
 </style>
