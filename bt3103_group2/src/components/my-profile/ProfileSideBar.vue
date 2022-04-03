@@ -54,6 +54,7 @@ import MyDealTable from "../my-profile/MyDealsTable.vue"
 import UserInfoDisplay from "../my-profile/UserInfoDisplay.vue"
 import CreatePost from "../my-profile/CreatePostForm.vue"
 import Chats from '../../views/Chats.vue'
+// import Chats from "../Chat/chat_alternative.vue";
 import LogOut from "../Logout.vue"
 
 const db = getFirestore(firebaseApp)

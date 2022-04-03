@@ -93,50 +93,53 @@ export default {
         })
     },
     methods: {
-    async createPost() {
-        var a = document.getElementById("post.title").value
-        var b = document.getElementById("post.purpose").value
-        var c = document.getElementById("post.description").value
-        var d = document.getElementById("post.category").value
-        var f = document.getElementById("post.location").value
-        var email = auth.currentUser.email
-        var status = b
-        if(b == "Borrowing"){
-            status = "Want to borrow"
+        async createPost() {
+            var a = document.getElementById("post.title").value
+            var b = document.getElementById("post.purpose").value
+            var c = document.getElementById("post.description").value
+            var d = document.getElementById("post.category").value
+            var f = document.getElementById("post.location").value
+            var email = auth.currentUser.email
+            var status = b
+            if(b == "Borrowing"){
+                status = "Want to borrow"
+            }else{
+                status = "Want to lend"
+            }
+            var sysTime = new Date()
+            var timeStamp = sysTime.getTime()
+            var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
+                                " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
+            var postID = email + a + timeStamp
+            if (confirm("creating post : " + a) == true){
+                try{
+                    const docRef = await setDoc(doc(db, "Posts", postID), {
+                        title:a,
+                        purpose:b,
+                        description:c,
+                        category:d,
+                        location:f,
+                        status: status,
+                        user:email,
+                        postID:postID,
+                        postDate:timeFormatted
+                    })
+                    console.log(docRef);
+                }catch(error){
+                    console.error("Error adding document:", error);
+                }
+                let user_info = doc(db, "Users", String(this.user.email))
+                await updateDoc(user_info, {
+                    posts: arrayUnion(postID)
+                })
+            }
+            // Reset all fields
+            this.post.title=''
+            this.post.purpose=''
+            this.post.description=''
+            this.post.location=''
+            this.post.category=''
         }
-        else{
-            status = "Want to lend"
-        }
-        var sysTime = new Date()
-        var timeStamp = sysTime.getTime()
-        var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
-                            " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
-        var postID = email + a + timeStamp
-        if (confirm("creating post : " + a) == true){
-        try{
-            const docRef = await setDoc(doc(db, "Posts", postID), {
-                title:a,
-                purpose:b,
-                description:c,
-                category:d,
-                location:f,
-                status: status,
-                user:email,
-                postID:postID,
-                postDate:timeFormatted
-            })
-            console.log(docRef);
-        }
-        catch(error){
-            console.error("Error adding document:", error);
-        }
-        let user_info = doc(db, "Users", String(this.user.email))
-        await updateDoc(user_info, {
-            posts: arrayUnion(postID)
-        })
-        }
-        history.back()
-    }
     }
 }
 </script>

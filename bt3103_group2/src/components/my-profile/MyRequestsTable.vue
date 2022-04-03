@@ -84,19 +84,19 @@ export default {
                 if(requestInfo[5] == "Requested"){
                     requestBtn.innerHTML="Delete"
                     requestBtn.onclick=function(){
-                        deleteRequest(record)
+                        deleteRequest(record, self)
                     }
                     cell7.appendChild(requestBtn)
                 }else if(requestInfo[5] == "Sent Out"){
                     requestBtn.innerHTML="Receive"
                     requestBtn.onclick=function(){
-                        receiveRequest(record)
+                        receiveRequest(record, self)
                     }
                     cell7.appendChild(requestBtn)
                 }else if(requestInfo[5] == "Received"){
                     requestBtn.innerHTML="Return"
                     requestBtn.onclick=function(){
-                        returnRequest(record)
+                        returnRequest(record, self)
                     }
                     cell7.appendChild(requestBtn)
                 }else if(requestInfo[5] == "Returned"){
@@ -108,7 +108,7 @@ export default {
                 }else{
                     requestBtn.innerHTML="Delete"
                     requestBtn.onclick=function(){
-                        deleteRequestAfterComplete(record)
+                        deleteRequestAfterComplete(record, self)
                     }
                     cell7.appendChild(requestBtn)
                 }
@@ -134,7 +134,7 @@ export default {
         }
 
     
-        async function deleteRequest(record){
+        async function deleteRequest(record, self){
             var userID = auth.currentUser.email
             if(confirm("You are going to delete " + record)){
                 // Delete the record from the user table
@@ -157,23 +157,27 @@ export default {
                         status:"Want to lend"
                     })
                 }
-                // Re-render the request table
-                location.reload()
+                // Remove all rows from table
+                var table = document.getElementById("MyRequests")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
+                // Re-render the page
+                display(self)
             }
         }
 
         async function deleteDeal(userID, postID){
-            if(confirm("Please confirm that you are going to delete this request.")){
-                // Remove the record in the user's own table
-                const docRef = doc(db, "Users", userID)
-                await updateDoc(docRef, {
-                    deals: arrayRemove(postID)
-                })
-                // Remove the deal in the Deals table
-                await deleteDoc(doc(db, "Deals", postID))
-                console.log("Deal successfully deleted!")
-            }
+            // Remove the record in the user's own table
+            const docRef = doc(db, "Users", userID)
+            await updateDoc(docRef, {
+                deals: arrayRemove(postID)
+            })
+            // Remove the deal in the Deals table
+            await deleteDoc(doc(db, "Deals", postID))
+            console.log("Deal successfully deleted!")
         }
+
 
         async function receiveRequest(record){
             if(confirm("Please confirm that you have returned this item.")){
@@ -182,8 +186,13 @@ export default {
                 await updateDoc(docRef, {
                     status: "Received"
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyRequests")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
 
@@ -194,8 +203,13 @@ export default {
                 await updateDoc(docRef, {
                     status: "Returned"
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyRequests")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
 
@@ -207,8 +221,13 @@ export default {
                 await updateDoc(myInfo, {
                     requests:arrayRemove(record)
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyRequests")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
     }

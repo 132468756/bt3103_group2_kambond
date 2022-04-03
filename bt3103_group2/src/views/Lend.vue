@@ -1,5 +1,5 @@
 <template>
-<div style="text-align:center;" v-if="user">
+<div  v-if="user">
   <NavBar/>
   <div id="filter">
     <Filter1 @change = "newFilter1" />
@@ -179,6 +179,7 @@ export default {
   background-color: rgba(233,233,233,0.8);
   margin: 5px 5px 5px 5px;
   border: solid 1px gray;
+  margin-left: 12%;
 }
 .postList{
   display:inline-block;
@@ -187,7 +188,7 @@ export default {
 #postView{
   overflow-y: scroll;
   width: 100%;
-  height: 490px;
+  height: 570px;
   margin-top: 20px;
 }
 #postView::-webkit-scrollbar {

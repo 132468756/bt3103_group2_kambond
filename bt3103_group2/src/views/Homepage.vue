@@ -161,7 +161,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;*/
-  height: 880px; 
+  height: 880px;
 }
 
 

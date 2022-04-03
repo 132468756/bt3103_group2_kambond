@@ -76,7 +76,7 @@ export default {
                         deleteBtn.id = String(postInfo[0])
                         deleteBtn.innerHTML="Delete"
                         deleteBtn.onclick=function(){
-                            deletePost(record)
+                            deletePost(record, self)
                         }
                         cell8.appendChild(deleteBtn)
                     }else{
@@ -92,6 +92,7 @@ export default {
                 console.log("User need to login")
             }
         }
+
         async function findPostInfo(record){
             let thisPost = await getDoc(doc(db, "Posts", record))
             let postID = thisPost.data().postID
@@ -105,15 +106,21 @@ export default {
             console.log(postInfo)
             return postInfo
         }
-        async function deletePost(record){
+
+        async function deletePost(record, self){
             if(confirm("Please confirm that you want to delete this post." )){
                 // Delete from user table
                 let user = doc(db, "Users", auth.currentUser.email)
                 await updateDoc(user, {
                     posts:arrayRemove(record)
                 })
+                // Remove all rows from table
+                var table = document.getElementById("MyPosts")
+                while (table.rows.length > 1) {
+                    table.deleteRow(1)
+                }
                 // Re-render the page
-                location.reload()
+                display(self)
             }
         }
     }
