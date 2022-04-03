@@ -11,7 +11,7 @@
   <div id = "categorycheckboxes">
   <input type="checkbox" @change="categoryselectAll" v-model="categoryallSelected">Select All
   <class v-for = "category of categories" :key = "category.id">
-          <input type = "checkbox" v-model = "selectedcategory" :value = "category.id" string /><label>{{category.id}}</label>
+          <label><input type = "checkbox" v-model = "selectedcategory" :value = "category.id" @change='categoryupdateCheckall()' />{{category.id}}</label>
       </class>
     </div>
   </div>
@@ -24,7 +24,7 @@
 <div id = "locationcheckboxes">
   <input type="checkbox" @change="locationselectAll" v-model="locationallSelected">Select All
       <class  id = "checkboxes" v-for = "location of locations" :key = "location.id">
-          <input type = "checkbox" v-model = "selectedlocation" :value = "location.id" /><label>{{location.id}}</label>
+          <label><input type = "checkbox" v-model = "selectedlocation" :value = "location.id" @change='locationupdateCheckall()'/>{{location.id}}</label>
       </class>
     </div>
   </div>
@@ -36,14 +36,14 @@
     </div>
 
     
-  
+  <div id = "postView">
   <Modal
         v-show="isModalVisible"
         @close="closeModal"
         :post = "modalData"
       />
 
-  <div className = "filteredpostList" 
+  <div className = "postList" 
     v-for= "post in filteredPosts"
     :key = "post.id"
     v-show ="showdata">
@@ -85,6 +85,7 @@
       :status = "post.status"/>
       
     </button> 
+  </div>
   </div>
   
 </template>
@@ -197,6 +198,21 @@ methods: {
       this.selectedlocation = [];
     }
   },
+
+  locationupdateCheckall: function(){
+    if(this.locations.length == this.selectedlocation.length){
+        this.locationallSelected= true;
+    }else{
+        this.locationallSelected = false;
+    }
+  },
+  categoryupdateCheckall: function(){
+    if(this.categories.length == this.selectedcategory.length){
+        this.categoryallSelected= true;
+    }else{
+        this.categoryallSelected = false;
+    }
+  },
   async categoryselectAll() {
     if(this.categoryallSelected) {
       const selectedcategory = this.categories.map((category) => (category.id));
@@ -213,7 +229,10 @@ methods: {
         console.log("isopen")
   },
   showpost() {
-    this.filteredPosts = this.borrowingposts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location));
+
+    this.filteredPosts = this.borrowingposts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
+
+    
     this.originalshow = false;
     this.showdata = true; 
     this.onlyborrow = false;
@@ -235,18 +254,30 @@ methods: {
 <style scoped>
 #postModal{
   justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.8);
+  margin: 5px 5px 5px 5px;
+  border: solid 1px gray;
 }
-
 .postList{
   display:inline-block;
+  /* overflow-y: scroll; */
+}
+#postView{
+  overflow-y: scroll;
+  width: 100%;
+  height: 490px;
+  margin-top: 20px;
+}
+#postView::-webkit-scrollbar {
+  display: none;
+}
+#filter{
+  border-radius: 10px;
 }
 
 .showrRow {
   align-self: center;
-}
-
-.filteredpostList{
-  display:inline-block;
 }
 
 
@@ -259,23 +290,23 @@ methods: {
 }
 
 #locationname {
-  background-color: rgba(239, 220, 198, 0.9);
+  background-color: rgba(241, 187, 129, 0.9);
   text-align: center;
-  width: 180px;
+  width: 15vw;
   border: transparent;
-  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .whole {
   display: flex;
 }
 
 #locationcheckboxes {
-  background-color: rgba(253, 231, 208, 0.7);
+  background-color: rgba(244, 216, 187, 0.9);
   padding: 10px;
-  width: 2000px;
+  width: 85vw;
   border: transparent;
   text-align: left;
-  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 #categorycheckboxes input {
@@ -287,20 +318,20 @@ methods: {
 }
 
 #categoryname {
-  background-color: rgba(188, 221, 236, 0.9);
+  background-color: rgba(180, 219, 237, 0.9);
   text-align: center;
-  width: 180px;
+  width: 15vw;
   border: transparent;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 
 #categorycheckboxes {
-  background-color: rgba(200, 238, 255, 0.7);
+  background-color: rgba(209, 226, 234, 0.9);
   padding: 10px;
-  width: 2000px;
+  width: 85vw;
   border: transparent;
   text-align: left;
-  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 </style>

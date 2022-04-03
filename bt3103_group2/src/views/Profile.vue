@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <otherUserProfileTable id="otherUserTable" :userid="this.user" />
+    <otherUserProfileTable id="otherUserTable" :userid="this.id" />
 </div>
 </template>
 
@@ -137,7 +137,7 @@ export default {
 #otherUserInfo{
   float:left;
   width:60vw;
-  background-image: url("~@/assets/birds.jpg");
+  background-image: url("~@/assets/grey.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
@@ -149,16 +149,21 @@ export default {
 #otherUserBtns{
   float:right;
   width:10vw;
-  margin-top:17vh;
+  margin-top:14vh;
   margin-left:2vw;
 }
 #backBtn, #likeBtn, #chatBtn {
   width: 7vw;
-  border: 0.5px solid black;
+  border: 1.5px solid rgba(159, 204, 183);
   border-radius: 10px;
-  background-color: rgb(240, 182, 169);
+  background-color:rgb(214, 241, 238);
   margin: 5px;
 }
+#backBtn:hover, #likeBtn:hover, #chatBtn:hover{
+  background-color:rgba(159, 204, 183);
+  transition:0.5s;
+}
+
 #otherUserTable{
 
 }

@@ -6,7 +6,7 @@
       </md-avatar>
       <div class="chat__headerInfo">
         <!-- <h3>Welcome to Kambond</h3> -->
-        <h3>{{this.friend}}</h3>
+        <h3>{{ this.friend }}</h3>
       </div>
 
       <div class="chat__headerRight">
@@ -32,7 +32,7 @@
       <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
         <input type="text" id="inputMsg" autocomplete="off" />
-        <button type="submit" id="submitBtn"> Send Message</button>
+        <button type="submit" id="submitBtn"> Send </button>
       </form>
       <!-- <md-icon>mic</md-icon> -->
     </div>
@@ -62,7 +62,7 @@ export default {
       previouschats: [],
       roomid: null,
       avatar: null,
-      friend: {},
+      friend: "",
     };
   },
   methods: {
@@ -228,12 +228,14 @@ export default {
 }
 
 #submitBtn {
+  display: block;
   height: 40px;
   width: 80px;
   border-radius: 20px;
   border: transparent;
-  background-color:#45e445;
-  text-align: center;
+  background-color: rgb(179, 249, 185);
+  text-align:center;
+  font-weight: bold;
   margin-left: 3%;
 }
 
@@ -242,6 +244,6 @@ export default {
 }
 
 #submitBtn:active{
-  background-color: #5cc05c;
+  background-color: #7bb67d;
 }
 </style>

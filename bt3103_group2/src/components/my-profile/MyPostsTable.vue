@@ -25,6 +25,7 @@ export default {
             userID:''
         }
     },
+    emits:["showPost"],
     mounted(){
         const auth = getAuth()
         onAuthStateChanged(auth, (user) => {

@@ -29,14 +29,16 @@
 
     <div id="displayInfo">
         <br><br>
-        <SettingsTable id="settingTable" v-if="this.showSettingTable" />
-        <MyPostTable id="MyPosts" v-if="this.showPosts" />
-        <MyRequestTable id="MyRequests" v-if="this.showRequests" />
-        <MyDealTable id="MyDeals" v-if="this.showDeals" />
-        <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
-        <CreatePost id="createpostform" v-if="this.showCreate" />
-        <Chats id="chats" v-if="this.showChats" />
-        <LogOut v-if="this.showProfile"/>
+        <div id="infoInnerBox">
+            <SettingsTable id="settingTable" v-if="this.showSettingTable" />
+            <MyPostTable id="MyPosts" v-if="this.showPosts" @showPost="openPosts"/>
+            <MyRequestTable id="MyRequests" v-if="this.showRequests" />
+            <MyDealTable id="MyDeals" v-if="this.showDeals" />
+            <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
+            <CreatePost id="createpostform" v-if="this.showCreate" @showPost="openPosts"/>
+            <Chats id="chats" v-if="this.showChats" />
+            <LogOut v-if="this.showProfile"/>
+        </div>
     </div>
 </div>
 </template>
@@ -296,6 +298,15 @@ export default {
     background-size:cover;
 }
 
+#infoInnerBox {
+    height: 650px;
+    overflow-y:scroll;
+}
+
+#infoInnerBox::-webkit-scrollbar {
+  display: none;
+}
+
 #settingTable {
     width: 70%;
     height: 350px;
@@ -317,7 +328,7 @@ export default {
 }
 
 #btn:hover{
-    background-color: rgb(199, 199, 199);
+    background-color: rgba(199, 199, 199);
     transition: 0.3s;
 }
 

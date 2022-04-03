@@ -176,10 +176,11 @@ export default {
 #postModal{
   justify-content:center;
   border-radius: 10px;
-  background-color: rgba(233,233,233,0.8);
+  background-color: rgba(233,233,233,0.9);
   margin: 5px 5px 5px 5px;
-  border: solid 1px gray;
+  border: transparent;
   margin-left: 12%;
+  box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 .postList{
   display:inline-block;

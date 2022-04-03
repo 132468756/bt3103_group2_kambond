@@ -1,8 +1,9 @@
+
 <template>
     <form @submit.prevent="onSubmit" method="post" id="createpostform">
         <div className ="row">
         <label className = "postlabel"> Title </label>
-        <input type="title" required v-model="post.title" id = "post.title"/>
+        <input type="title" required v-model="post.title" id = "post.title" autocomplete="off"/>
         </div>
 
         <div className ="row">
@@ -15,7 +16,7 @@
 
         <div className ="row">
         <label className = "postlabel"> Description </label>
-        <input type="desription" required v-model="post.description" id = "post.description"/>
+        <input type="desription" required v-model="post.description" id = "post.description" autocomplete="off"/>
         </div>
 
         <div className ="row">
@@ -68,7 +69,6 @@ import firebaseApp from "../../firebase.js";
 import {arrayUnion, getFirestore} from "firebase/firestore";
 import { doc, setDoc, updateDoc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-
 const db = getFirestore(firebaseApp);
 const auth = getAuth()
 export default {

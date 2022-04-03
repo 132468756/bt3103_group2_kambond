@@ -293,6 +293,7 @@ const db = getFirestore(firebaseApp);
 
   #buttons{
     margin-top:2%;
+    margin-left:4vw;
   }
 
   .borrowButton{
@@ -301,13 +302,26 @@ const db = getFirestore(firebaseApp);
     border:0px;
     border-radius: 2px;
     height: 30px;
-    width: 300px;
+    width: 30vw;
     margin: auto;
   }
 
   .borrowButton:hover{
     background:#df1e68;
     transition:1s;
+  }
+  
+  .btn-big-close {
+    border:0px;
+    border-radius: 2px;
+    height: 30px;
+    width: 30vw;
+    margin: auto;
+  }
+
+  .btn-big-close:hover{
+    background: rgba(233, 184, 204, 0.671);
+    transition: 1s;
   }
 
   .modal-fade-enter,
@@ -320,19 +334,6 @@ const db = getFirestore(firebaseApp);
     transition: opacity .5s ease;
   }
 
-
-  .btn-big-close {
-    border:0px;
-    border-radius: 2px;
-    height: 30px;
-    width: 300px;
-    margin: auto;
-  }
-
-  .btn-big-close:hover{
-    background: rgb(184, 223, 233);
-    transition: 1s;
-  }
   #picprofile {
   width: 4vw;
   height: 4vw;
