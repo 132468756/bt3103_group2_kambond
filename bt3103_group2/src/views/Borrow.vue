@@ -11,7 +11,7 @@
   <div id = "categorycheckboxes">
   <input type="checkbox" @change="categoryselectAll" v-model="categoryallSelected">Select All
   <class v-for = "category of categories" :key = "category.id">
-          <label><input type = "checkbox" v-model = "selectedcategory" :value = "category.id" @change='categoryupdateCheckall()' />{{category.id}}</label>
+          <label><input type = "checkbox" v-model = "selectedcategory" :value = "category.id" @change="categoryupdateCheckall()" />{{category.id}}</label>
       </class>
     </div>
   </div>
@@ -24,14 +24,13 @@
 <div id = "locationcheckboxes">
   <input type="checkbox" @change="locationselectAll" v-model="locationallSelected">Select All
       <class  id = "checkboxes" v-for = "location of locations" :key = "location.id">
-          <label><input type = "checkbox" v-model = "selectedlocation" :value = "location.id" @change='locationupdateCheckall()'/>{{location.id}}</label>
+          <label><input type = "checkbox" v-model = "selectedlocation" :value = "location.id" @change="locationupdateCheckall()"/>{{location.id}}</label>
       </class>
     </div>
   </div>
   </div>
  
   <div className = "showRow">
-    <button className = "borrow" @click = "showborrow()"> Show all items for Borrowing </button>
     <button className="show" @click = "showpost()"> Filter all items for Borrowing</button>
     </div>
 
@@ -72,20 +71,6 @@
     </button> 
   </div>
 
-     <div className = "postList" 
-    v-for= "post in borrowingposts"
-    :key = "post.id"
-    v-show = "onlyborrow">
-    <button type="button"
-          id = "postModal"
-          @click="showModal(post)">
-      <Post className = "posts"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"/>
-      
-    </button> 
-  </div>
   </div>
   
 </template>
@@ -97,8 +82,9 @@ import { doc} from "firebase/firestore";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
 import Modal from "../components/Modal.vue"
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {collection, getDocs, getDoc} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+
+import {collection, getDocs, getDoc, where, query} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -117,14 +103,12 @@ export default {
       modalData:{},
       posts:[],
       filteredPosts:[],
-      borrowingposts:[],
       selectedstatus: [],
       selectedcategory: [],
       selectedlocation: [],
       statusallSelected: false,
       locationallSelected: false,
       categoryallSelected: false,
-      onlyborrow: false,
       statuses: [
         {id: "Want to lend"},
         {id: "Requested"},
@@ -171,23 +155,35 @@ export default {
         }
       })
         
-    async function collectData(posts){
-      let z = await getDocs(collection(db,"Posts"))
+ async function collectData(posts){
+      /*let z = await getDocs(collection(db,"Posts"))
       z.forEach((doc)=> 
-      posts.push(doc.data()))
+      { if(doc.data().status == "Want to borrow" ){
+          posts.push(doc.data()) }
+      }
+      )*/
+      var qTitle = query(
+        collection(db, "Posts"),
+        where("status","==","Want to lend")
+        );
+        
+      const queryTitle = await getDocs(qTitle)
+      queryTitle.forEach((doc) => {
+          posts.push(doc.data())
+        })
+      
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
-      console.log(docRef.data().username);
+
       posts.forEach(async (post)=>{
         docRef = await getDoc(doc(db, "Users", post.user));
-        console.log(docRef.data().username)
         post.userName = docRef.data().username
       
       });
-      return posts
+      return posts;
     }
     collectData(this.posts)
-},
+  },
 methods: {
   async locationselectAll() {
     if(this.locationallSelected) {
@@ -230,21 +226,14 @@ methods: {
   },
   showpost() {
 
-    this.filteredPosts = this.borrowingposts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
+    this.filteredPosts = this.posts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
 
     
     this.originalshow = false;
     this.showdata = true; 
-    this.onlyborrow = false;
   },
   closeModal() {
         this.isModalVisible = false;
- },
- showborrow() {
-   this.borrowingposts = this.posts.filter(post => post.purpose === "Lending");
-   this.originalshow = false;
-   this.showdata = false;
-   this.onlyborrow = true;
  }
 
 },
@@ -254,6 +243,7 @@ methods: {
 <style scoped>
 #postModal{
   justify-content:center;
+  margin-left:12%;
   border-radius: 10px;
   background-color: rgba(233,233,233,0.8);
   margin: 5px 5px 5px 5px;

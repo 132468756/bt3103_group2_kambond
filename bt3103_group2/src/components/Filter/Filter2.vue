@@ -52,7 +52,7 @@ export default {
   <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
    <div class="whole">
     <div id="name">
-      <h3>Category</h3>
+      <h3>Location</h3>
     </div>
   <div id = "checkboxes">
   <input type="checkbox" @change="selectAll" v-model= "allSelected">Select All
