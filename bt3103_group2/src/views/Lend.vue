@@ -179,7 +179,7 @@ export default {
   background-color: rgba(233,233,233,0.9);
   margin: 5px 5px 5px 5px;
   border: transparent;
-  margin-left: 12%;
+  margin-left: 15%;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 .postList{
@@ -197,5 +197,8 @@ export default {
 }
 #filter{
   border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+  width: 90%;
+  margin-left: 5%;
 }
 </style>
