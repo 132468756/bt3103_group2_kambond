@@ -157,21 +157,18 @@ export default {
 
 <style scoped>
 .home {
-  /* background-image: url("~@/assets/search-bg.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size:cover;*/
-  height: 880px; 
+  height: 880px;
 }
 
 
 #postModal {
-    justify-content:center;
-    border-radius: 10px;
-    background-color: rgba(233,233,233,0.8);
-    margin: 5px 5px 5px 5px;
-    border: solid 1px gray;
-    margin-left: 12%;
+  justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.9);
+  margin: 5px 5px 5px 5px;
+  border: transparent;
+  margin-left: 12%;
+  box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 
 .postList {

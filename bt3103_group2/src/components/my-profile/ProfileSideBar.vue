@@ -29,14 +29,16 @@
 
     <div id="displayInfo">
         <br><br>
-        <SettingsTable id="settingTable" v-if="this.showSettingTable" />
-        <MyPostTable id="MyPosts" v-if="this.showPosts" @showPost="openPosts"/>
-        <MyRequestTable id="MyRequests" v-if="this.showRequests" />
-        <MyDealTable id="MyDeals" v-if="this.showDeals" />
-        <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
-        <CreatePost id="createpostform" v-if="this.showCreate" @showPost="openPosts"/>
-        <Chats id="chats" v-if="this.showChats" />
-        <LogOut v-if="this.showProfile"/>
+        <div id="infoInnerBox">
+            <SettingsTable id="settingTable" v-if="this.showSettingTable" />
+            <MyPostTable id="MyPosts" v-if="this.showPosts" @showPost="openPosts"/>
+            <MyRequestTable id="MyRequests" v-if="this.showRequests" />
+            <MyDealTable id="MyDeals" v-if="this.showDeals" />
+            <UserInfoDisplay id="userInfo" v-if="this.showProfile" />
+            <CreatePost id="createpostform" v-if="this.showCreate" @showPost="openPosts"/>
+            <Chats id="chats" v-if="this.showChats" />
+            <LogOut v-if="this.showProfile"/>
+        </div>
     </div>
 </div>
 </template>
@@ -54,6 +56,7 @@ import MyDealTable from "../my-profile/MyDealsTable.vue"
 import UserInfoDisplay from "../my-profile/UserInfoDisplay.vue"
 import CreatePost from "../my-profile/CreatePostForm.vue"
 import Chats from '../../views/Chats.vue'
+// import Chats from "../Chat/chat_alternative.vue";
 import LogOut from "../Logout.vue"
 
 const db = getFirestore(firebaseApp)
@@ -293,6 +296,15 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     background-size:cover;
+}
+
+#infoInnerBox {
+    height: 650px;
+    overflow-y:scroll;
+}
+
+#infoInnerBox::-webkit-scrollbar {
+  display: none;
 }
 
 #settingTable {
