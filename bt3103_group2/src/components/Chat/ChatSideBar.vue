@@ -54,7 +54,7 @@ export default {
       const docNow = await getDocs(collection(db, "Chats"));
       
       docNow.forEach((doc) => {
-        console.log(doc.data().user2 == String(auth.currentUser.displayName));
+        // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (
           (doc.data().user1 == String(auth.currentUser.email)) |
           (doc.data().user2 == String(auth.currentUser.email))
