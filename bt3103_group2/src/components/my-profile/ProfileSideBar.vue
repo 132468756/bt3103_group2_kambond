@@ -88,7 +88,6 @@ export default {
             showCreate:false
         }
     },
-
     mounted() {
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {

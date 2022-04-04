@@ -53,8 +53,8 @@ export default {
   },
   mounted() {
    async function getRooms(self) {
-      const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp")));
-      //console.log(docNow)
+      const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp","desc")));
+      console.log(docNow)
       docNow.forEach((doc) => {
         // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (

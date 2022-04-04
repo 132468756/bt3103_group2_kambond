@@ -24,9 +24,9 @@
       <div class="chat__body" v-if="fetched">
         <div v-for="chat in previouschats" :key="chat.id">
           <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
-            {{ chat.message }}  <br/>   <small id="time">{{chat.time}}</small>
+            {{ chat.message }}  <br/>  
           </p>
-          
+          <small id="time">{{chat.time}}</small>
         </div>
       </div>
     </div>
@@ -240,7 +240,13 @@ export default {
   width: fit-content;
   margin-bottom: 30px;
 }
-
+#time {
+  position: relative;
+  font-size: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:darkgray;
+  margin-bottom: 30px;
+}
 .chat__name {
   position: absolute;
   top: -15px;
@@ -311,7 +317,5 @@ export default {
   background-color: #7bb67d;
 }
 
-#time {
-  font-size: 8px;
-}
+
 </style>

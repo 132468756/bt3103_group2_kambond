@@ -4,7 +4,8 @@
     <div class="otherInfoDisUp">
         <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate($event)" />
         <div id="otherUserBtns">
-            <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }});createChatRoom()">Chat</button>
+            <!-- <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }});createChatRoom()">Chat</button> -->
+            <button class="Btn" id="chatBtn" @click="createChatRoom()">Chat</button>
             <br>
             <likeBtn class="Btn" id="likeBtn" :user="this.id" @updateAfterLike="update"/>
             <br>
@@ -100,7 +101,7 @@ export default {
         });
         console.log(docNew);
       }
-      //this.$router.push({name:'MyProfile'});
+      this.$router.push({name:'MyProfile'});
     },
 
     updateDisplay(){
