@@ -2,7 +2,7 @@
   <div v-if="fetched" class="app">
     <div class="app__body">
       <ChatSideBar @update="update($event)" />
-      <ChatView v-if="showChats" :room="emitRoom" :key="refresh" />
+      <ChatView v-if="showChats" :room="emitRoom" :key="refresh"/>
     </div>
   </div>
 </template>
@@ -61,13 +61,13 @@ export default {
   display: grid;
   place-items: center;
   /* background-color: #c7dd1f; */
-  height: 70vh;
+  height: 67vh;
 }
 
 .app__body {
   display: flex;
   background-color: #dedbdb;
-  height: 73vh;
+  height: 67vh;
   width: 70vw;
   box-shadow: -1px 4px 20px -6px rgba(111, 153, 226, 0.75);
   border-radius: 20px;

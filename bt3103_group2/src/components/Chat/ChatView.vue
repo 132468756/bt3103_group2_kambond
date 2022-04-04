@@ -20,11 +20,13 @@
         </md-button> -->
       </div>
     </div>
-    <div class="chat__body" v-if="fetched">
-      <div v-for="chat in previouschats" :key="chat.id">
-        <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
-          {{ chat.message }}
-        </p>
+    <div id="content">
+      <div class="chat__body" v-if="fetched">
+        <div v-for="chat in previouschats" :key="chat.id">
+          <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
+            {{ chat.message }}
+          </p>
+        </div>
       </div>
     </div>
     <div class="chat__footer">
@@ -62,7 +64,13 @@ export default {
       roomid: null,
       avatar: null,
       friend: "",
+      timer: "",
     };
+  },
+  created() {
+    this.getPreviousChats();
+    this.timer = setInterval(this.getPreviousChats, 5000);
+    // this.scrollToEnd();
   },
   methods: {
     async onSubmit() {
@@ -75,6 +83,7 @@ export default {
 
       document.getElementById("inputMsg").value = "";
       this.getPreviousChats();
+      this.timer = setInterval(this.getPreviousChats, 5000);
     },
 
     isMe(chat) {
@@ -109,8 +118,28 @@ export default {
       //console.log(this.friend);
     },
   },
-
   mounted() {
+    function scrollToBottom() {
+      const element = document.getElementById("content");
+      console.log("ele", element);
+      console.log(
+        "ele",
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
+        })
+      );
+      console.log("ele", element.scrollTop);
+      console.log("ele", element.scrollHeight);
+      element.scrollTop = 600;
+      console.log("ele", element.scrollTop);
+      element.scrollTo({
+        top: 100,
+        behavior: "smooth",
+      });
+    }
+    scrollToBottom();
     //console.log("Chatview", this.room);
     async function getPreviousChats(roomId, self) {
       let docRef = await getDoc(doc(db, "Chats", roomId));
@@ -177,20 +206,25 @@ export default {
   justify-content: space-between;
   min-width: 100px;
 }
-
-.chat__body {
+#content {
   flex: 1;
   background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
     repeat center;
   padding: 30px;
   overflow-y: scroll;
-
+  overflow-x: hidden;
 }
-
+/* .chat__body {
+  flex: 1;
+  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
+    repeat center;
+  padding: 30px;
+  overflow-y: scroll;
+}
 .chat__body::-webkit-scrollbar {
   display: none;
-  bottom:0;
-}
+  bottom: 0;
+} */
 
 .chat__message {
   position: relative;
