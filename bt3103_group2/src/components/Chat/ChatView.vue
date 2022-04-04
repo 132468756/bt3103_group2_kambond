@@ -91,6 +91,7 @@ export default {
       this.getPreviousChats();
       this.timer = setInterval(this.getPreviousChats, 5000);
     },
+
     isMe(chat) {
       //console.log(chat.user);
       return chat.user == auth.currentUser.email;
@@ -176,10 +177,10 @@ export default {
 }
 
 .chat__header {
-  padding: 20px;
+  padding: 0 20px 7px 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid rgb(211, 211, 211);
 }
 
 .chat__headerInfo {
@@ -209,6 +210,10 @@ export default {
   padding: 30px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+#content::-webkit-scrollbar {
+  display: none;
 }
 /* .chat__body {
   flex: 1;
@@ -252,7 +257,7 @@ export default {
 
 .chat__reciever {
   margin-left: auto;
-  background-color: #b0ffb0;
+  background-color: #95EC69;
 }
 
 .chat__footer {
@@ -272,7 +277,7 @@ export default {
 
 .chat__footer > form > input {
   flex: 1;
-  border-radius: 30px;
+  border-radius: 10px;
   padding: 10px;
   border: none;
 }
@@ -292,12 +297,12 @@ export default {
   display: block;
   height: 40px;
   width: 80px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: transparent;
-  background-color: rgb(179, 249, 185);
+  background-color: #07C160;
   text-align: center;
-  font-weight: bold;
   margin-left: 3%;
+  color: white;
 }
 
 #submitBtn:hover {
