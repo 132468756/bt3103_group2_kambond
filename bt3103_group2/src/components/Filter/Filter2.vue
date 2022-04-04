@@ -65,11 +65,11 @@ export default {
 
 <style scoped>
 #checkboxes input {
-  margin: 10px 1px 10px 10px;
+  margin: 10px 12px 10px 10px;
 }
 
 #checkboxes label {
-  margin: 10px 20px 10px 5px;
+  margin: 10px 10px 10px 0;
 }
 
 #name {

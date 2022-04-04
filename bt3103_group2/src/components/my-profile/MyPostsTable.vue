@@ -16,7 +16,7 @@
 <script>
 import  firebaseApp from "../../firebase.js"
 import {getFirestore} from "firebase/firestore"
-import{getDoc, doc,  updateDoc, arrayRemove} from "firebase/firestore"
+import{getDoc, doc,  updateDoc, arrayRemove, deleteDoc} from "firebase/firestore"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
 const db = getFirestore(firebaseApp)
 export default {
@@ -120,6 +120,8 @@ export default {
                 while (table.rows.length > 1) {
                     table.deleteRow(1)
                 }
+                // Delete post from Posts
+                await deleteDoc(doc(db, "Posts", record))
                 // Re-render the page
                 display(self)
             }
@@ -152,7 +154,7 @@ export default {
         background-color: rgb(194, 240, 255);
     }
     .deletePostBtn {
-        width: 80%;
+        width: 50px;
         height: 80%;
         background-color: rgb(136, 223, 252);
         cursor: pointer;
