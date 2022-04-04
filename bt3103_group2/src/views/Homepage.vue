@@ -65,7 +65,8 @@ export default {
     async search(text) {
       console.log("searching"+ text);
       this.postlist = [];
-      var regEx = new RegExp(text + "*", "i");
+      // var regEx = new RegExp(text + "*", "i");
+      var regEx = new RegExp(text, 'i')
       const querySnapshotTitle = await getDocs(collection(db, "Posts"));
       const querySnapshotUser = await getDocs(collection(db, "Users"));
       try{

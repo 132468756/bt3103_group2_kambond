@@ -8,7 +8,7 @@
         <input
           type="text"
           id="inputbox"
-          v-model.lazy="searchText"
+          v-model.trim="searchText"
           required=""
           Placeholder="Enter to Search in KamBond"
           @keydown.enter="newSearch"
@@ -37,6 +37,7 @@ export default {
     newSearch(){
       // this.$emit(the event which runs on parent, data to pass)
       this.$emit('search', this.searchText);
+      console.log('emitting ', this.searchText)
     },
   },
 };
