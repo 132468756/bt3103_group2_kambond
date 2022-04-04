@@ -4,7 +4,7 @@
     <div class="otherInfoDisUp">
         <userInfo id="otherUserInfo" :user="this.id" @interface="getUpdate($event)" />
         <div id="otherUserBtns">
-            <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }})">Chat</button>
+            <button class="Btn" id="chatBtn" @click="$router.push({name: 'Chats', params: { receiver: this.id }});createChatRoom()">Chat</button>
             <br>
             <likeBtn class="Btn" id="likeBtn" :user="this.id" @updateAfterLike="update"/>
             <br>
@@ -29,7 +29,7 @@ import {
   updateDoc,
   arrayUnion,
   setDoc,
-  getDoc,
+  getDoc,Timestamp
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import firebaseApp from "../firebase.js";
@@ -72,9 +72,9 @@ export default {
     console.log("updated");
   },
   
-    async createChatRoom(self) {
+    async createChatRoom() {
       const userId = auth.currentUser.email;
-      const chatUserId = self.id;
+      const chatUserId = this.id;
       const queryCheck = await getDoc(doc(db, "Users", userId));
       const chatrooms = queryCheck.data().chatrooms;
       const haveOrNot = chatrooms.includes(String(chatUserId));
@@ -88,6 +88,7 @@ export default {
           profile_picture: String(chatUser.data().photoURL),
           chats: [],
           chatRoomName:String(chatRoomId),
+          timestamp:Timestamp.now(),
         });
         console.log(docNow);
         const docRef = await updateDoc(doc(db, "Users", String(userId)), {
@@ -99,7 +100,7 @@ export default {
         });
         console.log(docNew);
       }
-      this.$router.push({name:'MyProfile'});
+      //this.$router.push({name:'MyProfile'});
     },
 
     updateDisplay(){

@@ -46,7 +46,7 @@ export default {
       const chatcontent = chat.data().chats;
       //console.log(chatcontent[chatcontent.length-1]);
       if (chatcontent.length != 0) {
-        self.lastmessage = chatcontent[chatcontent.length - 1].message;
+        self.lastmessage = chatcontent[chatcontent.length - 1].time;
       }
       let user = await getDoc(doc(db, "Users", self.chatroom));
       self.otherName = user.data().username;
