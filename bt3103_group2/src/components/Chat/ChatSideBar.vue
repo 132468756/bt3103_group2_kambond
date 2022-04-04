@@ -3,16 +3,14 @@
     <div class="sidebar__header">
       <p id="headerinfo"> Welcome to KamBond!</p>
     </div>
-    <div class='sidebar__search'>
+    <!-- <div class='sidebar__search'>
       <div class='sidebar__searchContainer'>
         <img src="../../assets/search.png" id="searchImg">
         <input placeholder="Search" id="newChatInput"/>  
       </div>
-    </div>
+    </div> -->
     <div class="sidebar__chat">
       <div v-for="room in rooms" :key="room.id">
-        <!-- <p> room </p> -->
-        <!-- <p>onupate:{{onUpdate}}</p> -->
         <SidebarChatUserRow :room="room" @update="update($event)" />
       </div>
     </div>
@@ -43,38 +41,20 @@ export default {
   },
   methods: {
     async update(text) {
-      console.log("inSideBar",text);
+      //console.log("inSideBar",text);
       this.emitRoom = text;
       this.onUpdate = text;
-      console.log("sidebarupdate",this.onUpdate)
+      //console.log("sidebarupdate",this.onUpdate)
       //this.getRooms();
       this.$emit('update',this.emitRoom);
     },
-
-    // async getRooms() {
-    //   if(this.rooms.length != 0) {
-    //     this.rooms.splice(0);
-    //   }
-    //   const docNow = await getDocs(collection(db, "Chats"));
-      
-    //   docNow.forEach((doc) => {
-    //     console.log(doc.data().user2 == String(auth.currentUser.displayName));
-    //     if (
-    //       (doc.data().user1 == String(auth.currentUser.email)) |
-    //       (doc.data().user2 == String(auth.currentUser.email))
-    //     ) {
-    //       this.rooms.push(doc.data().chatRoomName);
-    //     }
-    //   });
-    //   console.log("rooms", this.rooms);
-    // }
   },
   mounted() {
    async function getRooms(self) {
       const docNow = await getDocs(collection(db, "Chats"));
       
       docNow.forEach((doc) => {
-        console.log(doc.data().user2 == String(auth.currentUser.displayName));
+        // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (
           (doc.data().user1 == String(auth.currentUser.email)) |
           (doc.data().user2 == String(auth.currentUser.email))
@@ -82,7 +62,7 @@ export default {
           self.rooms.push(doc.data().chatRoomName);
         }
       });
-      console.log("rooms", self.rooms);
+      //console.log("rooms", self.rooms);
     }
     getRooms(this);
   },  
@@ -120,7 +100,7 @@ export default {
   margin-right: 2vw;
   font-size: 24px !important;
 }
-.sidebar__search {
+/* .sidebar__search {
   display: flex;
   align-items: center;
   background-color: #f6f6f6;
@@ -134,7 +114,7 @@ export default {
   width: 100%;
   height: 35px;
   border-radius: 20px;
-}
+} */
 .sidebar__searchContainer > input {
   border: none;
   margin-left: 10px;

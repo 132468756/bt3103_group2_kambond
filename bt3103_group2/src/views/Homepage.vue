@@ -163,31 +163,18 @@ export default {
 
 <style scoped>
 .home {
-  /* background-image: url("~@/assets/search-bg.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size:cover;*/
-  height: 880px; 
+  height: 880px;
 }
 
 
 #postModal {
-  justify-content: center;
-    
-  /* The image used */
-  background-image: url("~@/assets/modal-bg3.jpg");
-
-  /* Control the height of the image */
-  min-height: 100%;
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size:cover;
-
-  border: 1px solid  rgba(0, 0, 0, 0.4);
-  padding: 0%;
-  margin: 1%;
+  justify-content:center;
+  border-radius: 10px;
+  background-color: rgba(233,233,233,0.9);
+  margin: 5px 5px 5px 5px;
+  border: transparent;
+  margin-left: 12%;
+  box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 
 .postList {
