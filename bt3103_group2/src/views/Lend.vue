@@ -10,9 +10,7 @@
     <div id="postView">
       <Modal
         v-show="isModalVisible"
-        @close="closeModal"
-        :post = "modalData"
-      />
+        @close="closeModal" :post = "modalData"/>
       <div className = "postList" v-for= "post in posts" :key = "post.id">
         <button 
           type="button"
@@ -176,10 +174,9 @@ export default {
 #postModal{
   justify-content:center;
   border-radius: 10px;
-  background-color: rgba(233,233,233,0.9);
+  background-color: rgba(233,233,233,0.8);
   margin: 5px 5px 5px 5px;
   border: transparent;
-  margin-left: 15%;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 .postList{
@@ -191,6 +188,7 @@ export default {
   width: 100%;
   height: 570px;
   margin-top: 20px;
+  text-align: center;
 }
 #postView::-webkit-scrollbar {
   display: none;

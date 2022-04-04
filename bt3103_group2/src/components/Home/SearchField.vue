@@ -62,15 +62,15 @@ export default {
   background-color: transparent;
   height: 30px;
   padding: 10px;
-  width: 40vw;
-  margin-left: 30vw;
+  width: 40%;
+  margin-left: 30%;
 }
 
 #searchBarContainer {
   display: flex;
   align-items: center;
   background-color: white;
-  width: 40vw;
+  width: 95%;
   height: 45px;
   border-radius: 50px;
   box-shadow: 0px 0px 25px rgba(27, 26, 26, 0.719);

@@ -252,12 +252,13 @@ methods: {
 </script>
 
 <style scoped>
-#postModal{
+#postModal {
   justify-content:center;
   border-radius: 10px;
   background-color: rgba(233,233,233,0.8);
   margin: 5px 5px 5px 5px;
-  border: solid 1px gray;
+  border: transparent;
+  box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 .postList{
   display:inline-block;
@@ -266,8 +267,9 @@ methods: {
 #postView{
   overflow-y: scroll;
   width: 100%;
-  height: 490px;
+  height: 440px;
   margin-top: 20px;
+  text-align: center;
 }
 #postView::-webkit-scrollbar {
   display: none;
