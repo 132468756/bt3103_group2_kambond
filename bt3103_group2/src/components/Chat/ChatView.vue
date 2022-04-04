@@ -124,27 +124,6 @@ export default {
     },
   },
   mounted() {
-    function scrollToBottom() {
-      const element = document.getElementById("content");
-      console.log("ele", element);
-      console.log(
-        "ele",
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        })
-      );
-      console.log("ele", element.scrollTop);
-      console.log("ele", element.scrollHeight);
-      element.scrollTop = 600;
-      console.log("ele", element.scrollTop);
-      element.scrollTo({
-        top: 100,
-        behavior: "smooth",
-      });
-    }
-    scrollToBottom();
     //console.log("Chatview", this.room);
     async function getPreviousChats(roomId, self) {
       let docRef = await getDoc(doc(db, "Chats", roomId));
@@ -174,6 +153,18 @@ export default {
     }
     listFriends(this);
   },
+
+  updated(){
+    const theElement = document.getElementById('content');
+
+    const scrollToBottom = (node) => {
+      console.log("to bottom triggered")
+      node.scrollTop = node.scrollHeight;
+      console.log(node.scrollHeight)
+      console.log(node.scrollTop)
+    }
+    scrollToBottom(theElement);
+  }
 };
 </script>
 

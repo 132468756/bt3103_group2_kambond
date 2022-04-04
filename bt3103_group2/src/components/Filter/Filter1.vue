@@ -10,16 +10,16 @@ export default {
         {id: "Beauty & Personal Care"},
         {id: "Bulletin Board"},
         {id: "Computers & Tech"},
+        {id: "Tickets & Vouchers"},
         {id: "Food & Drinks"},
+        {id: "Fashion"},
         {id: "Health & Nutrition"},
         {id: "Hobbies & Toys"},
-        {id: "Mobile Phones & Gadgets"},
         {id: "Photography"},
+        {id: "Mobile Phones & Gadgets"},
         {id: "Sports Equipment"},
-        {id: "Tickets & Vouchers"},
         {id: "Learning & Enrichment"},
         {id: "Video Gaming"},
-        {id: "Fashion"},
         {id: "Exchange Currency"},
         {id: "Musical Instrument"},
         {id: "Others"},
@@ -83,11 +83,11 @@ export default {
 
 <style scoped>
 #checkboxes input {
-  margin: 10px 1px 10px 10px;
+  margin: 10px 15px 10px 10px;
 }
 
 #checkboxes label {
-  margin: 10px 20px 10px 5px;
+  margin: 10px 10px 10px 0;
 }
 
 #name {
