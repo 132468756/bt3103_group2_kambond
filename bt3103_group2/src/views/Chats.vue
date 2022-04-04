@@ -1,7 +1,7 @@
 <template>
   <div v-if="fetched" class="app">
     <div class="app__body">
-      <ChatSideBar @update="update($event)" />
+      <ChatSideBar @update="update($event)" ref="sideBar"/>
       <ChatView v-if="showChats" :room="emitRoom" :key="refresh"/>
     </div>
   </div>

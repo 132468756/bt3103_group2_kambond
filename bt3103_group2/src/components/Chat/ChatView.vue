@@ -91,6 +91,7 @@ export default {
       this.getPreviousChats();
       this.timer = setInterval(this.getPreviousChats, 5000);
     },
+
     isMe(chat) {
       //console.log(chat.user);
       return chat.user == auth.currentUser.email;
