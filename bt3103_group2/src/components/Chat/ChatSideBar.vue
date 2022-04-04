@@ -24,6 +24,8 @@ import {
   getFirestore,
   collection,
   getDocs,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp);
@@ -51,8 +53,8 @@ export default {
   },
   mounted() {
    async function getRooms(self) {
-      const docNow = await getDocs(collection(db, "Chats"));
-      
+      const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp","desc")));
+      console.log(docNow)
       docNow.forEach((doc) => {
         // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (

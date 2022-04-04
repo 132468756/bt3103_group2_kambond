@@ -24,8 +24,9 @@
       <div class="chat__body" v-if="fetched">
         <div v-for="chat in previouschats" :key="chat.id">
           <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
-            {{ chat.message }}
+            {{ chat.message }}  <br/>  
           </p>
+          <small id="time">{{chat.time}}</small>
         </div>
       </div>
     </div>
@@ -49,6 +50,7 @@ import {
   arrayUnion,
   //collection,
   getDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp);
@@ -68,7 +70,7 @@ export default {
     };
   },
   created() {
-    this.getPreviousChats();
+    //this.getPreviousChats();
     this.timer = setInterval(this.getPreviousChats, 5000);
     // this.scrollToEnd();
   },
@@ -76,16 +78,19 @@ export default {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
       console.log("msg on submit", msg);
-      const mychat = { user: auth.currentUser.email, message: msg };
+      const mychat = { user: auth.currentUser.email, 
+      message: msg,
+      time:Timestamp.now().toDate().toLocaleDateString() +" " + Timestamp.now().toDate().toLocaleTimeString(),
+      timestamp:Timestamp.now()};
       await updateDoc(doc(db, "Chats", this.room), {
         chats: arrayUnion(mychat),
+        timestamp:Timestamp.now(),
       });
 
       document.getElementById("inputMsg").value = "";
       this.getPreviousChats();
       this.timer = setInterval(this.getPreviousChats, 5000);
     },
-
     isMe(chat) {
       //console.log(chat.user);
       return chat.user == auth.currentUser.email;
@@ -235,7 +240,13 @@ export default {
   width: fit-content;
   margin-bottom: 30px;
 }
-
+#time {
+  position: relative;
+  font-size: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:darkgray;
+  margin-bottom: 30px;
+}
 .chat__name {
   position: absolute;
   top: -15px;
@@ -305,4 +316,6 @@ export default {
 #submitBtn:active {
   background-color: #7bb67d;
 }
+
+
 </style>
