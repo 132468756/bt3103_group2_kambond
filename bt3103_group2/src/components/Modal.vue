@@ -56,9 +56,13 @@
             </router-link>
           </div>
             <div id="buttons">
-            <div v-if= "post.status == 'Want to borrow'">
+            <div v-if= "userID == post.user">
+              <button
+              class = "borrowButton"> Unavailable</button>
+            </div>
+            <div v-else-if = "post.status == 'Want to borrow'">
               <button @click = "toBorrow(this)"
-              class = "borrowButton"> Lend</button>
+              class = "borrowButton"> Lend </button>
             </div>
             <div v-else-if = "post.status == 'Want to lend'">
               <button @click = "toBorrow(this)"
@@ -92,17 +96,37 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
+    data() {
+      return {
+        userID :"",
+        };
+    },
     props:{
       post:Object
-      },
-    mounted() {
+    },
+    mounted: function() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
+          this.userID = user.email;
           }
         })
-      },
+      function checkAvailable(self, post){
+        console.log(self.userID)
+        if (self.userID == post.user){
+          self.available = "false"
+        }
+        else if (post.status == 'Want to lend'){
+          self.available = "borrow";
+        }
+        else if (post.status == 'Want to borrow'){
+          self.available = "lend";
+        }
+        console.log(self.available)
+      }
+      checkAvailable(this, this.post)
+    },
     methods: {
       close() {
         this.$emit('close');
