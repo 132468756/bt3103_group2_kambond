@@ -62,6 +62,7 @@ import LogOut from "../Logout.vue"
 const db = getFirestore(firebaseApp)
 
 export default {
+    props: ['query'],   
     beforeCreate () {
     document.querySelector('body').setAttribute('style', 'background:rgb(233, 233, 233)')},
     components:{
@@ -88,7 +89,11 @@ export default {
             showCreate:false
         }
     },
-    mounted() {
+    mounted() {       
+        if (this.$route.query.q) {
+            console.log("query",this.$route.query.q);
+            this.openChats();
+        }
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {
