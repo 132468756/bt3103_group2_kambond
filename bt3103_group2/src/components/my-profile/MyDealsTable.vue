@@ -134,7 +134,7 @@ export default {
             let status = thisPost.data().status
 
             let deal_info = await getDoc(doc(db, "Deals", record))
-            let owner = deal_info.data().owner
+            let owner = deal_info.data().borrower
             let owner_info  = await getDoc(doc(db, "Users", owner))
             let borrowerName = owner_info.data().username
 
@@ -172,8 +172,8 @@ export default {
                 let myID = auth.currentUser.email
                 const myInfo = doc(db, "Users", myID)
                 let deal = await getDoc(doc(db, "Deals", record))
-                let owner = deal.data().owner
-                const ownerInfo = doc(db, "Users", owner)
+                let borrower = deal.data().borrower
+                const ownerInfo = doc(db, "Users", borrower)
                 // Increase the credit point of both parties
                 await updateDoc(myInfo, {
                     creditPoint: increment(10)
@@ -241,7 +241,7 @@ export default {
     }
 
     .dealActionBtn, .dealCancelBtn {
-        width: 50px;
+        width: 100px;
         height: 80%;
         background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;

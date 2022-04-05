@@ -120,14 +120,17 @@ const db = getFirestore(firebaseApp);
         var a = this.post.postID
         if (purpose == "Borrowing"){
           var lender = this.user.email
+          var borrower = this.post.user
         }
         else {
           lender = this.post.user
+          borrower = this.user.email
         }
         try{
           const docRef = await setDoc(doc(db, "Deals", a), {
               dealID: a,
-              owner: this.user.email
+              lender: lender,
+              borrower: borrower
               })
           console.log(docRef);
           }
@@ -168,11 +171,10 @@ const db = getFirestore(firebaseApp);
               requests:requests
               })
           console.log(docRe);
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-          },
+        },
 
       toBorrow: async function(self){
             alert("borrowing item " + this.post.title)
@@ -188,11 +190,10 @@ const db = getFirestore(firebaseApp);
             status: "Requested"
           })
           console.log(postDoc)
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-      },
+        },
       },
 }
 </script>

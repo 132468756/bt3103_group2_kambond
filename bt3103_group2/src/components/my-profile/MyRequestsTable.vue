@@ -132,7 +132,7 @@ export default {
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
             let deal_info = await getDoc(doc(db, "Deals", record))
-            let user = deal_info.data().owner
+            let user = deal_info.data().lender
             let user_info = await getDoc(doc(db, "Users", user))
             let lenderName = user_info.data().username
 
@@ -151,11 +151,13 @@ export default {
                     requests: arrayRemove(record)
                 })
                 // Delete record from the poster's table and Deals table
+                let deal = doc(db, "Deals", record)
+                let deal_info = await getDoc(deal)
+                let lenderID = deal_info.data().lender
+                await deleteDeal(lenderID, record)
+                //Change the post status back to previous state
                 let post = doc(db, "Posts", record)
                 let post_info = await getDoc(post)
-                let posterID = post_info.data().user
-                await deleteDeal(posterID, record)
-                //Change the post status back to previous state
                 if(post_info.data().purpose == "Borrowing"){
                     await updateDoc(post, {
                         status:"Want to borrow"
@@ -187,8 +189,8 @@ export default {
         }
 
 
-        async function receiveRequest(record){
-            if(confirm("Please confirm that you have returned this item.")){
+        async function receiveRequest(record, self){
+            if(confirm("Please confirm that you have received this item.")){
                 // Update the post status
                 const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
@@ -204,7 +206,7 @@ export default {
             }
         }
 
-        async function returnRequest(record){
+        async function returnRequest(record, self){
             if(confirm("Please confirm that you have returned this item.")){
                 // Update the post status
                 const docRef = doc(db, "Posts", record)
@@ -221,7 +223,7 @@ export default {
             }
         }
 
-        async function deleteRequestAfterComplete(record){
+        async function deleteRequestAfterComplete(record, self){
             if(confirm("Please confirm that you want to delete this transaction history from your Request record.")){
                 // Delete from user table
                 let myID = auth.currentUser.email
