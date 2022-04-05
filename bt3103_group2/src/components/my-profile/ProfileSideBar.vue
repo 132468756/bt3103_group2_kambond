@@ -298,7 +298,7 @@ export default {
 }
 
 #infoInnerBox {
-    height: 650px;
+    height: 660px;
     overflow-y:scroll;
 }
 

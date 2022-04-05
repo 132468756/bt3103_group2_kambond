@@ -39,22 +39,20 @@ export default {
     },
 
     async updateInfo(room){
-      console.log("update info triggered")
-      console.log("from update",room)
       let chat = await getDoc(doc(db, "Chats", room));
-        const chatcontent = chat.data().chats;
-        if (chatcontent.length != 0) {
-          this.lastmessage = chatcontent[chatcontent.length - 1].message;
-        }
-        console.log(this.lastmessage)
+      const chatcontent = chat.data().chats;
+      if (chatcontent.length != 0) {
+        this.lastmessage = chatcontent[chatcontent.length - 1].message;
+      }
+      // console.log(this.lastmessage)
     },
 
-    time(){
-      setInterval(() => {
-        console.log("from interval",this.emitRoom)
-        this.updateInfo(this.emitRoom)
-      }, 500)
-    }
+    // time(){
+    //   setInterval(() => {
+    //     // console.log("from interval",this.emitRoom)
+    //     this.updateInfo(this.emitRoom)
+    //   }, 500)
+    // }
   },
 
   mounted() {
