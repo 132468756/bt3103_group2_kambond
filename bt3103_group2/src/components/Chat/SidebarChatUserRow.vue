@@ -35,7 +35,7 @@ export default {
       //console.log("emit",this.room)
       this.emitRoom = this.room;
       this.$emit("update", this.emitRoom);
-      this.time()
+      // this.time()
     },
 
     async updateInfo(room){
@@ -51,7 +51,7 @@ export default {
     //   setInterval(() => {
     //     // console.log("from interval",this.emitRoom)
     //     this.updateInfo(this.emitRoom)
-    //   }, 500)
+    //   }, 2500)
     // }
   },
 

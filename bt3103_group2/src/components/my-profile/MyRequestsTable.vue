@@ -1,5 +1,5 @@
 <template>
-    <table id="MyRequests">
+    <table id="MyRequests" v-show="this.showTable">
         <tr class="MyRequestRow">
             <th class="MyRequestTitle">ID</th>
             <th class="MyRequestTitle">Title</th>
@@ -10,6 +10,8 @@
             <th class="MyRequestTitle">Action</th>
         </tr>
     </table>
+
+    <div id="noRecordMsg" v-show="!this.showTable"><h1>Ooops! You don't have any request yet...</h1></div>
 </template>
 
 <script>
@@ -23,7 +25,8 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return{
-            userID:''
+            userID:'',
+            showTable:''
         }
     },
     mounted(){
@@ -43,77 +46,82 @@ export default {
             let records = user.data().requests
             // console.log(user.data())
             // console.log(records)
-            console.log(records.length)
-            let reverseID = records.length
-            records.forEach(async (record) => {
-                var table = document.getElementById("MyRequests")
-                var row = table.insertRow(ind)
-                row.className="MyRequestRow"
+            if(records.length > 0){
+                self.showTable=true
+                console.log(records.length)
+                let reverseID = records.length
+                records.forEach(async (record) => {
+                    var table = document.getElementById("MyRequests")
+                    var row = table.insertRow(ind)
+                    row.className="MyRequestRow"
 
-                let requestInfo = await findRequestInfo(record)
-                // console.log("requestInfo", requestInfo) 
-                var cell1 = row.insertCell(0)
-                cell1.className="MyRequestCol"
-                var cell2 = row.insertCell(1)
-                var cell3 = row.insertCell(2)
-                var cell4 = row.insertCell(3)
-                var cell5 = row.insertCell(4)
-                var cell6 = row.insertCell(5)
-                var cell7 = row.insertCell(6)
+                    let requestInfo = await findRequestInfo(record)
+                    // console.log("requestInfo", requestInfo) 
+                    var cell1 = row.insertCell(0)
+                    cell1.className="MyRequestCol"
+                    var cell2 = row.insertCell(1)
+                    var cell3 = row.insertCell(2)
+                    var cell4 = row.insertCell(3)
+                    var cell5 = row.insertCell(4)
+                    var cell6 = row.insertCell(5)
+                    var cell7 = row.insertCell(6)
 
-                cell1.innerHTML = reverseID
-                cell2.innerHTML = requestInfo[1]
-                cell3.innerHTML = requestInfo[2]
-                cell4.innerHTML = requestInfo[3]
-                //Create button for other user profile
-                var otherUserBtn = document.createElement("button")
-                otherUserBtn.className = "otherLenderBtn"
-                otherUserBtn.id = String(requestInfo[0])
-                otherUserBtn.innerHTML = requestInfo[4]
-                otherUserBtn.onclick = function(){
-                    self.$router.push({ name:"Profile", params:{id: requestInfo[6]}})
-                    }
-                cell5.appendChild(otherUserBtn)
-                cell6.innerHTML = requestInfo[5]
-                
-                // Create request button
-                var requestBtn = document.createElement("button")
-                requestBtn.className = "requestActionBtn"
-                requestBtn.id = String(requestInfo[0])
+                    cell1.innerHTML = reverseID
+                    cell2.innerHTML = requestInfo[1]
+                    cell3.innerHTML = requestInfo[2]
+                    cell4.innerHTML = requestInfo[3]
+                    //Create button for other user profile
+                    var otherUserBtn = document.createElement("button")
+                    otherUserBtn.className = "otherLenderBtn"
+                    otherUserBtn.id = String(requestInfo[0])
+                    otherUserBtn.innerHTML = requestInfo[4]
+                    otherUserBtn.onclick = function(){
+                        self.$router.push({ name:"Profile", params:{id: requestInfo[6]}})
+                        }
+                    cell5.appendChild(otherUserBtn)
+                    cell6.innerHTML = requestInfo[5]
+                    
+                    // Create request button
+                    var requestBtn = document.createElement("button")
+                    requestBtn.className = "requestActionBtn"
+                    requestBtn.id = String(requestInfo[0])
 
-                if(requestInfo[5] == "Requested"){
-                    requestBtn.innerHTML="Delete"
-                    requestBtn.onclick=function(){
-                        deleteRequest(record, self)
+                    if(requestInfo[5] == "Requested"){
+                        requestBtn.innerHTML="Delete"
+                        requestBtn.onclick=function(){
+                            deleteRequest(record, self)
+                        }
+                        cell7.appendChild(requestBtn)
+                    }else if(requestInfo[5] == "Sent Out"){
+                        requestBtn.innerHTML="Receive"
+                        requestBtn.onclick=function(){
+                            receiveRequest(record, self)
+                        }
+                        cell7.appendChild(requestBtn)
+                    }else if(requestInfo[5] == "Received"){
+                        requestBtn.innerHTML="Return"
+                        requestBtn.onclick=function(){
+                            returnRequest(record, self)
+                        }
+                        cell7.appendChild(requestBtn)
+                    }else if(requestInfo[5] == "Returned"){
+                        var info_div = document.createElement("div")
+                        info_div.className="requestInfoReturned"
+                        info_div.id = String(requestInfo[0])
+                        info_div.innerHTML = "Waiting to Complete"
+                        cell7.appendChild(info_div)
+                    }else{
+                        requestBtn.innerHTML="Delete"
+                        requestBtn.onclick=function(){
+                            deleteRequestAfterComplete(record, self)
+                        }
+                        cell7.appendChild(requestBtn)
                     }
-                    cell7.appendChild(requestBtn)
-                }else if(requestInfo[5] == "Sent Out"){
-                    requestBtn.innerHTML="Receive"
-                    requestBtn.onclick=function(){
-                        receiveRequest(record, self)
-                    }
-                    cell7.appendChild(requestBtn)
-                }else if(requestInfo[5] == "Received"){
-                    requestBtn.innerHTML="Return"
-                    requestBtn.onclick=function(){
-                        returnRequest(record, self)
-                    }
-                    cell7.appendChild(requestBtn)
-                }else if(requestInfo[5] == "Returned"){
-                    var info_div = document.createElement("div")
-                    info_div.className="requestInfoReturned"
-                    info_div.id = String(requestInfo[0])
-                    info_div.innerHTML = "Waiting to Complete"
-                    cell7.appendChild(info_div)
-                }else{
-                    requestBtn.innerHTML="Delete"
-                    requestBtn.onclick=function(){
-                        deleteRequestAfterComplete(record, self)
-                    }
-                    cell7.appendChild(requestBtn)
-                }
-                reverseID -= 1
-            })
+                    reverseID -= 1
+                })
+            } else {
+                self.showTable=false
+            }
         }
 
         async function findRequestInfo(record){
@@ -124,7 +132,7 @@ export default {
             let postDate = thisPost.data().postDate
             let status = thisPost.data().status
             let deal_info = await getDoc(doc(db, "Deals", record))
-            let user = deal_info.data().owner
+            let user = deal_info.data().lender
             let user_info = await getDoc(doc(db, "Users", user))
             let lenderName = user_info.data().username
 
@@ -143,11 +151,13 @@ export default {
                     requests: arrayRemove(record)
                 })
                 // Delete record from the poster's table and Deals table
+                let deal = doc(db, "Deals", record)
+                let deal_info = await getDoc(deal)
+                let lenderID = deal_info.data().lender
+                await deleteDeal(lenderID, record)
+                //Change the post status back to previous state
                 let post = doc(db, "Posts", record)
                 let post_info = await getDoc(post)
-                let posterID = post_info.data().user
-                await deleteDeal(posterID, record)
-                //Change the post status back to previous state
                 if(post_info.data().purpose == "Borrowing"){
                     await updateDoc(post, {
                         status:"Want to borrow"
@@ -179,8 +189,8 @@ export default {
         }
 
 
-        async function receiveRequest(record){
-            if(confirm("Please confirm that you have returned this item.")){
+        async function receiveRequest(record, self){
+            if(confirm("Please confirm that you have received this item.")){
                 // Update the post status
                 const docRef = doc(db, "Posts", record)
                 await updateDoc(docRef, {
@@ -196,7 +206,7 @@ export default {
             }
         }
 
-        async function returnRequest(record){
+        async function returnRequest(record, self){
             if(confirm("Please confirm that you have returned this item.")){
                 // Update the post status
                 const docRef = doc(db, "Posts", record)
@@ -213,7 +223,7 @@ export default {
             }
         }
 
-        async function deleteRequestAfterComplete(record){
+        async function deleteRequestAfterComplete(record, self){
             if(confirm("Please confirm that you want to delete this transaction history from your Request record.")){
                 // Delete from user table
                 let myID = auth.currentUser.email

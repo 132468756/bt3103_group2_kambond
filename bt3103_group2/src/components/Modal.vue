@@ -69,23 +69,6 @@
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Lend </button>
             </div>
-            <div v-else-if = "post.status == 'Want to lend'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Borrow </button>
-            </div>
-            <div v-else>
-              <button class = "borrowButton">Unavailable </button>
-            </div>
-
-            <button
-              type="button"
-              class="btn-big-close"
-              @click="close"
-              aria-label="Close modal"
-            >
-              Close
-            </button>
-          </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
@@ -120,20 +103,25 @@ const db = getFirestore(firebaseApp);
     methods: {
       close() {
         this.$emit('close');
+        console.log(this.user.email)
+        console.log(this.post.email)
         },
 
       addDeal: async function(purpose){
         var a = this.post.postID
         if (purpose == "Borrowing"){
           var lender = this.user.email
+          var borrower = this.post.user
         }
         else {
           lender = this.post.user
+          borrower = this.user.email
         }
         try{
           const docRef = await setDoc(doc(db, "Deals", a), {
               dealID: a,
-              owner: this.user.email
+              lender: lender,
+              borrower: borrower
               })
           console.log(docRef);
           }
@@ -174,11 +162,10 @@ const db = getFirestore(firebaseApp);
               requests:requests
               })
           console.log(docRe);
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-          },
+        },
 
       toBorrow: async function(self){
             alert("borrowing item " + this.post.title)
@@ -199,11 +186,10 @@ const db = getFirestore(firebaseApp);
             status: "Requested"
           })
           console.log(postDoc)
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-      },
+        },
       },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <table id="MyDeals">
+    <table id="MyDeals" v-show="this.showTable">
         <tr class="MyDealRow">
             <th class="MyDealTitle">ID</th>
             <th class="MyDealTitle">Title</th>
@@ -10,6 +10,8 @@
             <th class="MyDealTitle">Action</th>
         </tr>
     </table>
+
+    <div id="noRecordMsg" v-show="!this.showTable"><h1>Ooops! You don't have any deal yet...</h1></div>
 </template>
 
 <script>
@@ -23,7 +25,8 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return{
-            userID:''
+            userID:'',
+            showTable:''
         }
     },
 
@@ -44,76 +47,81 @@ export default {
             let records = user.data().deals
             // console.log(user.data())
             // console.log(records)
-            let reverseID=records.length
-            
-            records.forEach(async (record) => {
-                var table = document.getElementById("MyDeals")
-                var row = table.insertRow(ind)
-                row.className="MyDealRow"
+            if(records.length > 0){
+                self.showTable=true
+                let reverseID=records.length
+                
+                records.forEach(async (record) => {
+                    var table = document.getElementById("MyDeals")
+                    var row = table.insertRow(ind)
+                    row.className="MyDealRow"
 
-                let dealInfo = await findDealInfo(record)
-                // console.log("dealInfo", dealInfo) 
-                var cell1 = row.insertCell(0)
-                cell1.className="MyDealCol"
-                var cell2 = row.insertCell(1)
-                var cell3 = row.insertCell(2)
-                var cell4 = row.insertCell(3)
-                var cell5 = row.insertCell(4)
-                var cell6 = row.insertCell(5)
-                var cell7 = row.insertCell(6)
+                    let dealInfo = await findDealInfo(record)
+                    // console.log("dealInfo", dealInfo) 
+                    var cell1 = row.insertCell(0)
+                    cell1.className="MyDealCol"
+                    var cell2 = row.insertCell(1)
+                    var cell3 = row.insertCell(2)
+                    var cell4 = row.insertCell(3)
+                    var cell5 = row.insertCell(4)
+                    var cell6 = row.insertCell(5)
+                    var cell7 = row.insertCell(6)
 
-                cell1.innerHTML = reverseID
-                cell2.innerHTML = dealInfo[1]
-                cell3.innerHTML = dealInfo[2]
-                cell4.innerHTML = dealInfo[3]
-                // Create button for other user profile
-                var otherUserBtn = document.createElement("button")
-                otherUserBtn.className = "otherBorrowerBtn"
-                otherUserBtn.id = String(dealInfo[0])
-                otherUserBtn.innerHTML = dealInfo[4]
-                otherUserBtn.onclick = function(){
-                    self.$router.push({ name:"Profile", params:{id: dealInfo[6]}})
-                }
-                cell5.appendChild(otherUserBtn)
-                cell6.innerHTML = dealInfo[5]
-
-                // Create deal button
-                var dealBtn = document.createElement("button")
-                dealBtn.className = "dealActionBtn"
-                dealBtn.id = String(dealInfo[0])
-
-                //Create Info block
-                var info_div = document.createElement("div")
-                info_div.className="dealInfoLent"
-                info_div.id = String(dealInfo[0])
-
-                if(dealInfo[5]=="Requested"){
-                    dealBtn.innerHTML="Send"
-                    dealBtn.onclick=function(){
-                        confirmDeal(record, self)
+                    cell1.innerHTML = reverseID
+                    cell2.innerHTML = dealInfo[1]
+                    cell3.innerHTML = dealInfo[2]
+                    cell4.innerHTML = dealInfo[3]
+                    // Create button for other user profile
+                    var otherUserBtn = document.createElement("button")
+                    otherUserBtn.className = "otherBorrowerBtn"
+                    otherUserBtn.id = String(dealInfo[0])
+                    otherUserBtn.innerHTML = dealInfo[4]
+                    otherUserBtn.onclick = function(){
+                        self.$router.push({ name:"Profile", params:{id: dealInfo[6]}})
                     }
-                    cell7.appendChild(dealBtn)
-                }else if(dealInfo[5]=="Sent Out"){
-                    info_div.innerHTML = "Lent"
-                    cell7.appendChild(info_div)
-                }else if(dealInfo[5]=="Received"){
-                    info_div.innerHTML = "Waiting for Return"
-                    cell7.appendChild(info_div)
-                }else if(dealInfo[5]=="Returned"){
-                    dealBtn.innerHTML="Complete"
-                    dealBtn.onclick=function(){
-                        completeDeal(record, self)
+                    cell5.appendChild(otherUserBtn)
+                    cell6.innerHTML = dealInfo[5]
+
+                    // Create deal button
+                    var dealBtn = document.createElement("button")
+                    dealBtn.className = "dealActionBtn"
+                    dealBtn.id = String(dealInfo[0])
+
+                    //Create Info block
+                    var info_div = document.createElement("div")
+                    info_div.className="dealInfoLent"
+                    info_div.id = String(dealInfo[0])
+
+                    if(dealInfo[5]=="Requested"){
+                        dealBtn.innerHTML="Send"
+                        dealBtn.onclick=function(){
+                            confirmDeal(record, self)
+                        }
+                        cell7.appendChild(dealBtn)
+                    }else if(dealInfo[5]=="Sent Out"){
+                        info_div.innerHTML = "Lent"
+                        cell7.appendChild(info_div)
+                    }else if(dealInfo[5]=="Received"){
+                        info_div.innerHTML = "Waiting for Return"
+                        cell7.appendChild(info_div)
+                    }else if(dealInfo[5]=="Returned"){
+                        dealBtn.innerHTML="Complete"
+                        dealBtn.onclick=function(){
+                            completeDeal(record, self)
+                        }
+                        cell7.appendChild(dealBtn)
+                    }else{
+                        dealBtn.innerHTML="Delete"
+                        dealBtn.onclick=function(){
+                            deleteDeal(record, self)
+                        }
+                        cell7.appendChild(dealBtn)
                     }
-                    cell7.appendChild(dealBtn)
-                }else{
-                    dealBtn.innerHTML="Delete"
-                    dealBtn.onclick=function(){
-                        deleteDeal(record, self)
-                    }
-                    cell7.appendChild(dealBtn)
-                }
-                reverseID -= 1
-            })
+                    reverseID -= 1
+                })
+            }else{
+                self.showTable=false
+            }
         }
         display(this)
 
@@ -126,7 +134,7 @@ export default {
             let status = thisPost.data().status
 
             let deal_info = await getDoc(doc(db, "Deals", record))
-            let owner = deal_info.data().owner
+            let owner = deal_info.data().borrower
             let owner_info  = await getDoc(doc(db, "Users", owner))
             let borrowerName = owner_info.data().username
 
@@ -164,8 +172,8 @@ export default {
                 let myID = auth.currentUser.email
                 const myInfo = doc(db, "Users", myID)
                 let deal = await getDoc(doc(db, "Deals", record))
-                let owner = deal.data().owner
-                const ownerInfo = doc(db, "Users", owner)
+                let borrower = deal.data().borrower
+                const ownerInfo = doc(db, "Users", borrower)
                 // Increase the credit point of both parties
                 await updateDoc(myInfo, {
                     creditPoint: increment(10)
@@ -233,7 +241,7 @@ export default {
     }
 
     .dealActionBtn, .dealCancelBtn {
-        width: 50px;
+        width: 100px;
         height: 80%;
         background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;
