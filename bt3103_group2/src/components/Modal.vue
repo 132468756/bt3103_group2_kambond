@@ -179,6 +179,11 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
+            if (this.post.purpose == "Lending") {
+              this.$router.push({name: 'sideBar', query: {q:"showRequest"}});
+            } else {
+              this.$router.push({name: 'sideBar', query: {q:"showDeal"}});
+            }
             this.close();
           },
 

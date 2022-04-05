@@ -89,11 +89,18 @@ export default {
             showCreate:false
         }
     },
-    mounted() {       
-        if (this.$route.query.q) {
-            console.log("query",this.$route.query.q);
-            if(this.$route.query.q == "showChats") {
+    mounted() {
+        const queryURL = this.$route.query.q;
+        if (queryURL) {
+            console.log("query",queryURL);
+            if(queryURL == "showChats") {
                 this.openChats();
+            } else if (queryURL == "showSettings") {
+                this.openSettings();
+            } else if (queryURL == "showRequest") {
+                this.openRequests();
+            } else if (queryURL == "showDeal") {
+                this.openDeals();
             }
         }
         const auth = getAuth();
