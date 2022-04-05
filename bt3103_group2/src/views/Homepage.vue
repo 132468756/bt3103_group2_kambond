@@ -1,6 +1,6 @@
 <template>
 
-  <div class="home" v-if="user">
+ <div class="home" v-if="user">
     <NavBar />
     <div class="box">
       <div class="search">
@@ -36,6 +36,7 @@ import {
   doc,
   getDocs,
   collection,
+  getDoc,
 } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp);
@@ -56,7 +57,7 @@ export default {
       postlist: [],
       isModalVisible: false,
       modalData: {},
-      searchText :''
+      searchText:"",
     };
   },
 
@@ -83,6 +84,12 @@ export default {
           this.postlist.push(post.data());
         }
       });
+
+      this.postlist.forEach(async (post)=>{
+        let docRef = await getDoc(doc(db, "Users", post.user));
+        post.userName = docRef.data().username
+      });
+
       console.log(this.postlist[0].status);
       console.log(this.searchText)
       }
@@ -142,8 +149,7 @@ export default {
           // Create user only if this is a new user
           const docNow = await setDoc(doc(db, "Users", self.user), data);
           console.log(docNow);
-          self.$router.push({ path:"/myprofile"})
-          alert("PLease update your personal info in Settings before proceeding.")
+          self.$router.push({ path:"/settings"})
         }
         // } catch (error) {
         //   console.error("Error adding document:", error);
@@ -173,6 +179,9 @@ export default {
 
 .postList {
   display: inline-block;
+  width: 45vw;
+  justify-content:center;
+  margin-left:18%;
   /* border: 3px solid black; */
 }
 

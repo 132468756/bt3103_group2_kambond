@@ -174,12 +174,10 @@ export default {
     async function collectData(posts){
       let z = await getDocs(collection(db,"Posts"))
       z.forEach((doc)=> 
-      posts.push(doc.data()))
+        posts.push(doc.data()))
       console.log(posts)
-      let docRef = await getDoc(doc(db, "Users", "12345"));
-      console.log(docRef.data().username);
       posts.forEach(async (post)=>{
-        docRef = await getDoc(doc(db, "Users", post.user));
+        let docRef = await getDoc(doc(db, "Users", post.user));
         console.log(docRef.data().username)
         post.userName = docRef.data().username
       
