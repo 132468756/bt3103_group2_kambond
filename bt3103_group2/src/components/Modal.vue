@@ -56,27 +56,28 @@
             </router-link>
           </div>
             <div id="buttons">
-            <div v-if= "post.status == 'Want to borrow'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Lend</button>
+              <div id="actionBtn" v-if="post.user!=this.user.email">
+                <div v-if= "post.status == 'Want to borrow'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Lend</button>
+                </div>
+                <div v-else-if = "post.status == 'Want to lend'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Borrow </button>
+                </div>
+                <div v-else>
+                  <button class = "borrowButton">Unavailable </button>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn-big-close"
+                @click="close"
+                aria-label="Close modal"
+              >
+                Close
+              </button>
             </div>
-            <div v-else-if = "post.status == 'Want to lend'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Borrow </button>
-            </div>
-            <div v-else>
-              <button class = "borrowButton">Unavailable </button>
-            </div>
-
-            <button
-              type="button"
-              class="btn-big-close"
-              @click="close"
-              aria-label="Close modal"
-            >
-              Close
-            </button>
-          </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
@@ -95,6 +96,11 @@ const db = getFirestore(firebaseApp);
     props:{
       post:Object
       },
+    data(){
+      return{
+        user:''
+      }
+    },
     mounted() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
@@ -106,6 +112,8 @@ const db = getFirestore(firebaseApp);
     methods: {
       close() {
         this.$emit('close');
+        console.log(this.user.email)
+        console.log(this.post.email)
         },
 
       addDeal: async function(purpose){
