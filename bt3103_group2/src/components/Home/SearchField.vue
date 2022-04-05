@@ -71,7 +71,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: white;
-  width: 95%;
+  width: 96.5%;
   height: 45px;
   border-radius: 50px;
   box-shadow: 0px 0px 25px rgba(27, 26, 26, 0.719);
