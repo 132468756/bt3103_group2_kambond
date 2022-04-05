@@ -1,5 +1,5 @@
 <template>
-    <table id="MyPosts">
+    <table id="MyPosts" v-show="this.showTable">
         <tr class="MyPostRow">
             <th class="MyPostTitle">ID</th>
             <th class="MyPostTitle">Title</th>
@@ -11,6 +11,8 @@
             <th class="MyPostTitle">Action</th>
         </tr>
     </table>
+
+    <div id="noRecordMsg" v-show="!this.showTable"><h1>Ooops! You don't have any post yet...</h1></div>
 </template>
 
 <script>
@@ -22,7 +24,8 @@ const db = getFirestore(firebaseApp)
 export default {
     data(){
         return{
-            userID:''
+            userID:'',
+            showTable:''
         }
     },
     emits:["showPost"],
@@ -42,53 +45,58 @@ export default {
                 let user = await getDoc(doc(db, "Users", self.userID))
                 let ind = 1
                 let records = user.data().posts
-                console.log(user.data())
-                console.log(records)
-                let reverseID = records.length
-                
-                records.forEach(async (record) => {
-                    var table = document.getElementById("MyPosts")
-                    var row = table.insertRow(ind)
-                    row.className="MyPostRow"
-                    let postInfo = await findPostInfo(record)
-                    // console.log("postInfo", postInfo) 
-                    var cell1 = row.insertCell(0)
-                    cell1.className="MyPostCol"
-                    var cell2 = row.insertCell(1)
-                    var cell3 = row.insertCell(2)
-                    var cell4 = row.insertCell(3)
-                    var cell5 = row.insertCell(4)
-                    var cell6 = row.insertCell(5)
-                    var cell7 = row.insertCell(6)
-                    var cell8 = row.insertCell(7)
-
-                    cell1.innerHTML = reverseID
-                    cell2.innerHTML = postInfo[1]
-                    cell3.innerHTML = postInfo[2]
-                    cell4.innerHTML = postInfo[3]
-                    cell5.innerHTML = postInfo[4]
-                    cell6.innerHTML = postInfo[5]
-                    cell7.innerHTML = postInfo[6]
-
+                if(records.length > 0){
+                    self.showTable=true
+                    console.log(user.data())
+                    console.log(records)
+                    let reverseID = records.length
                     
-                    if(postInfo[6] == "Completed" || postInfo[6] == "Want to lend" || postInfo[6] == "Want to borrow"){
-                        var deleteBtn = document.createElement("button")
-                        deleteBtn.className = "deletePostBtn"
-                        deleteBtn.id = String(postInfo[0])
-                        deleteBtn.innerHTML="Delete"
-                        deleteBtn.onclick=function(){
-                            deletePost(record, self)
+                    records.forEach(async (record) => {
+                        var table = document.getElementById("MyPosts")
+                        var row = table.insertRow(ind)
+                        row.className="MyPostRow"
+                        let postInfo = await findPostInfo(record)
+                        // console.log("postInfo", postInfo) 
+                        var cell1 = row.insertCell(0)
+                        cell1.className="MyPostCol"
+                        var cell2 = row.insertCell(1)
+                        var cell3 = row.insertCell(2)
+                        var cell4 = row.insertCell(3)
+                        var cell5 = row.insertCell(4)
+                        var cell6 = row.insertCell(5)
+                        var cell7 = row.insertCell(6)
+                        var cell8 = row.insertCell(7)
+
+                        cell1.innerHTML = reverseID
+                        cell2.innerHTML = postInfo[1]
+                        cell3.innerHTML = postInfo[2]
+                        cell4.innerHTML = postInfo[3]
+                        cell5.innerHTML = postInfo[4]
+                        cell6.innerHTML = postInfo[5]
+                        cell7.innerHTML = postInfo[6]
+
+                        
+                        if(postInfo[6] == "Completed" || postInfo[6] == "Want to lend" || postInfo[6] == "Want to borrow"){
+                            var deleteBtn = document.createElement("button")
+                            deleteBtn.className = "deletePostBtn"
+                            deleteBtn.id = String(postInfo[0])
+                            deleteBtn.innerHTML="Delete"
+                            deleteBtn.onclick=function(){
+                                deletePost(record, self)
+                            }
+                            cell8.appendChild(deleteBtn)
+                        }else{
+                            var divBlk = document.createElement("div")
+                            divBlk.innerHTML = "In Transaction"
+                            divBlk.className = "emptyDiv"
+                            divBlk.id = String(postInfo[0])
+                            cell8.appendChild(divBlk)
                         }
-                        cell8.appendChild(deleteBtn)
-                    }else{
-                        var divBlk = document.createElement("div")
-                        divBlk.innerHTML = "In Transaction"
-                        divBlk.className = "emptyDiv"
-                        divBlk.id = String(postInfo[0])
-                        cell8.appendChild(divBlk)
-                    }
-                    reverseID -= 1
-                })
+                        reverseID -= 1
+                    })
+                }else{
+                    self.showTable=false
+                }
             } else {
                 console.log("User need to login")
             }
