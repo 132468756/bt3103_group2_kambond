@@ -57,6 +57,13 @@
         </select>
         </div>
 
+        <div className ="row">
+        <label className = "postlabel"> Image </label>
+        <input type="file" accept="image/*" id="post.image" @change="onImageChange">
+        <input type="hidden" name="url" id="url">
+        <img :src="previewImage" alt="Preview" v-if="previewImage" class="uploading-image" />
+        </div>
+
         <div className = "submitRow">
         <button className="submit" @click = "createPost()"> Create Post </button>
         </div>
@@ -65,12 +72,16 @@
 </template>
 
 <script>
-import firebaseApp from "../../firebase.js";
-import {arrayUnion, getFirestore} from "firebase/firestore";
+import firebaseApp  from "../../firebase.js";
+import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import storage from "../../firebase"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useState } from "@/composables/state"
 const db = getFirestore(firebaseApp);
-const auth = getAuth()
+const auth = getAuth();
+const [image, setImage] = useState(null);
+
 export default {
     data() {
         return {
@@ -82,7 +93,8 @@ export default {
             category: "",
             location: "",
             },
-        };
+            previewImage: null,
+        }
     },
     mounted() {
         const auth = getAuth();
@@ -93,6 +105,44 @@ export default {
         })
     },
     methods: {
+        onImageChange(e) {
+            const reader = new FileReader();
+            let file = e.target.files[0]; // get the supplied file
+            // if there is a file, set image to that file
+            if (file) {
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                console.log(file);
+                setImage(file);
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+            // this.previewImage = URL.createObjectURL(file)
+            // if there is no file, set image back to null
+            } else {
+            setImage(null);
+            }
+        },
+
+        // uploading file in storage
+        uploadImage(postID){
+            var email = auth.currentUser.email
+
+            // Check if image state is null
+            if (image) {
+                // If image is a file, create a root reference to storage
+                const storageRef = storage.ref();
+                // Create child reference
+                const imageRef = storageRef.child(email).child(postID);
+                // Store the file
+                imageRef.put(image)
+                // Callback
+                .then(() => {
+                    alert("Image uploaded successfully to Firebase.");
+                });
+            }
+        },
+
         async createPost() {
             var a = document.getElementById("post.title").value
             var b = document.getElementById("post.purpose").value
@@ -112,8 +162,7 @@ export default {
                                 " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
             var postID = email + a + timeStamp
             if(a!='' && b!='' && c!='' && d!='' && f!=''){
-                // Make sure all fields have been filled in
-                if (confirm("creating post : " + a) == true){
+            // Make sure all fields have been filled in
                     try{
                         const docRef = await setDoc(doc(db, "Posts", postID), {
                             title:a,
@@ -127,6 +176,7 @@ export default {
                             postDate:timeFormatted
                         })
                         console.log(docRef);
+                        this.uploadImage(postID);
                     }catch(error){
                         console.error("Error adding document:", error);
                     }
@@ -134,17 +184,20 @@ export default {
                     await updateDoc(user_info, {
                         posts: arrayUnion(postID)
                     })
+                    alert("Successfully Posted " + this.post.title);
                     // Reset all fields
                     this.post.title=''
                     this.post.purpose=''
                     this.post.description=''
                     this.post.location=''
                     this.post.category=''
-                }
+                    //document.getElementById("createpostform").reset();
+                    this.post.image=null
+                    this.previewImage=null
             }else{
                 alert("Please make sure you have filled in all the fields required.")
             }
-        }
+        }, //createPost
     }
 }
 </script>
@@ -184,6 +237,10 @@ input,select {
     flex-direction:column;
     width:40%;
     margin-left:30%;
+}
+
+.uploading-image{
+
 }
 .submitRow{
     text-align: left;
