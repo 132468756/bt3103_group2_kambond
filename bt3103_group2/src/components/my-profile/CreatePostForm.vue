@@ -57,6 +57,13 @@
         </select>
         </div>
 
+        <div className ="row">
+        <label className = "postlabel"> Location </label>
+        <input type="file" accept="image/*" id="post.image" @change="preview">
+        <input type="hidden" name="url" id="url">
+        <img :src="previewImage" alt="Preview" v-if="previewImage" class="uploading-image" />
+        </div>
+
         <div className = "submitRow">
         <button className="submit" @click = "createPost()"> Create Post </button>
         </div>
@@ -68,9 +75,10 @@
 import firebaseApp from "../../firebase.js";
 import {arrayUnion, getFirestore} from "firebase/firestore";
 import { doc, setDoc, updateDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+// document.getElementById('contactForm').addEventListener('submit', submitForm);
 const db = getFirestore(firebaseApp);
-const auth = getAuth()
+const auth = getAuth();
 export default {
     data() {
         return {
@@ -82,7 +90,8 @@ export default {
             category: "",
             location: "",
             },
-        };
+            previewImage: null,
+        }
     },
     mounted() {
         const auth = getAuth();
@@ -93,6 +102,41 @@ export default {
         })
     },
     methods: {
+        // Preview image after choosing file
+        preview (e){
+            const file = e.target.files[0]
+            this.previewImage = URL.createObjectURL(file)
+            // this.previewImage = getInputVal('url');
+        },
+
+        // uploading file in storage
+        uploadImage(postID){
+            var email = auth.currentUser.email
+            const file = document.getElementById("post.image").files[0];
+            var storage = firebaseApp.storage();
+            var storageref=storage.ref();
+            var thisref=storageref.child(email).child(postID).put(file);
+            // Uploaded completed successfully, now we can get the download URL
+            thisref.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                //getting url of image
+                document.getElementById("url").value=downloadURL;
+                alert('uploaded successfully');
+            });
+ 
+            // // Get values
+            // var url = getInputVal('url');
+        },
+
+        // function getInputVal(id){
+        //     document.getElementById('contactForm').reset();
+        // }
+ 
+ 
+        // Function to get get form values
+        // getInputVal(id){
+        //     return document.getElementById(id).value;
+        // },
+
         async createPost() {
             var a = document.getElementById("post.title").value
             var b = document.getElementById("post.purpose").value
@@ -123,6 +167,7 @@ export default {
                         user:email,
                         postID:postID,
                         postDate:timeFormatted
+
                     })
                     console.log(docRef);
                 }catch(error){
@@ -132,6 +177,8 @@ export default {
                 await updateDoc(user_info, {
                     posts: arrayUnion(postID)
                 })
+
+                this.uploadImage(postID);
             }
             // Reset all fields
             this.post.title=''
@@ -139,7 +186,19 @@ export default {
             this.post.description=''
             this.post.location=''
             this.post.category=''
-        }
+            this.previewImage=null
+        }, // createPost
+        
+        // uploadImage(e){
+        // const image = e.target.files[0];
+        // this.item.imageUrl
+        // const reader = new FileReader();
+        // reader.readAsDataURL(image);
+        // reader.onload = e =>{
+        //     this.previewImage = e.target.result;
+        //     console.log(this.previewImage);
+        // }
+        // },
     }
 }
 </script>
