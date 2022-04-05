@@ -77,19 +77,21 @@ export default {
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
-      console.log("msg on submit", msg);
-      const mychat = { user: auth.currentUser.email, 
-      message: msg,
-      time:Timestamp.now().toDate().toLocaleDateString() +" " + Timestamp.now().toDate().toLocaleTimeString(),
-      timestamp:Timestamp.now()};
-      await updateDoc(doc(db, "Chats", this.room), {
-        chats: arrayUnion(mychat),
-        timestamp:Timestamp.now(),
-      });
+      if(msg != '' && msg != null){
+        console.log("msg on submit", msg);
+        const mychat = { user: auth.currentUser.email, 
+        message: msg,
+        time:Timestamp.now().toDate().toLocaleDateString() +" " + Timestamp.now().toDate().toLocaleTimeString(),
+        timestamp:Timestamp.now()};
+        await updateDoc(doc(db, "Chats", this.room), {
+          chats: arrayUnion(mychat),
+          timestamp:Timestamp.now(),
+        });
 
-      document.getElementById("inputMsg").value = "";
-      this.getPreviousChats();
-      this.timer = setInterval(this.getPreviousChats, 5000);
+        document.getElementById("inputMsg").value = "";
+        this.getPreviousChats();
+        this.timer = setInterval(this.getPreviousChats, 5000);
+      }
     },
 
     isMe(chat) {

@@ -67,7 +67,7 @@ export default {
 .app__body {
   display: flex;
   background-color: #dedbdb;
-  height: 82vh;
+  height: 660px;
   width: 70vw;
   box-shadow: -1px 4px 20px -6px rgba(111, 153, 226, 0.75);
   border-radius: 20px;
