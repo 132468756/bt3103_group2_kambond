@@ -51,9 +51,14 @@
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
-            <router-link :to = "'/profile/' + post.user " :id = post.user>
+            <div v-if= "userID == post.user">
               {{post.userName}}
-            </router-link>
+            </div>
+            <div v-else>
+              <router-link :to = "'/profile/' + post.user " :id = post.user>
+                {{post.userName}}
+              </router-link>
+            </div>
           </div>
             <div id="buttons">
             <div v-if= "userID == post.user">
