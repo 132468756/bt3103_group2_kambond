@@ -92,7 +92,9 @@ export default {
     mounted() {       
         if (this.$route.query.q) {
             console.log("query",this.$route.query.q);
-            this.openChats();
+            if(this.$route.query.q == "showChats") {
+                this.openChats();
+            }
         }
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
