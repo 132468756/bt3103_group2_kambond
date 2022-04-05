@@ -97,7 +97,6 @@ import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',

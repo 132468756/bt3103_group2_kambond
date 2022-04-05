@@ -263,7 +263,7 @@ export default {
     }
 
     .requestActionBtn {
-        width: 80%;
+        width: 50px;
         height: 80%;
         background-color: rgba(117, 255, 117, 0.822);
         cursor: pointer;

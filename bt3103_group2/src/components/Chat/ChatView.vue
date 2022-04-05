@@ -24,8 +24,9 @@
       <div class="chat__body" v-if="fetched">
         <div v-for="chat in previouschats" :key="chat.id">
           <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
-            {{ chat.message }}
+            {{ chat.message }}  <br/>  
           </p>
+          <small id="time">{{chat.time}}</small>
         </div>
       </div>
     </div>
@@ -49,6 +50,7 @@ import {
   arrayUnion,
   //collection,
   getDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp);
@@ -68,22 +70,28 @@ export default {
     };
   },
   created() {
-    this.getPreviousChats();
+    //this.getPreviousChats();
     this.timer = setInterval(this.getPreviousChats, 5000);
     // this.scrollToEnd();
   },
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
-      console.log("msg on submit", msg);
-      const mychat = { user: auth.currentUser.email, message: msg };
-      await updateDoc(doc(db, "Chats", this.room), {
-        chats: arrayUnion(mychat),
-      });
+      if(msg != '' && msg != null){
+        console.log("msg on submit", msg);
+        const mychat = { user: auth.currentUser.email, 
+        message: msg,
+        time:Timestamp.now().toDate().toLocaleDateString() +" " + Timestamp.now().toDate().toLocaleTimeString(),
+        timestamp:Timestamp.now()};
+        await updateDoc(doc(db, "Chats", this.room), {
+          chats: arrayUnion(mychat),
+          timestamp:Timestamp.now(),
+        });
 
-      document.getElementById("inputMsg").value = "";
-      this.getPreviousChats();
-      this.timer = setInterval(this.getPreviousChats, 5000);
+        document.getElementById("inputMsg").value = "";
+        this.getPreviousChats();
+        this.timer = setInterval(this.getPreviousChats, 5000);
+      }
     },
 
     isMe(chat) {
@@ -119,27 +127,6 @@ export default {
     },
   },
   mounted() {
-    function scrollToBottom() {
-      const element = document.getElementById("content");
-      console.log("ele", element);
-      console.log(
-        "ele",
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        })
-      );
-      console.log("ele", element.scrollTop);
-      console.log("ele", element.scrollHeight);
-      element.scrollTop = 600;
-      console.log("ele", element.scrollTop);
-      element.scrollTo({
-        top: 100,
-        behavior: "smooth",
-      });
-    }
-    scrollToBottom();
     //console.log("Chatview", this.room);
     async function getPreviousChats(roomId, self) {
       let docRef = await getDoc(doc(db, "Chats", roomId));
@@ -169,6 +156,18 @@ export default {
     }
     listFriends(this);
   },
+
+  updated(){
+    const theElement = document.getElementById('content');
+
+    const scrollToBottom = (node) => {
+      console.log("to bottom triggered")
+      node.scrollTop = node.scrollHeight;
+      console.log(node.scrollHeight)
+      console.log(node.scrollTop)
+    }
+    scrollToBottom(theElement);
+  }
 };
 </script>
 
@@ -180,10 +179,10 @@ export default {
 }
 
 .chat__header {
-  padding: 20px;
+  padding: 0 20px 7px 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid rgb(211, 211, 211);
 }
 
 .chat__headerInfo {
@@ -214,6 +213,10 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+#content::-webkit-scrollbar {
+  display: none;
+}
 /* .chat__body {
   flex: 1;
   background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
@@ -235,7 +238,13 @@ export default {
   width: fit-content;
   margin-bottom: 30px;
 }
-
+#time {
+  position: relative;
+  font-size: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  color:darkgray;
+  margin-bottom: 30px;
+}
 .chat__name {
   position: absolute;
   top: -15px;
@@ -250,7 +259,7 @@ export default {
 
 .chat__reciever {
   margin-left: auto;
-  background-color: #b0ffb0;
+  background-color: #95EC69;
 }
 
 .chat__footer {
@@ -270,7 +279,7 @@ export default {
 
 .chat__footer > form > input {
   flex: 1;
-  border-radius: 30px;
+  border-radius: 10px;
   padding: 10px;
   border: none;
 }
@@ -290,12 +299,12 @@ export default {
   display: block;
   height: 40px;
   width: 80px;
-  border-radius: 20px;
+  border-radius: 10px;
   border: transparent;
-  background-color: rgb(179, 249, 185);
+  background-color: #07C160;
   text-align: center;
-  font-weight: bold;
   margin-left: 3%;
+  color: white;
 }
 
 #submitBtn:hover {
@@ -305,4 +314,6 @@ export default {
 #submitBtn:active {
   background-color: #7bb67d;
 }
+
+
 </style>

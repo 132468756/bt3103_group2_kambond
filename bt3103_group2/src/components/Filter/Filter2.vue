@@ -52,7 +52,7 @@ export default {
   <div id="checked">Checked names: {{ checkedNames }}</div>
    <div class="whole">
     <div id="name">
-      <h3>Category</h3>
+      <h3>Location</h3>
     </div>
   <div id = "checkboxes">
   <input type="checkbox" @change="selectAll" v-model= "allSelected">Select All
@@ -65,11 +65,11 @@ export default {
 
 <style scoped>
 #checkboxes input {
-  margin: 10px 1px 10px 10px;
+  margin: 10px 12px 10px 10px;
 }
 
 #checkboxes label {
-  margin: 10px 20px 10px 5px;
+  margin: 10px 10px 10px 0;
 }
 
 #name {

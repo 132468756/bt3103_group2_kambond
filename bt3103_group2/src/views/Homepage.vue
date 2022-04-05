@@ -66,7 +66,8 @@ export default {
     async search(text) {
       console.log("searching"+ text);
       this.postlist = [];
-      var regEx = new RegExp(text + "*", "i");
+      // var regEx = new RegExp(text + "*", "i");
+      var regEx = new RegExp(text, 'i')
       const querySnapshotTitle = await getDocs(collection(db, "Posts"));
       const querySnapshotUser = await getDocs(collection(db, "Users"));
       try{
@@ -170,10 +171,9 @@ export default {
 #postModal {
   justify-content:center;
   border-radius: 10px;
-  background-color: rgba(233,233,233,0.9);
+  background-color: rgba(233,233,233,0.8);
   margin: 5px 5px 5px 5px;
   border: transparent;
-  margin-left: 12%;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
 
@@ -185,4 +185,15 @@ export default {
   /* border: 3px solid black; */
 }
 
+#postView{
+  overflow-y: scroll;
+  width: 100%;
+  height: 440px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#postView::-webkit-scrollbar {
+  display: none;
+}
 </style>
