@@ -116,20 +116,6 @@ const db = getFirestore(firebaseApp);
           this.userID = user.email;
           }
         })
-      function checkAvailable(self, post){
-        console.log(self.userID)
-        if (self.userID == post.user){
-          self.available = "false"
-        }
-        else if (post.status == 'Want to lend'){
-          self.available = "borrow";
-        }
-        else if (post.status == 'Want to borrow'){
-          self.available = "lend";
-        }
-        console.log(self.available)
-      }
-      checkAvailable(this, this.post)
     },
     methods: {
       close() {

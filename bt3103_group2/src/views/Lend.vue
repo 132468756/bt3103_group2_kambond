@@ -123,7 +123,7 @@ export default {
     async collectData(){
       var f1 = Object.keys(this.filter).length
       var f2 = Object.keys(this.filter2).length
-      console.log(f2)
+      console.log("filter change "+ f2)
       if (f2 != 0){
         var qTitle = query(
         collection(db, "Posts"),
