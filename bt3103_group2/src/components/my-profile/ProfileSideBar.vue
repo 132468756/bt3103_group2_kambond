@@ -298,7 +298,7 @@ export default {
 }
 
 #infoInnerBox {
-    height: 650px;
+    height: 660px;
     overflow-y:scroll;
 }
 
@@ -320,10 +320,11 @@ export default {
     margin-left: 3%;
     width: 10%;
     height: 4%;
-    background-color:rgb(233, 233, 233);
-    border: 1px gray solid;
+    background-color:rgb(230, 230, 230);
+    border: transparent;
     border-radius: 10px;
     cursor: pointer;
+    box-shadow: 0 0 5px rgb(66, 64, 62);
 }
 
 #btn:hover{
@@ -339,4 +340,5 @@ export default {
     width: 90%;
     margin-left: 2.5%;
 }
+
 </style>

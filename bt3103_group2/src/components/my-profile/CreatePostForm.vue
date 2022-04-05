@@ -155,23 +155,35 @@ export default {
             var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
                                 " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
             var postID = email + a + timeStamp
-            if (confirm("creating post : " + a) == true){
-                try{
-                    const docRef = await setDoc(doc(db, "Posts", postID), {
-                        title:a,
-                        purpose:b,
-                        description:c,
-                        category:d,
-                        location:f,
-                        status: status,
-                        user:email,
-                        postID:postID,
-                        postDate:timeFormatted
-
+            if(a!='' && b!='' && c!='' && d!='' && f!=''){
+                // Make sure all fields have been filled in
+                if (confirm("creating post : " + a) == true){
+                    try{
+                        const docRef = await setDoc(doc(db, "Posts", postID), {
+                            title:a,
+                            purpose:b,
+                            description:c,
+                            category:d,
+                            location:f,
+                            status: status,
+                            user:email,
+                            postID:postID,
+                            postDate:timeFormatted
+                        })
+                        console.log(docRef);
+                    }catch(error){
+                        console.error("Error adding document:", error);
+                    }
+                    let user_info = doc(db, "Users", String(this.user.email))
+                    await updateDoc(user_info, {
+                        posts: arrayUnion(postID)
                     })
-                    console.log(docRef);
-                }catch(error){
-                    console.error("Error adding document:", error);
+                    // Reset all fields
+                    this.post.title=''
+                    this.post.purpose=''
+                    this.post.description=''
+                    this.post.location=''
+                    this.post.category=''
                 }
                 let user_info = doc(db, "Users", String(this.user.email))
                 await updateDoc(user_info, {
@@ -179,26 +191,19 @@ export default {
                 })
 
                 this.uploadImage(postID);
+                
+                // Reset all fields
+                this.post.title=''
+                this.post.purpose=''
+                this.post.description=''
+                this.post.location=''
+                this.post.category=''
+                this.previewImage=null
+
+            }else{
+                alert("Please make sure you have filled in all the fields required.")
             }
-            // Reset all fields
-            this.post.title=''
-            this.post.purpose=''
-            this.post.description=''
-            this.post.location=''
-            this.post.category=''
-            this.previewImage=null
         }, // createPost
-        
-        // uploadImage(e){
-        // const image = e.target.files[0];
-        // this.item.imageUrl
-        // const reader = new FileReader();
-        // reader.readAsDataURL(image);
-        // reader.onload = e =>{
-        //     this.previewImage = e.target.result;
-        //     console.log(this.previewImage);
-        // }
-        // },
     }
 }
 </script>
@@ -212,26 +217,26 @@ export default {
     margin-left: 10%;
 }
 .postlabel {
-  color: rgb(82, 179, 218);
-  display: flex;
-  justify-content:left;
-  margin-top:2%;
-  margin-bottom:2%;
-  width:100%;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
+    color: rgb(82, 179, 218);
+    display: flex;
+    justify-content:left;
+    margin-top:2%;
+    margin-bottom:2%;
+    width:100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
 }
 input,select {
-  display: flex;
-  justify-content:center;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-  border: none;
-  box-shadow: 2px 2px 2px 2px rgba(82, 179, 218, 0.2);
+    display: flex;
+    justify-content:center;
+    padding: 10px 6px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ddd;
+    color: #555;
+    border: none;
+    box-shadow: 2px 2px 2px 2px rgba(82, 179, 218, 0.2);
 }
 .row{
     display:flex;
@@ -258,13 +263,13 @@ input,select {
     font-size: 17px;
 }
 .submit:hover{
-  outline-color: transparent;
-  outline-style: solid;
-  box-shadow: 0 0 0 1px lightblue;
-  transition: 0.5s;
-  font-weight: bold;
+    outline-color: transparent;
+    outline-style: solid;
+    box-shadow: 0 0 0 1px lightblue;
+    transition: 0.5s;
+    font-weight: bold;
 }
 .submit:active{
-  background-color: lightblue;
+    background-color: lightblue;
 }
 </style>
