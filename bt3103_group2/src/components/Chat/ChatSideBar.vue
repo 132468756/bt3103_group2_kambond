@@ -50,26 +50,11 @@ export default {
       //this.getRooms();
       this.$emit('update',this.emitRoom);
     },
-
-    async updateSideBar(){
-      this.rooms=[]
-      const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp","desc")));
-      docNow.forEach((doc) => {
-        // console.log(doc.data().user2 == String(auth.currentUser.displayName));
-        if (
-          (doc.data().user1 == String(auth.currentUser.email)) |
-          (doc.data().user2 == String(auth.currentUser.email))
-        ) {
-          this.rooms.push(doc.data().chatRoomName);
-        }
-      });
-    },
-
-    
   },
   mounted() {
    async function getRooms(self) {
       const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp","desc")));
+      console.log(docNow)
       docNow.forEach((doc) => {
         // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (
