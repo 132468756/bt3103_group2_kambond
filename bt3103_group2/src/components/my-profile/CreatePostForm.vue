@@ -58,8 +58,8 @@
         </div>
 
         <div className ="row">
-        <label className = "postlabel"> Location </label>
-        <input type="file" accept="image/*" id="post.image" @change="preview">
+        <label className = "postlabel"> Image </label>
+        <input type="file" accept="image/*" id="post.image" @change="onImageChange">
         <input type="hidden" name="url" id="url">
         <img :src="previewImage" alt="Preview" v-if="previewImage" class="uploading-image" />
         </div>
@@ -72,13 +72,16 @@
 </template>
 
 <script>
-import firebaseApp from "../../firebase.js";
-import {arrayUnion, getFirestore} from "firebase/firestore";
+import firebaseApp  from "../../firebase.js";
+import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc} from "firebase/firestore";
+import storage from "../../firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// document.getElementById('contactForm').addEventListener('submit', submitForm);
+import { useState } from "@/composables/state"
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
+const [image, setImage] = useState(null);
+
 export default {
     data() {
         return {
@@ -102,40 +105,43 @@ export default {
         })
     },
     methods: {
-        // Preview image after choosing file
-        preview (e){
-            const file = e.target.files[0]
-            this.previewImage = URL.createObjectURL(file)
-            // this.previewImage = getInputVal('url');
+        onImageChange(e) {
+            const reader = new FileReader();
+            let file = e.target.files[0]; // get the supplied file
+            // if there is a file, set image to that file
+            if (file) {
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                console.log(file);
+                setImage(file);
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+            // this.previewImage = URL.createObjectURL(file)
+            // if there is no file, set image back to null
+            } else {
+            setImage(null);
+            }
         },
 
         // uploading file in storage
         uploadImage(postID){
             var email = auth.currentUser.email
-            const file = document.getElementById("post.image").files[0];
-            var storage = firebaseApp.storage();
-            var storageref=storage.ref();
-            var thisref=storageref.child(email).child(postID).put(file);
-            // Uploaded completed successfully, now we can get the download URL
-            thisref.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                //getting url of image
-                document.getElementById("url").value=downloadURL;
-                alert('uploaded successfully');
-            });
- 
-            // // Get values
-            // var url = getInputVal('url');
-        },
 
-        // function getInputVal(id){
-        //     document.getElementById('contactForm').reset();
-        // }
- 
- 
-        // Function to get get form values
-        // getInputVal(id){
-        //     return document.getElementById(id).value;
-        // },
+            // Check if image state is null
+            if (image) {
+                // If image is a file, create a root reference to storage
+                const storageRef = storage.ref();
+                // Create child reference
+                const imageRef = storageRef.child(email).child(postID);
+                // Store the file
+                imageRef.put(image)
+                // Callback
+                .then(() => {
+                    alert("Image uploaded successfully to Firebase.");
+                });
+            }
+        },
 
         async createPost() {
             var a = document.getElementById("post.title").value
@@ -156,8 +162,7 @@ export default {
                                 " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
             var postID = email + a + timeStamp
             if(a!='' && b!='' && c!='' && d!='' && f!=''){
-                // Make sure all fields have been filled in
-                if (confirm("creating post : " + a) == true){
+            // Make sure all fields have been filled in
                     try{
                         const docRef = await setDoc(doc(db, "Posts", postID), {
                             title:a,
@@ -171,6 +176,7 @@ export default {
                             postDate:timeFormatted
                         })
                         console.log(docRef);
+                        this.uploadImage(postID);
                     }catch(error){
                         console.error("Error adding document:", error);
                     }
@@ -178,32 +184,20 @@ export default {
                     await updateDoc(user_info, {
                         posts: arrayUnion(postID)
                     })
+                    alert("Successfully Posted " + this.post.title);
                     // Reset all fields
                     this.post.title=''
                     this.post.purpose=''
                     this.post.description=''
                     this.post.location=''
                     this.post.category=''
-                }
-                let user_info = doc(db, "Users", String(this.user.email))
-                await updateDoc(user_info, {
-                    posts: arrayUnion(postID)
-                })
-
-                this.uploadImage(postID);
-                
-                // Reset all fields
-                this.post.title=''
-                this.post.purpose=''
-                this.post.description=''
-                this.post.location=''
-                this.post.category=''
-                this.previewImage=null
-
+                    //document.getElementById("createpostform").reset();
+                    this.post.image=null
+                    this.previewImage=null
             }else{
                 alert("Please make sure you have filled in all the fields required.")
             }
-        }, // createPost
+        }, //createPost
     }
 }
 </script>
@@ -243,6 +237,10 @@ input,select {
     flex-direction:column;
     width:40%;
     margin-left:30%;
+}
+
+.uploading-image{
+
 }
 .submitRow{
     text-align: left;
