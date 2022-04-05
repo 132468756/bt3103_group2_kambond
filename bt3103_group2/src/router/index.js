@@ -93,6 +93,7 @@ const routes = [
     path: "/sideBar",
     name: "sideBar",
     component: SideBar,
+    props: route => ({ query: route.query.q })
   },
 ];
 
