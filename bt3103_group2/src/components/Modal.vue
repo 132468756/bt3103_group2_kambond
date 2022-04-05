@@ -51,7 +51,8 @@
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
-            <router-link :to = "'/profile/' + post.user " :id = post.user>
+            <router-link to="/myprofile" v-if="post.user == this.myself">{{post.userName}} </router-link>
+            <router-link :to = "'/profile/' + post.user " :id = post.user v-else>
               {{post.userName}}
             </router-link>
           </div>
@@ -88,18 +89,25 @@ import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+const auth = getAuth();
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
     props:{
       post:Object
       },
+      data() {
+        return {
+          user:"",
+          myself:"",
+        }
+      },
     mounted() {
-      const auth = getAuth();
+      
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
+          this.myself = auth.currentUser.email;
           }
         })
       },

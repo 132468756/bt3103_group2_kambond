@@ -47,12 +47,12 @@ export default {
       // console.log(this.lastmessage)
     },
 
-    time(){
-      setInterval(() => {
-        // console.log("from interval",this.emitRoom)
-        this.updateInfo(this.emitRoom)
-      }, 500)
-    }
+    // time(){
+    //   setInterval(() => {
+    //     // console.log("from interval",this.emitRoom)
+    //     this.updateInfo(this.emitRoom)
+    //   }, 500)
+    // }
   },
 
   mounted() {
