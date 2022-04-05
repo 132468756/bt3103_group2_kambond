@@ -177,12 +177,22 @@ const db = getFirestore(firebaseApp);
         },
 
       toBorrow: async function(self){
-            alert("borrowing item " + this.post.title)
+        if(this.post.purpose=="Borrowing"){
+          if(confirm("Please confirm that you want to lend this item to this user")){
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
             this.close();
-          },
+          }
+        }else{
+          if(confirm("Please confirm that you want to borrow this item from this user")){
+            await self.addRequest(this.post.purpose);
+            await self.addDeal(this.post.purpose);
+            await self.updateStatus();
+            this.close();
+          }
+        }
+      },
 
       updateStatus: async function(){
         try{
