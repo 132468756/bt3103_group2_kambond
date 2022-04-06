@@ -78,7 +78,6 @@
                 Close
               </button>
             </div>
-            </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
