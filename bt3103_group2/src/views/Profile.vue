@@ -101,7 +101,7 @@ export default {
         });
         console.log(docNew);
       }
-      this.$router.push({name:'MyProfile'});
+      this.$router.push({name: 'sideBar', query: {q:"showChats"}});
     },
 
     updateDisplay(){
