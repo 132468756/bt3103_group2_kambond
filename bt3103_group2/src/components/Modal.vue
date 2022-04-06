@@ -51,33 +51,24 @@
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
-            <router-link to="/myprofile" v-if="post.user == this.myself">{{post.userName}} </router-link>
-            <router-link :to = "'/profile/' + post.user " :id = post.user v-else>
+            <div v-if= "userID == post.user">
               {{post.userName}}
-            </router-link>
-          </div>
-            <div id="buttons">
-            <div v-if= "post.status == 'Want to borrow'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Lend</button>
-            </div>
-            <div v-else-if = "post.status == 'Want to lend'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Borrow </button>
             </div>
             <div v-else>
-              <button class = "borrowButton">Unavailable </button>
+              <router-link :to = "'/profile/' + post.user " :id = post.user>
+                {{post.userName}}
+              </router-link>
             </div>
-
-            <button
-              type="button"
-              class="btn-big-close"
-              @click="close"
-              aria-label="Close modal"
-            >
-              Close
-            </button>
           </div>
+            <div id="buttons">
+            <div v-if= "userID == post.user">
+              <button
+              class = "borrowButton"> Unavailable</button>
+            </div>
+            <div v-else-if = "post.status == 'Want to borrow'">
+              <button @click = "toBorrow(this)"
+              class = "borrowButton"> Lend </button>
+            </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
@@ -89,45 +80,48 @@ import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-const auth = getAuth();
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
+    data() {
+      return {
+        userID :"",
+        };
+    },
     props:{
       post:Object
-      },
-      data() {
-        return {
-          user:"",
-          myself:"",
-        }
-      },
-    mounted() {
-      
+    },
+    mounted: function() {
+      const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          this.myself = auth.currentUser.email;
+          this.userID = user.email;
           }
         })
-      },
+    },
     methods: {
       close() {
         this.$emit('close');
+        console.log(this.user.email)
+        console.log(this.post.email)
         },
 
       addDeal: async function(purpose){
         var a = this.post.postID
         if (purpose == "Borrowing"){
           var lender = this.user.email
+          var borrower = this.post.user
         }
         else {
           lender = this.post.user
+          borrower = this.user.email
         }
         try{
           const docRef = await setDoc(doc(db, "Deals", a), {
               dealID: a,
-              owner: this.user.email
+              lender: lender,
+              borrower: borrower
               })
           console.log(docRef);
           }
@@ -150,10 +144,10 @@ const db = getFirestore(firebaseApp);
         var a = this.post.postID
         console.log(a)
         if (purpose == "Borrowing"){
-          var borrower = this.post.user
+          var borrower = this.user.email
         }
         else {
-          borrower = this.user.email
+          borrower = this.post.user
         }
         try{
           let docRef = await getDoc(doc(db, "Users", borrower));
@@ -168,17 +162,21 @@ const db = getFirestore(firebaseApp);
               requests:requests
               })
           console.log(docRe);
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-          },
+        },
 
       toBorrow: async function(self){
             alert("borrowing item " + this.post.title)
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
+            if (this.post.purpose == "Lending") {
+              this.$router.push({name: 'sideBar', query: {q:"showRequest"}});
+            } else {
+              this.$router.push({name: 'sideBar', query: {q:"showDeal"}});
+            }
             this.close();
           },
 
@@ -188,11 +186,10 @@ const db = getFirestore(firebaseApp);
             status: "Requested"
           })
           console.log(postDoc)
-        }
-        catch(error){
+        }catch(error){
           console.error("Error updating document:", error);
           }
-      },
+        },
       },
 }
 </script>

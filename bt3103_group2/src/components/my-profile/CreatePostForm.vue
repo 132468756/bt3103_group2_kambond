@@ -1,27 +1,39 @@
 
 <template>
-    <form @submit.prevent="onSubmit" method="post" id="createpostform">
-        <div className ="row">
-        <label className = "postlabel"> Title </label>
-        <input type="title" required v-model="post.title" id = "post.title" autocomplete="off"/>
-        </div>
+  <form @submit.prevent="onSubmit" method="post" id="createpostform">
+    <div className="row">
+      <label className="postlabel"> Title </label>
+      <input
+        type="title"
+        required
+        v-model="post.title"
+        id="post.title"
+        autocomplete="off"
+      />
+    </div>
 
-        <div className ="row">
-        <label className = "postlabel"> Purpose </label>
-        <select required v-model="post.purpose" id = "post.purpose">
+    <div className="row">
+      <label className="postlabel"> Purpose </label>
+      <select required v-model="post.purpose" id="post.purpose">
         <option>Borrowing</option>
         <option>Lending</option>
-        </select>
-        </div>
+      </select>
+    </div>
 
-        <div className ="row">
-        <label className = "postlabel"> Description </label>
-        <input type="desription" required v-model="post.description" id = "post.description" autocomplete="off"/>
-        </div>
+    <div className="row">
+      <label className="postlabel"> Description </label>
+      <input
+        type="desription"
+        required
+        v-model="post.description"
+        id="post.description"
+        autocomplete="off"
+      />
+    </div>
 
-        <div className ="row">
-        <label className = "postlabel"> Category </label>
-        <select required v-model="post.category" id = "post.category">
+    <div className="row">
+      <label className="postlabel"> Category </label>
+      <select required v-model="post.category" id="post.category">
         <option>Beauty & Personal Care</option>
         <option>Bulletin Board</option>
         <option>Computers & Tech</option>
@@ -38,12 +50,12 @@
         <option>Exchange Currency</option>
         <option>Musical Instrument</option>
         <option>Others</option>
-        </select>
-        </div>
+      </select>
+    </div>
 
-        <div className ="row">
-        <label className = "postlabel"> Location </label>
-        <select required v-model="post.location" id = "post.location">
+    <div className="row">
+      <label className="postlabel"> Location </label>
+      <select required v-model="post.location" id="post.location">
         <option>PGP / PGPR</option>
         <option>Utown</option>
         <option>RVRC</option>
@@ -54,163 +66,248 @@
         <option>Raffles Hall</option>
         <option>Kent Ridge Hall</option>
         <option>Others</option>
-        </select>
-        </div>
+      </select>
+    </div>
 
-        <div className = "submitRow">
-        <button className="submit" @click = "createPost()"> Create Post </button>
-        </div>
-    
-    </form>
+    <div className="row">
+      <label className="postlabel"> Image </label>
+      <input
+        type="file"
+        accept="image/*"
+        id="post.image"
+        @change="onImageChange"
+      />
+      <input type="hidden" name="url" id="url" />
+      <img
+        :src="previewImage"
+        alt="Preview"
+        v-if="previewImage"
+        class="uploading-image"
+      />
+    </div>
+
+    <div className="submitRow">
+      <button className="submit" @click="createPost()">Create Post</button>
+    </div>
+  </form>
 </template>
 
 <script>
 import firebaseApp from "../../firebase.js";
-import {arrayUnion, getFirestore} from "firebase/firestore";
-import { doc, setDoc, updateDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { ref, getStorage, uploadBytes } from "firebase/storage";
+import { arrayUnion, getFirestore } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useState } from "@/composables/state";
 const db = getFirestore(firebaseApp);
-const auth = getAuth()
+const auth = getAuth();
+const [image, setImage] = useState(null);
+const storage = getStorage();
 export default {
-    data() {
-        return {
-            user: false,
-            post:{
-            title: "",
-            purpose: "",
-            desription: "",
-            category: "",
-            location: "",
-            },
+  data() {
+    return {
+      user: false,
+      post: {
+        title: "",
+        purpose: "",
+        desription: "",
+        category: "",
+        location: "",
+      },
+      previewImage: null,
+    };
+  },
+  mounted() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  },
+  methods: {
+    onImageChange(e) {
+      const reader = new FileReader();
+      let file = e.target.files[0]; // get the supplied file
+      // if there is a file, set image to that file
+      if (file) {
+        reader.onload = () => {
+          if (reader.readyState === 2) {
+            console.log(file);
+            setImage(file);
+          }
         };
+        reader.readAsDataURL(e.target.files[0]);
+        // this.previewImage = URL.createObjectURL(file)
+        // if there is no file, set image back to null
+      } else {
+        setImage(null);
+      }
     },
-    mounted() {
-        const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-            this.user = user;
-            }
-        })
+
+    // uploading file in storage
+    // uploadImage(postID){
+    //     var email = auth.currentUser.email
+
+    //     // Check if image state is null
+    //     if (image) {
+    //         // If image is a file, create a root reference to storage
+    //         //const storageRef = ref(storage);
+    //         // Create child reference
+    //         //imageRef = storageRef.root;
+    //         //const imageRef = storageRef.child(email).child(postID);
+    //         // Store the file
+    //         // imageRef.put(image)
+    //         // // Callback
+    //         // .then(() => {
+    //         //     alert("Image uploaded successfully to Firebase.");
+    //         // });
+
+    //     }
+    // },
+
+    uploadImage(postID) {
+      if (image) {
+        const fileRef = ref(storage,"images" + postID);
+        console.log(fileRef)
+        uploadBytes(fileRef,image).then(() => {alert("uploaded")})
+      }
     },
-    methods: {
-        async createPost() {
-            var a = document.getElementById("post.title").value
-            var b = document.getElementById("post.purpose").value
-            var c = document.getElementById("post.description").value
-            var d = document.getElementById("post.category").value
-            var f = document.getElementById("post.location").value
-            var email = auth.currentUser.email
-            var status = b
-            if(b == "Borrowing"){
-                status = "Want to borrow"
-            }else{
-                status = "Want to lend"
-            }
-            var sysTime = new Date()
-            var timeStamp = sysTime.getTime()
-            var timeFormatted = sysTime.getFullYear() + "-" + (sysTime.getMonth() + 1) + "-" + sysTime.getDate() + 
-                                " " + (sysTime.getHours()) + ":" + (sysTime.getMinutes());
-            var postID = email + a + timeStamp
-            if(a!='' && b!='' && c!='' && d!='' && f!=''){
-                // Make sure all fields have been filled in
-                if (confirm("creating post : " + a) == true){
-                    try{
-                        const docRef = await setDoc(doc(db, "Posts", postID), {
-                            title:a,
-                            purpose:b,
-                            description:c,
-                            category:d,
-                            location:f,
-                            status: status,
-                            user:email,
-                            postID:postID,
-                            postDate:timeFormatted
-                        })
-                        console.log(docRef);
-                    }catch(error){
-                        console.error("Error adding document:", error);
-                    }
-                    let user_info = doc(db, "Users", String(this.user.email))
-                    await updateDoc(user_info, {
-                        posts: arrayUnion(postID)
-                    })
-                    // Reset all fields
-                    this.post.title=''
-                    this.post.purpose=''
-                    this.post.description=''
-                    this.post.location=''
-                    this.post.category=''
-                }
-            }else{
-                alert("Please make sure you have filled in all the fields required.")
-            }
+
+    async createPost() {
+      var a = document.getElementById("post.title").value;
+      var b = document.getElementById("post.purpose").value;
+      var c = document.getElementById("post.description").value;
+      var d = document.getElementById("post.category").value;
+      var f = document.getElementById("post.location").value;
+      var email = auth.currentUser.email;
+      var status = b;
+      if (b == "Borrowing") {
+        status = "Want to borrow";
+      } else {
+        status = "Want to lend";
+      }
+      var sysTime = new Date();
+      var timeStamp = sysTime.getTime();
+      var timeFormatted =
+        sysTime.getFullYear() +
+        "-" +
+        (sysTime.getMonth() + 1) +
+        "-" +
+        sysTime.getDate() +
+        " " +
+        sysTime.getHours() +
+        ":" +
+        sysTime.getMinutes();
+      var postID = email + a + timeStamp;
+      if (a != "" && b != "" && c != "" && d != "" && f != "") {
+        // Make sure all fields have been filled in
+        try {
+          const docRef = await setDoc(doc(db, "Posts", postID), {
+            title: a,
+            purpose: b,
+            description: c,
+            category: d,
+            location: f,
+            status: status,
+            user: email,
+            postID: postID,
+            postDate: timeFormatted,
+          });
+          console.log(docRef);
+          this.uploadImage(postID);
+          //this.uploadImage();
+        } catch (error) {
+          console.error("Error adding document:", error);
         }
-    }
-}
+        let user_info = doc(db, "Users", String(this.user.email));
+        await updateDoc(user_info, {
+          posts: arrayUnion(postID),
+        });
+        alert("Successfully Posted " + this.post.title);
+        // Reset all fields
+        this.post.title = "";
+        this.post.purpose = "";
+        this.post.description = "";
+        this.post.location = "";
+        this.post.category = "";
+        //document.getElementById("createpostform").reset();
+        this.post.image = null;
+        this.previewImage = null;
+      } else {
+        alert("Please make sure you have filled in all the fields required.");
+      }
+    }, //createPost
+  },
+};
 </script>
 
 <style scoped>
 #createpostform {
-    background: transparent;
-    padding-bottom: 80px;
-    justify-content:center;
-    width: 80%;
-    margin-left: 10%;
+  background: transparent;
+  padding-bottom: 80px;
+  justify-content: center;
+  width: 80%;
+  margin-left: 10%;
 }
 .postlabel {
-    color: rgb(82, 179, 218);
-    display: flex;
-    justify-content:left;
-    margin-top:2%;
-    margin-bottom:2%;
-    width:100%;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
+  color: rgb(82, 179, 218);
+  display: flex;
+  justify-content: left;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
-input,select {
-    display: flex;
-    justify-content:center;
-    padding: 10px 6px;
-    width: 100%;
-    box-sizing: border-box;
-    border-bottom: 1px solid #ddd;
-    color: #555;
-    border: none;
-    box-shadow: 2px 2px 2px 2px rgba(82, 179, 218, 0.2);
+input,
+select {
+  display: flex;
+  justify-content: center;
+  padding: 10px 6px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+  border: none;
+  box-shadow: 2px 2px 2px 2px rgba(82, 179, 218, 0.2);
 }
-.row{
-    display:flex;
-    flex-direction:column;
-    width:40%;
-    margin-left:30%;
+.row {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin-left: 30%;
 }
-.submitRow{
-    text-align: left;
-    padding:1%;
+
+.uploading-image {
+}
+.submitRow {
+  text-align: left;
+  padding: 1%;
 }
 .submit {
-    position:absolute;
-    text-align: center;
-    background-color: orange;
-    border:0;
-    margin-left: 24%;
-    margin-top:20px;
-    color:aliceblue;
-    border-radius: 20px;
-    width: 10vw;
-    height:7%;
-    cursor: pointer;
-    font-size: 17px;
+  position: absolute;
+  text-align: center;
+  background-color: orange;
+  border: 0;
+  margin-left: 24%;
+  margin-top: 20px;
+  color: aliceblue;
+  border-radius: 20px;
+  width: 10vw;
+  height: 7%;
+  cursor: pointer;
+  font-size: 17px;
 }
-.submit:hover{
-    outline-color: transparent;
-    outline-style: solid;
-    box-shadow: 0 0 0 1px lightblue;
-    transition: 0.5s;
-    font-weight: bold;
+.submit:hover {
+  outline-color: transparent;
+  outline-style: solid;
+  box-shadow: 0 0 0 1px lightblue;
+  transition: 0.5s;
+  font-weight: bold;
 }
-.submit:active{
-    background-color: lightblue;
+.submit:active {
+  background-color: lightblue;
 }
 </style>

@@ -67,7 +67,8 @@ export default {
 </script>
 
 <template>
-  <!-- <div id="checked">Checked names: {{ checkedNames }}</div> -->
+  <div id="checked">Checked names: {{ checkedNames }}</div> 
+   
   <div class="whole">
     <div id="name">
       <h3>Category</h3>
@@ -113,7 +114,8 @@ export default {
 
 #checked {
   background-color: rgba(241, 238, 255, 0.582);
-  padding: 5px;
   border: transparent;
+  height:0px;
+  color:transparent;
 }
 </style>

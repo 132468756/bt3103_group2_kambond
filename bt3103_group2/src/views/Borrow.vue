@@ -156,12 +156,6 @@ export default {
       })
         
  async function collectData(posts){
-      /*let z = await getDocs(collection(db,"Posts"))
-      z.forEach((doc)=> 
-      { if(doc.data().status == "Want to borrow" ){
-          posts.push(doc.data()) }
-      }
-      )*/
       var qTitle = query(
         collection(db, "Posts"),
         where("status","==","Want to lend")
