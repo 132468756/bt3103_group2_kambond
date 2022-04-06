@@ -42,6 +42,11 @@
           <div classname="body">
             Catogory: {{post.category}} 
           </div>
+          <div classname="body">
+            <p>{{ post.imageURL}} </p>
+            <img :src= "url" alt="Preview" />
+          </div>
+
           
           
 
@@ -60,7 +65,7 @@
               </router-link>
             </div>
           </div>
-            <div id="buttons">
+            <!-- <div id="buttons">
             <div v-if= "userID == post.user">
               <button
               class = "borrowButton"> Unavailable</button>
@@ -68,6 +73,31 @@
             <div v-else-if = "post.status == 'Want to borrow'">
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Lend </button>
+            </div> -->
+
+            <div id="buttons">
+              <div id="actionBtn" v-if="post.user!=this.user">
+                <div v-if= "post.status == 'Want to borrow'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Lend</button>
+                </div>
+                <div v-else-if = "post.status == 'Want to lend'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Borrow </button>
+                </div>
+                <div v-else>
+                  <button class = "borrowButton">Unavailable </button>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn-big-close"
+                @click="close"
+                aria-label="Close modal"
+              >
+                Close
+              </button>
+
             </div>
         </footer>
       </div>
@@ -77,15 +107,20 @@
 
 <script>
 import firebaseApp from "../firebase.js";
-import {getFirestore} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+//import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 const db = getFirestore(firebaseApp);
+// const storage = getStorage();
+
   export default {
     name: 'Modal',
     data() {
       return {
         userID :"",
+        url: this.post.imageURL,
+        previewImage: null,
         };
     },
     props:{
@@ -98,8 +133,8 @@ const db = getFirestore(firebaseApp);
           this.user = user;
           this.userID = user.email;
           }
-        })
-    },
+        });
+      },
     methods: {
       close() {
         this.$emit('close');
@@ -275,6 +310,8 @@ const db = getFirestore(firebaseApp);
     flex-direction: column;
     font-size:3vh;
     text-align: left;
+    overflow-y: scroll;
+    height: 40vh;
   }
 
   .btn-close {

@@ -77,7 +77,6 @@
         id="post.image"
         @change="onImageChange"
       />
-      <input type="hidden" name="url" id="url" />
       <img
         :src="previewImage"
         alt="Preview"
@@ -86,7 +85,8 @@
       />
     </div>
 
-    <div className="submitRow">
+    <!-- <div className="submitRow"> -->
+    <div className="row">
       <button className="submit" @click="createPost()">Create Post</button>
     </div>
   </form>
@@ -98,10 +98,10 @@ import { ref, getStorage, uploadBytes } from "firebase/storage";
 import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useState } from "@/composables/state";
+// import { useState } from "@/composables/state";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
-const [image, setImage] = useState(null);
+// const [image, setImage] = useState(null);
 const storage = getStorage();
 export default {
   data() {
@@ -113,8 +113,10 @@ export default {
         desription: "",
         category: "",
         location: "",
+        imageURL: "",
       },
       previewImage: null,
+      image: null,
     };
   },
   mounted() {
@@ -127,50 +129,41 @@ export default {
   },
   methods: {
     onImageChange(e) {
-      const reader = new FileReader();
+      // const reader = new FileReader();
       let file = e.target.files[0]; // get the supplied file
-      // if there is a file, set image to that file
-      if (file) {
-        reader.onload = () => {
-          if (reader.readyState === 2) {
-            console.log(file);
-            setImage(file);
-          }
-        };
-        reader.readAsDataURL(e.target.files[0]);
-        // this.previewImage = URL.createObjectURL(file)
-        // if there is no file, set image back to null
-      } else {
-        setImage(null);
-      }
+      this.image = file;
+      this.previewImage = URL.createObjectURL(file);
     },
 
     // uploading file in storage
     // uploadImage(postID){
-    //     var email = auth.currentUser.email
 
     //     // Check if image state is null
     //     if (image) {
     //         // If image is a file, create a root reference to storage
-    //         //const storageRef = ref(storage);
+    //         const storageRef = ref(storage);
     //         // Create child reference
-    //         //imageRef = storageRef.root;
-    //         //const imageRef = storageRef.child(email).child(postID);
+    //         // imageRef = storageRef.root;
+    //         const imageRef = storageRef.child(postID);
     //         // Store the file
-    //         // imageRef.put(image)
-    //         // // Callback
-    //         // .then(() => {
-    //         //     alert("Image uploaded successfully to Firebase.");
-    //         // });
+    //         imageRef.put(image)
+    //         // Callback
+    //         .then(() => {
+    //             console.log("Image uploaded successfully to Firebase.");
+    //         });
 
     //     }
     // },
 
-    uploadImage(postID) {
-      if (image) {
-        const fileRef = ref(storage,"images" + postID);
+    async uploadImage(postID) {
+      if (this.image) {
+        // var myPostID = this.post.postID
+        // var myImgName = myPostID.replace(/./g, "-")
+        const path = "posts/"+postID;
+        const fileRef = ref(storage, path)
         console.log(fileRef)
-        uploadBytes(fileRef,image).then(() => {alert("uploaded")})
+        await uploadBytes(fileRef, this.image)
+        .then(() => {console.log("Image uploaded successfully to Firebase. Path" + path)})
       }
     },
 
@@ -203,7 +196,19 @@ export default {
       if (a != "" && b != "" && c != "" && d != "" && f != "") {
         // Make sure all fields have been filled in
         try {
-          const docRef = await setDoc(doc(db, "Posts", postID), {
+          this.uploadImage(postID);
+          // const imgURL = String(this.previewImage);
+          // this.uploadImage(); 
+          const path = 'posts/'+ postID;
+          const imgURL = getDownloadURL(ref(storage, path))
+          .then((url) => {
+          console.log("url = "+url);
+          console.log("path = "+path);
+        })
+        .catch((error) => {
+        console.error("Error downloading image:", error);
+        });
+          const docRef = setDoc(doc(db, "Posts", postID), {
             title: a,
             purpose: b,
             description: c,
@@ -213,10 +218,9 @@ export default {
             user: email,
             postID: postID,
             postDate: timeFormatted,
+            imageURL: String(imgURL),
           });
           console.log(docRef);
-          this.uploadImage(postID);
-          //this.uploadImage();
         } catch (error) {
           console.error("Error adding document:", error);
         }
@@ -224,6 +228,7 @@ export default {
         await updateDoc(user_info, {
           posts: arrayUnion(postID),
         });
+
         alert("Successfully Posted " + this.post.title);
         // Reset all fields
         this.post.title = "";
@@ -234,6 +239,7 @@ export default {
         //document.getElementById("createpostform").reset();
         this.post.image = null;
         this.previewImage = null;
+        this.image = null;
       } else {
         alert("Please make sure you have filled in all the fields required.");
       }
@@ -278,27 +284,29 @@ select {
   flex-direction: column;
   width: 40%;
   margin-left: 30%;
+  /* align-items: center; */
 }
 
 .uploading-image {
 }
-.submitRow {
+/* .submitRow {
   text-align: left;
   padding: 1%;
-}
+} */
 .submit {
-  position: absolute;
+  /* position: absolute; */
   text-align: center;
   background-color: orange;
   border: 0;
-  margin-left: 24%;
+  margin-left: 30%;
   margin-top: 20px;
   color: aliceblue;
   border-radius: 20px;
-  width: 10vw;
-  height: 7%;
+  width: 9vw;
+  height: 3vh;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 15px;
+
 }
 .submit:hover {
   outline-color: transparent;
