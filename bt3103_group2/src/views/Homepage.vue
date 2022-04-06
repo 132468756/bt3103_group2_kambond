@@ -177,13 +177,13 @@ export default {
   margin: 5px 5px 5px 5px;
   border: transparent;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
+  width: 95%;
 }
 
 .postList {
   display: inline-block;
   width: 45vw;
   justify-content:center;
-  margin-left:18%;
   /* border: 3px solid black; */
 }
 
