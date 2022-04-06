@@ -162,7 +162,7 @@ export default {
         background-color: rgb(194, 240, 255);
     }
     .deletePostBtn {
-        width: 50px;
+        width: 100px;
         height: 80%;
         background-color: rgb(136, 223, 252);
         cursor: pointer;

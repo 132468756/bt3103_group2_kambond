@@ -22,7 +22,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
     /* The image used */
-  background-image: url("~@/assets/search-bg.png");
+  background-image: url("~@/assets/Swapping-1.jpg");
 
   /* Control the height of the image */
   min-height: 500px;
