@@ -56,6 +56,7 @@
               {{post.userName}}
             </router-link>
           </div>
+
           <div id="buttons">
             <div id="actionBtn" v-if="post.user!=this.userID">
               <div v-if= "post.status == 'Want to borrow'">
@@ -68,6 +69,7 @@
               </div>
               <div v-else>
                 <button class = "borrowButton">Unavailable </button>
+
               </div>
             </div>
             <button
@@ -101,9 +103,6 @@ const db = getFirestore(firebaseApp);
     data() {
       return {
         userID :"",
-        url: '',
-        path:''
-        // previewImage: null,
         };
     },
     props:{

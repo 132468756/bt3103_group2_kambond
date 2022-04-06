@@ -1,153 +1,70 @@
 <template>
-<div style="text-align:center;" v-if="user"> 
+<div  v-if="user">
   <NavBar/>
-  <div class = "filter" id="createpostform">
+  <div id="filter">
+    <Filter1 @change = "newFilter1" />
 
+    <Filter2 @change = "newFilter2"/>
 
-  <div class="whole">
-    <div id="categoryname">
-      <h3>Category</h3>
-    </div>
-  <div id = "categorycheckboxes">
-  <input type="checkbox" @change="categoryselectAll" v-model="categoryallSelected">Select All
-  <class v-for = "category of categories" :key = "category.id">
-          <label><input type = "checkbox" v-model = "selectedcategory" :value = "category.id" @change="categoryupdateCheckall()" />{{category.id}}</label>
-      </class>
-    </div>
-  </div>
   </div>
 
-  <div class="whole">
-    <div id="locationname">
-      <h3>Location</h3>
-    </div>
-<div id = "locationcheckboxes">
-  <input type="checkbox" @change="locationselectAll" v-model="locationallSelected">Select All
-      <class  id = "checkboxes" v-for = "location of locations" :key = "location.id">
-          <label><input type = "checkbox" v-model = "selectedlocation" :value = "location.id" @change="locationupdateCheckall()"/>{{location.id}}</label>
-      </class>
-    </div>
-  </div>
-  </div>
- 
-  <div className = "showRow">
-    <button className="show" @click = "showpost()"> Filter all items for Borrowing</button>
-    </div>
-
-    
-  <div id = "postView">
-  <Modal ref="modal"
+    <div id="postView">
+      <Modal
         v-show="isModalVisible"
-        @close="closeModal"
-        :post = "modalData"
-      />
-
-  <div className = "postList" 
-    v-for= "post in filteredPosts"
-    :key = "post.id"
-    v-show ="showdata">
-    <button type= "button"
+        @close="closeModal" :post = "modalData"/>
+      <div className = "postList" v-for= "post in posts" :key = "post.id">
+        <button 
+          type="button"
           id = "postModal"
-          @click="showModal(post)">
-      <Post className = "posts"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"/>
-      </button>
+          @click="showModal(post)"
+        >
+        <Post 
+          className = "posts"
+          :owner = "post.userName"
+          :title = "post.title"
+          :status = "post.status"
+        />
+        </button>
+      </div>
     </div>
-
-   <div className = "postList" 
-    v-for= "post in posts"
-    :key = "post.id"
-    v-show = "originalshow">
-    <button type="button"
-          id = "postModal"
-          @click="showModal(post)">
-      <Post className = "posts"
-      :owner = "post.userName"
-      :title = "post.title"
-      :status = "post.status"/>
-      
-    </button> 
+  <div>
+    
   </div>
-
-  </div>
-  
+</div>
 </template>
 
 <script>
-import firebaseApp from "../firebase.js";
-import { getFirestore} from "firebase/firestore";
-import { doc} from "firebase/firestore";
+import Filter1 from "@/components/Filter/Filter1.vue";
+import Filter2 from "@/components/Filter/Filter2.vue";
 import Post from "@/components/Post.vue"
 import NavBar from "../components/NavBar.vue"
 import Modal from "../components/Modal.vue"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-
-import {collection, getDocs, getDoc, where, query} from "firebase/firestore";
+import firebaseApp from "@/firebase.js";
+import {getFirestore} from "firebase/firestore";
+import {collection, getDocs, getDoc, doc, where, query} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-
 export default {
-  name: "CreatePost",
-  components:{
-    NavBar,
-    Post,
-    Modal,
-  },
+  name: "Borrow",
   data() {
     return {
       user: false,
       isModalVisible:false,
-      showdata: false,
-      originalshow: true,
       modalData:{},
       posts:[],
-      filteredPosts:[],
-      selectedstatus: [],
-      selectedcategory: [],
-      selectedlocation: [],
-      statusallSelected: false,
-      locationallSelected: false,
-      categoryallSelected: false,
-      statuses: [
-        {id: "Want to lend"},
-        {id: "Requested"},
-        {id: "Completed"},
-      ],
-      categories: [
-        {id: "Beauty & Personal Care"},
-        {id: "Bulletin Board"},
-        {id: "Computers & Tech"},
-        {id: "Food & Drinks"},
-        {id: "Health & Nutrition"},
-        {id: "Hobbies & Toys"},
-        {id: "Mobile Phones & Gadgets"},
-        {id: "Photography"},
-        {id: "Sports Equipment"},
-        {id: "Tickets & Vouchers"},
-        {id: "Learning & Enrichment"},
-        {id: "Video Gaming"},
-        {id: "Fashion"},
-        {id: "Exchange Currency"},
-        {id: "Musical Instrument"},
-        {id: "Others"},
-      ],
-      locations: [
-        {id: "PGP/PGPR"},
-        {id: "Utown"},
-        {id: "RVRC"},
-        {id: "Temasek Hall"},
-        {id: "Shears Hall"},
-        {id: "KEVII Hall"},
-        {id: "Eusoff Hall"},
-        {id: "Raffles Hall"},
-        {id: "Kent Ridge Hall"},
-        {id: "Others"},
-      ]
-
+      filter:{},
+      filter2:{},
+      checkedLocation: [],
     };
   },
-  mounted() {
+  components: {
+    Filter1,
+    Filter2,
+    Post,
+    NavBar,
+    Modal,
+  },
+  mounted(){
     const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -155,7 +72,13 @@ export default {
         }
       })
         
- async function collectData(posts){
+    async function collectData(posts){
+      /*let z = await getDocs(collection(db,"Posts"))
+      z.forEach((doc)=> 
+      { if(doc.data().status == "Want to borrow" ){
+          posts.push(doc.data()) }
+      }
+      )*/
       var qTitle = query(
         collection(db, "Posts"),
         where("status","==","Want to lend")
@@ -168,7 +91,6 @@ export default {
       
       console.log(posts)
       let docRef = await getDoc(doc(db, "Users", "12345"));
-
       posts.forEach(async (post)=>{
         docRef = await getDoc(doc(db, "Users", post.user));
         post.userName = docRef.data().username
@@ -178,41 +100,66 @@ export default {
     }
     collectData(this.posts)
   },
-methods: {
-  async locationselectAll() {
-    if(this.locationallSelected) {
-      const selectedlocation = this.locations.map((location) => (location.id));
-      this.selectedlocation = selectedlocation;
-    }
-    else {
-      this.selectedlocation = [];
+  methods:{
+    showModal(data){
+      this.isModalVisible = true;
+      this.modalData = data;
+      console.log("isopen")
+    },
+    closeModal(){
+      this.isModalVisible = false;
+    },  
+    newFilter1(value){
+      this.filter = value
+      console.log(this.filter)
+      this.posts= [];
+      this.collectData()
+    },
+    newFilter2(value){
+      this.filter2 = value
+      console.log(value);
+      this.posts= [];
+      this.collectData()
+    },
+    async collectData(){
+      var f1 = Object.keys(this.filter).length
+      var f2 = Object.keys(this.filter2).length
+      console.log("filter change "+ f2)
+      if (f2 != 0){
+        var qTitle = query(
+        collection(db, "Posts"),
+        where("location", "in", this.filter2),where("status","==","Want to lend")
+        );
+        
+      }
+      else {
+        qTitle = query(
+        collection(db, "Posts"),
+        where("status","==","Want to lend")
+        );
+        console.log("detect no filter")
+      }
+      
+      const queryTitle = await getDocs(qTitle)
+      queryTitle.forEach((doc) => {
+          this.posts.push(doc.data())
+        })
+      
+      if(f1!= 0){
+        const categoryFilter = Object.values(this.filter)
+        console.log(categoryFilter)
+        this.posts = this.posts.filter(post => categoryFilter.includes(post.category))
+      }
+      
+      let docRef = await getDoc(doc(db, "Users", "12345"));
+      this.posts.forEach(async (post)=>{
+        docRef = await getDoc(doc(db, "Users", post.user));
+        post.userName = docRef.data().username
+      
+      });
     }
   },
 
-  locationupdateCheckall: function(){
-    if(this.locations.length == this.selectedlocation.length){
-        this.locationallSelected= true;
-    }else{
-        this.locationallSelected = false;
-    }
-  },
-  categoryupdateCheckall: function(){
-    if(this.categories.length == this.selectedcategory.length){
-        this.categoryallSelected= true;
-    }else{
-        this.categoryallSelected = false;
-    }
-  },
-  async categoryselectAll() {
-    if(this.categoryallSelected) {
-      const selectedcategory = this.categories.map((category) => (category.id));
-      this.selectedcategory = selectedcategory;
-    }
-    else {
-      this.selectedcategory = [];
-    }
-  },
-   
   showModal(data) {
     this.isModalVisible = true;
     this.modalData = data;
@@ -235,13 +182,13 @@ methods: {
 };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#postModal {
+#postModal{
   justify-content:center;
-  margin-left:12%;
   border-radius: 10px;
   background-color: rgba(233,233,233,0.8);
-  margin: 5px 5px 5px 5px;
+  margin: 5px 10px 5px 10px;
   border: transparent;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }
@@ -252,7 +199,7 @@ methods: {
 #postView{
   overflow-y: scroll;
   width: 100%;
-  height: 440px;
+  height: 570px;
   margin-top: 20px;
   text-align: center;
 }
@@ -261,65 +208,9 @@ methods: {
 }
 #filter{
   border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+  width: 90%;
+  margin-left: 5%;
 }
-
-.showrRow {
-  align-self: center;
-}
-
-
-#locationcheckboxes input {
-  margin: 10px 1px 10px 10px;
-}
-
-#locationcheckboxes label {
-  margin: 10px 20px 10px 5px;
-}
-
-#locationname {
-  background-color: rgba(241, 187, 129, 0.9);
-  text-align: center;
-  width: 15vw;
-  border: transparent;
-  border-bottom-left-radius: 10px;
-}
-.whole {
-  display: flex;
-}
-
-#locationcheckboxes {
-  background-color: rgba(244, 216, 187, 0.9);
-  padding: 10px;
-  width: 85vw;
-  border: transparent;
-  text-align: left;
-  border-bottom-right-radius: 10px;
-}
-
-#categorycheckboxes input {
-  margin: 10px 1px 10px 10px;
-}
-
-#categorycheckboxes label {
-  margin: 10px 20px 10px 5px;
-}
-
-#categoryname {
-  background-color: rgba(180, 219, 237, 0.9);
-  text-align: center;
-  width: 15vw;
-  border: transparent;
-  border-top-left-radius: 10px;
-}
-
-#categorycheckboxes {
-  background-color: rgba(209, 226, 234, 0.9);
-  padding: 10px;
-  width: 85vw;
-  border: transparent;
-  text-align: left;
-  border-top-right-radius: 10px;
-}
-
 </style>
 
