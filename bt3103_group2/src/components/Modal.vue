@@ -23,31 +23,33 @@
           </button>
         </header>
 
-        <section
-          class="modal-body"
-          id="modalDescription"
-        >
-          <div classname="body">
-            Purpose: {{post.purpose}}  
+        <div className = "rowBody">
+          <section
+            class="modal-body"
+            id="modalDescription"
+          >
+            <div classname="body">
+              Purpose: {{post.purpose}}  
+            </div>
+            <div classname="body">
+              Location: {{post.location}} 
+            </div>
+            <div classname="body">
+              Description: {{post.description}}  
+            </div>
+            <div classname="body">
+              Time: {{post.postDate}} 
+            </div>
+            <div classname="body">
+              Catogory: {{post.category}} 
+            </div>
+  
+          </section>
+          <div classname="bodyPic">
+              <img :src= "url" alt="Preview" id = "objectpic" />
           </div>
-          <div classname="body">
-            Location: {{post.location}} 
-          </div>
-          <div classname="body">
-            Description: {{post.description}}  
-          </div>
-          <div classname="body">
-            Time: {{post.postDate}} 
-          </div>
-          <div classname="body">
-            Catogory: {{post.category}} 
-          </div>
-          <div classname="body">
-            <!-- <p>{{ post.imagePath}} </p> -->
-            <img :src= "url" alt="Preview" id="modalImg"/>
-          </div>
-        </section>
-
+        </div>
+        
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
@@ -56,31 +58,39 @@
               {{post.userName}}
             </router-link>
           </div>
-
-          <div id="buttons">
-            <div id="actionBtn" v-if="post.user!=this.userID">
-              <div v-if= "post.status == 'Want to borrow'">
-                <button @click = "toBorrow(this)"
-                class = "borrowButton"> Lend</button>
-              </div>
-              <div v-else-if = "post.status == 'Want to lend'">
-                <button @click = "toBorrow(this)"
-                class = "borrowButton"> Borrow </button>
-              </div>
-              <div v-else>
-                <button class = "borrowButton">Unavailable </button>
-
-              </div>
+            <!-- <div id="buttons">
+            <div v-if= "userID == post.user">
+              <button
+              class = "borrowButton"> Unavailable</button>
             </div>
-            <button
-              type="button"
-              class="btn-big-close"
-              @click="close"
-              aria-label="Close modal"
-            >
-              Close
-            </button>
-          </div>
+            <div v-else-if = "post.status == 'Want to borrow'">
+              <button @click = "toBorrow(this)"
+              class = "borrowButton"> Lend </button>
+            </div> -->
+
+            <div id="buttons">
+              <div id="actionBtn" v-if="post.user!=this.userID">
+                <div v-if= "post.status == 'Want to borrow'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Lend</button>
+                </div>
+                <div v-else-if = "post.status == 'Want to lend'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Borrow </button>
+                </div>
+                <div v-else>
+                  <button class = "borrowButton">Unavailable </button>
+                </div> 
+              </div>
+              <button
+                type="button"
+                class="btn-big-close"
+                @click="close"
+                aria-label="Close modal"
+              >
+                Close
+              </button>
+            </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
@@ -90,7 +100,6 @@
 <script>
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
-// import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -106,17 +115,16 @@ const db = getFirestore(firebaseApp);
         };
     },
     props:{
-      post:Object,
-    },
+      post:Object
+      },
     mounted() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          this.userID = this.user.email
-        }
-      });
-    },
+          }
+        });
+      },
     methods: {
       async getURL(){
       setTimeout(() => {
@@ -124,20 +132,16 @@ const db = getFirestore(firebaseApp);
         this.path = this.post.postID
         console.log("getURL triggered")
         console.log(this.path)
-
         // Get URL for the image inside the storage
         const storage = getStorage();
         const starsRef = ref(storage, 'posts/'+ this.path);
         // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
-
         getDownloadURL(starsRef)
         .then((url) => {
           this.url = url
         })
       }, 2000);
       },
-
-
       close() {
         this.$emit('close');
         console.log(this.user.email)
@@ -210,7 +214,6 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
-            this.$router.push({name: 'sideBar', query: {q:"showDeal"}});
             this.close();
           }
         }else{
@@ -218,7 +221,6 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
-            this.$router.push({name: 'sideBar', query: {q:"showRequest"}});
             this.close();
           }
         }
@@ -262,6 +264,12 @@ const db = getFirestore(firebaseApp);
     background-repeat: no-repeat;
     background-size:cover;
 
+  }
+
+  .rowBody{
+    display: flex;
+    flex-direction: row;
+    overflow-y: scroll;
   }
 
   .modal {
@@ -314,13 +322,18 @@ const db = getFirestore(firebaseApp);
 
   .modal-body {
     position: relative;
-    padding: 20px 10px 20px 100px;
+    padding: 20px 20px 20px 100px;
     display:flex;
     flex-direction: column;
     font-size:3vh;
     text-align: left;
-    overflow-y: scroll;
     height: 40vh;
+    width: 50%;
+    right: 2vw;
+  }
+
+  .bodyPic {
+    width: 50%;
   }
 
   .btn-close {
@@ -353,29 +366,26 @@ const db = getFirestore(firebaseApp);
     border:0px;
     border-radius: 2px;
     height: 30px;
-    width: 15vw;
+    width: 30vw;
     margin: auto;
   }
 
   .borrowButton:hover{
     background:#df1e68;
     transition:1s;
-    cursor: pointer;
   }
   
   .btn-big-close {
     border:0px;
     border-radius: 2px;
     height: 30px;
-    width: 15vw;
+    width: 30vw;
     margin: auto;
-    background:#ffbfd8; 
   }
 
   .btn-big-close:hover{
-    background: rgba(255, 167, 202, 0.925);
+    background: rgba(233, 184, 204, 0.671);
     transition: 1s;
-    cursor: pointer;
   }
 
   .modal-fade-enter,
@@ -393,8 +403,11 @@ const db = getFirestore(firebaseApp);
   height: 4vw;
 }
 
-#modalImg {
-  width: 250px;
-  height: 150px;
+#objectpic {
+  width: 30vw;
+  height: 30vh;
+  position:relative;
+  right: 5vw;
+  padding-top: 20px;
 }
 </style>
