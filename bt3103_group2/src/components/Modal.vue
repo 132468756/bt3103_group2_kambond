@@ -51,23 +51,32 @@
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
-            <div v-if= "userID == post.user">
+            <router-link :to = "'/profile/' + post.user " :id = post.user>
               {{post.userName}}
-            </div>
-            <div v-else>
-              <router-link :to = "'/profile/' + post.user " :id = post.user>
-                {{post.userName}}
-              </router-link>
-            </div>
+            </router-link>
           </div>
             <div id="buttons">
-            <div v-if= "userID == post.user">
+              <div id="actionBtn" v-if="post.user!=this.user.email">
+                <div v-if= "post.status == 'Want to borrow'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Lend</button>
+                </div>
+                <div v-else-if = "post.status == 'Want to lend'">
+                  <button @click = "toBorrow(this)"
+                  class = "borrowButton"> Borrow </button>
+                </div>
+                <div v-else>
+                  <button class = "borrowButton">Unavailable </button>
+                </div>
+              </div>
               <button
-              class = "borrowButton"> Unavailable</button>
-            </div>
-            <div v-else-if = "post.status == 'Want to borrow'">
-              <button @click = "toBorrow(this)"
-              class = "borrowButton"> Lend </button>
+                type="button"
+                class="btn-big-close"
+                @click="close"
+                aria-label="Close modal"
+              >
+                Close
+              </button>
             </div>
         </footer>
       </div>
@@ -80,26 +89,26 @@ import firebaseApp from "../firebase.js";
 import {getFirestore} from "firebase/firestore";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const db = getFirestore(firebaseApp);
   export default {
     name: 'Modal',
-    data() {
-      return {
-        userID :"",
-        };
-    },
     props:{
       post:Object
+      },
+    data(){
+      return{
+        user:''
+      }
     },
-    mounted: function() {
+    mounted() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          this.userID = user.email;
           }
         })
-    },
+      },
     methods: {
       close() {
         this.$emit('close');
@@ -144,10 +153,10 @@ const db = getFirestore(firebaseApp);
         var a = this.post.postID
         console.log(a)
         if (purpose == "Borrowing"){
-          var borrower = this.user.email
+          var borrower = this.post.user
         }
         else {
-          borrower = this.post.user
+          borrower = this.user.email
         }
         try{
           let docRef = await getDoc(doc(db, "Users", borrower));
@@ -173,11 +182,6 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
-            if (this.post.purpose == "Lending") {
-              this.$router.push({name: 'sideBar', query: {q:"showRequest"}});
-            } else {
-              this.$router.push({name: 'sideBar', query: {q:"showDeal"}});
-            }
             this.close();
           }
         }else{

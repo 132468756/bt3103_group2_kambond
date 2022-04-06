@@ -78,7 +78,7 @@ export default {
   display: inline-block;
   border: 0px;
   width: 35vw;
-  height: 15vh;
+  height: 13.2vh;
   padding: 10px;
   margin: 20px;
 }
