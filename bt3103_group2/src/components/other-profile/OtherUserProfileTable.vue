@@ -9,7 +9,7 @@
             <th class="OtherPostTitle">Status</th>
         </tr>
     </table>
-    <Modal v-show="isModalVisible" @close="closeModal" :post = "modalData"/>
+    <Modal ref="modal" v-show="isModalVisible" @close="closeModal" :post = "modalData"/>
 </template>
 
 <script>
@@ -99,6 +99,7 @@ export default {
         showModal(data){
             this.isModalVisible = true;
             this.modalData = data;
+            this.$refs.modal.getURL()
             console.log("isopen")
         }
     }
