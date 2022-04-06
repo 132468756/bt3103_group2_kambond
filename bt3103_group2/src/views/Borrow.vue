@@ -101,14 +101,6 @@ export default {
     collectData(this.posts)
   },
   methods:{
-    showModal(data){
-      this.isModalVisible = true;
-      this.modalData = data;
-      console.log("isopen")
-    },
-    closeModal(){
-      this.isModalVisible = false;
-    },  
     newFilter1(value){
       this.filter = value
       console.log(this.filter)
@@ -157,15 +149,15 @@ export default {
         post.userName = docRef.data().username
       
       });
-    }
-  },
+    },
+  
 
   showModal(data) {
     this.isModalVisible = true;
     this.modalData = data;
     this.$refs.modal.getURL()
     console.log("isopen")
-  },
+    },
   showpost() {
 
     this.filteredPosts = this.posts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
@@ -173,12 +165,11 @@ export default {
     
     this.originalshow = false;
     this.showdata = true; 
-  },
+    },
   closeModal() {
         this.isModalVisible = false;
- }
-
-},
+  },
+  },
 };
 </script>
 
