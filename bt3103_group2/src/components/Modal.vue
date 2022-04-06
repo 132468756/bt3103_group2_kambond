@@ -71,7 +71,7 @@
             </div> -->
 
             <div id="buttons">
-              <div id="actionBtn" v-if="post.user!=this.user">
+              <div id="actionBtn" v-if="post.user!=userID">
                 <div v-if= "post.status == 'Want to borrow'">
                   <button @click = "toBorrow(this)"
                   class = "borrowButton"> Lend</button>
@@ -126,10 +126,13 @@ const db = getFirestore(firebaseApp);
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
+          this.userID = this.user.email;
+          console.log("wait",this.post)
           }
         });
       },
     methods: {
+
       close() {
         this.$emit('close');
         console.log(this.user.email)
@@ -202,6 +205,7 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
+            this.$router.push({name: 'sideBar', query: {q:"showDeal"}});
             this.close();
           }
         }else{
@@ -209,6 +213,7 @@ const db = getFirestore(firebaseApp);
             await self.addRequest(this.post.purpose);
             await self.addDeal(this.post.purpose);
             await self.updateStatus();
+             this.$router.push({name: 'sideBar', query: {q:"showRequest"}});
             this.close();
           }
         }
