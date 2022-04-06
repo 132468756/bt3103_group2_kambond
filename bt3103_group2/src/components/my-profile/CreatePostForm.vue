@@ -94,7 +94,7 @@
 
 <script>
 import firebaseApp from "../../firebase.js";
-import { ref, getStorage, uploadBytes } from "firebase/storage";
+import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
