@@ -71,7 +71,7 @@
             </div> -->
 
             <div id="buttons">
-              <div id="actionBtn" v-if="post.user!=this.user">
+              <div id="actionBtn" v-if="post.user!=this.userID">
                 <div v-if= "post.status == 'Want to borrow'">
                   <button @click = "toBorrow(this)"
                   class = "borrowButton"> Lend</button>
@@ -82,7 +82,7 @@
                 </div>
                 <div v-else>
                   <button class = "borrowButton">Unavailable </button>
-                </div>
+                </div> 
               </div>
               <button
                 type="button"
@@ -114,8 +114,6 @@ const db = getFirestore(firebaseApp);
     data() {
       return {
         userID :"",
-        url: this.post.imageURL,
-        previewImage: null,
         };
     },
     props:{
