@@ -4,8 +4,8 @@
     <div style="text-align: center" id="loginComponent">
       <br><br>
       <h1 id="login-title">LOG IN</h1>
-      <div id="firebaseui-auth-container"></div>
       <div id="notice">Start your journey with Kambond!</div>
+      <div id="firebaseui-auth-container"></div>
     </div>
   </div>
 </template>
@@ -69,11 +69,12 @@ export default {
   color: rgb(25, 64, 80);
   font-style: italic;
   font-weight: bold;
+  margin-top: 30px;
 }
 
 #loginComponent {
   width: 30%;
-  height: 500px;
+  height: 550px;
   border-radius: 25px;
   margin-left: 35%;
 
