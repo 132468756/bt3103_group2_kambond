@@ -7,6 +7,7 @@
     <Filter2 @change = "newFilter2"/>
 
   </div>
+
     <div id="postView">
       <Modal
         v-show="isModalVisible"
@@ -158,6 +159,26 @@ export default {
       });
     }
   },
+
+  showModal(data) {
+    this.isModalVisible = true;
+    this.modalData = data;
+    this.$refs.modal.getURL()
+    console.log("isopen")
+  },
+  showpost() {
+
+    this.filteredPosts = this.posts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
+
+    
+    this.originalshow = false;
+    this.showdata = true; 
+  },
+  closeModal() {
+        this.isModalVisible = false;
+ }
+
+},
 };
 </script>
 

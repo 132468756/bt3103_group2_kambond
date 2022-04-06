@@ -94,7 +94,7 @@
 
 <script>
 import firebaseApp from "../../firebase.js";
-import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, getStorage, uploadBytes} from "firebase/storage";
 import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -196,18 +196,19 @@ export default {
       if (a != "" && b != "" && c != "" && d != "" && f != "") {
         // Make sure all fields have been filled in
         try {
-          this.uploadImage(postID);
+          const path = await this.uploadImage(postID);
+          console.log("creating path", path)
           // const imgURL = String(this.previewImage);
           // this.uploadImage(); 
-          const path = 'posts/'+ postID;
-          const imgURL = getDownloadURL(ref(storage, path))
-          .then((url) => {
-          console.log("url = "+url);
-          console.log("path = "+path);
-        })
-        .catch((error) => {
-        console.error("Error downloading image:", error);
-        });
+          // const path = 'posts/'+ postID;
+        //   const imgURL = getDownloadURL(ref(storage, path))
+        //   .then((url) => {
+        //   console.log("url = "+url);
+        //   console.log("path = "+path);
+        // })
+        // .catch((error) => {
+        // console.error("Error downloading image:", error);
+        // });
           const docRef = setDoc(doc(db, "Posts", postID), {
             title: a,
             purpose: b,
@@ -218,7 +219,7 @@ export default {
             user: email,
             postID: postID,
             postDate: timeFormatted,
-            imageURL: String(imgURL),
+            imagePath:postID,
           });
           console.log(docRef);
         } catch (error) {
