@@ -80,7 +80,7 @@ export default {
       )*/
       var qTitle = query(
         collection(db, "Posts"),
-        where("status","==","Want to lend")
+        where("status","==","Want to borrow")
         );
         
       const queryTitle = await getDocs(qTitle)
@@ -128,14 +128,14 @@ export default {
       if (f2 != 0){
         var qTitle = query(
         collection(db, "Posts"),
-        where("location", "in", this.filter2),where("status","==","Want to lend")
+        where("location", "in", this.filter2),where("status","==","Want to borrow")
         );
         
       }
       else {
         qTitle = query(
         collection(db, "Posts"),
-        where("status","==","Want to lend")
+        where("status","==","Want to borrow")
         );
         console.log("detect no filter")
       }

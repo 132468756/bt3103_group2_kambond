@@ -69,7 +69,7 @@ export default {
       // var regEx = new RegExp(text + "*", "i");
       var regEx = new RegExp(text, 'i')
       const querySnapshotTitle = await getDocs(collection(db, "Posts"));
-      const querySnapshotUser = await getDocs(collection(db, "Users"));
+      //const querySnapshotUser = await getDocs(collection(db, "Users"));
       try{
         querySnapshotTitle.forEach((post) => {
         if (regEx.test(post.data().title)) {
@@ -77,20 +77,22 @@ export default {
         }
       });
 
-      querySnapshotUser.forEach((post) => {
-        if (regEx.test(post.data().username)) {
-          this.postlist.push(post.data());
-        } else if (regEx.test(post.data().email)) {
-          this.postlist.push(post.data());
-        }
-      });
-
+//       querySnapshotUser.forEach((post) => {
+//         if (regEx.test(post.data().username)) {
+//           this.postlist.push(post.data());
+//         } 
+//         if (regEx.test(post.data().email)) {
+//           this.postlist.push(post.data());
+//         }
+//       });
+// console.log("postlist",this.postlist);
+      
       this.postlist.forEach(async (post)=>{
         let docRef = await getDoc(doc(db, "Users", post.user));
         post.userName = docRef.data().username
       });
 
-      console.log(this.postlist[0].status);
+      
       console.log(this.searchText)
       }
       catch(error){
@@ -183,7 +185,6 @@ export default {
   display: inline-block;
   width: 45vw;
   justify-content:center;
-  margin-left:18%;
   /* border: 3px solid black; */
 }
 
