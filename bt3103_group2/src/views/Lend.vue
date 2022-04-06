@@ -175,7 +175,7 @@ export default {
   justify-content:center;
   border-radius: 10px;
   background-color: rgba(233,233,233,0.8);
-  margin: 5px 5px 5px 5px;
+  margin: 5px 10px 5px 10px;
   border: transparent;
   box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
 }

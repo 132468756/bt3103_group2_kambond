@@ -56,9 +56,10 @@ export default {
 #title{
   text-align:left;
   margin-right: 10%;
-  font-size: 2.3vw;
+  font-size: 1.8vw;
   font-weight: bold;
   text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.4);;
+  width: 50%;
 }
 
 #owner {
@@ -70,26 +71,26 @@ export default {
 
 #user{
   margin-left: 3%;
-  font-size:2vw;
+  font-size:1.6vw;
 }
 
 #post {
   display: inline-block;
   border: 0px;
-  width: 40vw;
+  width: 35vw;
   height: 15vh;
   padding: 10px;
-  margin: 10px;
+  margin: 20px;
 }
 #statusbar {
   text-align:center;
   font-size: 13px;
   background-color:#ffecda;
-  border-radius:3px;
-  border:1.5px solid;
+  border: transparent;
+  box-shadow: 1px 1px 1px 1px rgba(53, 55, 57, 0.525);
   height:15px;
   width: 100px;
-  
+  border-radius: 5px;
 }
 
 #profilePicture {
