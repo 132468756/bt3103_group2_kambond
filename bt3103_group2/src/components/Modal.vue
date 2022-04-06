@@ -69,6 +69,7 @@
               <button @click = "toBorrow(this)"
               class = "borrowButton"> Lend </button>
             </div>
+            </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
