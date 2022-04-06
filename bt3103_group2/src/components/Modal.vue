@@ -23,35 +23,33 @@
           </button>
         </header>
 
-        <section
-          class="modal-body"
-          id="modalDescription"
-        >
-          <div classname="body">
-            Purpose: {{post.purpose}}  
+        <div className = "rowBody">
+          <section
+            class="modal-body"
+            id="modalDescription"
+          >
+            <div classname="body">
+              Purpose: {{post.purpose}}  
+            </div>
+            <div classname="body">
+              Location: {{post.location}} 
+            </div>
+            <div classname="body">
+              Description: {{post.description}}  
+            </div>
+            <div classname="body">
+              Time: {{post.postDate}} 
+            </div>
+            <div classname="body">
+              Catogory: {{post.category}} 
+            </div>
+  
+          </section>
+          <div classname="bodyPic">
+              <img :src= "url" alt="Preview" id = "objectpic" />
           </div>
-          <div classname="body">
-            Location: {{post.location}} 
-          </div>
-          <div classname="body">
-            Description: {{post.description}}  
-          </div>
-          <div classname="body">
-            Time: {{post.postDate}} 
-          </div>
-          <div classname="body">
-            Catogory: {{post.category}} 
-          </div>
-          <div classname="body">
-            <p>{{ post.imageURL}} </p>
-            <img :src= "url" alt="Preview" />
-          </div>
-
-          
-          
-
-        </section>
-
+        </div>
+        
         <footer class="modal-footer">
           <div name="footer">
             <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
@@ -268,6 +266,12 @@ const db = getFirestore(firebaseApp);
 
   }
 
+  .rowBody{
+    display: flex;
+    flex-direction: row;
+    overflow-y: scroll;
+  }
+
   .modal {
     background-color: rgba(233,233,233,0.8);
     border-radius: 10px;
@@ -318,13 +322,18 @@ const db = getFirestore(firebaseApp);
 
   .modal-body {
     position: relative;
-    padding: 20px 10px 20px 100px;
+    padding: 20px 20px 20px 100px;
     display:flex;
     flex-direction: column;
     font-size:3vh;
     text-align: left;
-    overflow-y: scroll;
     height: 40vh;
+    width: 50%;
+    right: 2vw;
+  }
+
+  .bodyPic {
+    width: 50%;
   }
 
   .btn-close {
@@ -392,5 +401,13 @@ const db = getFirestore(firebaseApp);
   #picprofile {
   width: 4vw;
   height: 4vw;
+}
+
+#objectpic {
+  width: 30vw;
+  height: 30vh;
+  position:relative;
+  right: 5vw;
+  padding-top: 20px;
 }
 </style>
