@@ -55,30 +55,29 @@
               {{post.userName}}
             </router-link>
           </div>
-            <div id="buttons">
-              <div id="actionBtn" v-if="post.user!=this.user.email">
-                <div v-if= "post.status == 'Want to borrow'">
-                  <button @click = "toBorrow(this)"
-                  class = "borrowButton"> Lend</button>
-                </div>
-                <div v-else-if = "post.status == 'Want to lend'">
-                  <button @click = "toBorrow(this)"
-                  class = "borrowButton"> Borrow </button>
-                </div>
-                <div v-else>
-                  <button class = "borrowButton">Unavailable </button>
-                </div>
+          <div id="buttons">
+            <div id="actionBtn" v-if="post.user!=this.user.email">
+              <div v-if= "post.status == 'Want to borrow'">
+                <button @click = "toBorrow(this)"
+                class = "borrowButton"> Lend</button>
               </div>
-              <button
-                type="button"
-                class="btn-big-close"
-                @click="close"
-                aria-label="Close modal"
-              >
-                Close
-              </button>
+              <div v-else-if = "post.status == 'Want to lend'">
+                <button @click = "toBorrow(this)"
+                class = "borrowButton"> Borrow </button>
+              </div>
+              <div v-else>
+                <button class = "borrowButton">Unavailable </button>
+              </div>
             </div>
-            </div>
+            <button
+              type="button"
+              class="btn-big-close"
+              @click="close"
+              aria-label="Close modal"
+            >
+              Close
+            </button>
+          </div>
         </footer>
       </div>
     </div> <!-- modal-backgrop -->
@@ -322,26 +321,29 @@ const db = getFirestore(firebaseApp);
     border:0px;
     border-radius: 2px;
     height: 30px;
-    width: 30vw;
+    width: 15vw;
     margin: auto;
   }
 
   .borrowButton:hover{
     background:#df1e68;
     transition:1s;
+    cursor: pointer;
   }
   
   .btn-big-close {
     border:0px;
     border-radius: 2px;
     height: 30px;
-    width: 30vw;
+    width: 15vw;
     margin: auto;
+    background:#ffbfd8; 
   }
 
   .btn-big-close:hover{
-    background: rgba(233, 184, 204, 0.671);
+    background: rgba(255, 167, 202, 0.925);
     transition: 1s;
+    cursor: pointer;
   }
 
   .modal-fade-enter,
