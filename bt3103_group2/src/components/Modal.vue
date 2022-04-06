@@ -42,6 +42,11 @@
           <div classname="body">
             Catogory: {{post.category}} 
           </div>
+          <div classname="body">
+            <p>{{ post.imageURL}} </p>
+            <img :src= "url" alt="Preview" />
+          </div>
+
           
           
 
@@ -86,28 +91,33 @@
 
 <script>
 import firebaseApp from "../firebase.js";
-import {getFirestore} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+// import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, setDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
+// const storage = getStorage();
+
   export default {
     name: 'Modal',
+    data() {
+      return {
+        userID :"",
+        url: this.post.imageURL,
+        previewImage: null,
+        };
+    },
     props:{
       post:Object
       },
-    data(){
-      return{
-        user:''
-      }
-    },
     mounted() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
           }
-        })
+        });
       },
     methods: {
       close() {
@@ -289,6 +299,8 @@ const db = getFirestore(firebaseApp);
     flex-direction: column;
     font-size:3vh;
     text-align: left;
+    overflow-y: scroll;
+    height: 40vh;
   }
 
   .btn-close {
