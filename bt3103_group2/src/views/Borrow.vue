@@ -36,7 +36,7 @@
 
     
   <div id = "postView">
-  <Modal
+  <Modal ref="modal"
         v-show="isModalVisible"
         @close="closeModal"
         :post = "modalData"
@@ -214,9 +214,10 @@ methods: {
   },
    
   showModal(data) {
-        this.isModalVisible = true;
-        this.modalData = data;
-        console.log("isopen")
+    this.isModalVisible = true;
+    this.modalData = data;
+    this.$refs.modal.getURL()
+    console.log("isopen")
   },
   showpost() {
 
