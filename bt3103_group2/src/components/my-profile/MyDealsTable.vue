@@ -241,7 +241,7 @@ export default {
     }
 
     .dealActionBtn, .dealCancelBtn {
-        width: 100px;
+        width: 5vw;
         height: 80%;
         background-color: rgba(255, 55, 255, 0.623);
         cursor: pointer;

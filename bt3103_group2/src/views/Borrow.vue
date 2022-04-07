@@ -9,7 +9,7 @@
   </div>
 
     <div id="postView">
-      <Modal
+      <Modal ref="modal"
         v-show="isModalVisible"
         @close="closeModal" :post = "modalData"/>
       <div className = "postList" v-for= "post in posts" :key = "post.id">
