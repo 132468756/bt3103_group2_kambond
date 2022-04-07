@@ -146,6 +146,7 @@ const db = getFirestore(firebaseApp);
         this.$emit('close');
         console.log(this.user.email)
         console.log(this.post.email)
+        this.url = ""
         },
 
       addDeal: async function(purpose){

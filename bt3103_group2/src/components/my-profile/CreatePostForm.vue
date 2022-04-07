@@ -2,13 +2,14 @@
 <template>
   <form @submit.prevent="onSubmit" method="post" id="createpostform">
     <div className="row">
-      <label className="postlabel"> Title </label>
+      <label className="postlabel"> Title (max 20 chars) </label>
       <input
         type="title"
         required
         v-model="post.title"
         id="post.title"
         autocomplete="off"
+        maxlength="20"
       />
     </div>
 
@@ -219,7 +220,6 @@ export default {
             user: email,
             postID: postID,
             postDate: timeFormatted,
-            imagePath:postID,
           });
           console.log(docRef);
         } catch (error) {
