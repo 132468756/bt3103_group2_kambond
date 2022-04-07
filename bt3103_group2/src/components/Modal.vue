@@ -135,7 +135,7 @@ const db = getFirestore(firebaseApp);
         .then((url) => {
           this.url = url
         })
-      }, 2000);
+      }, 1000);
       },
 
 
