@@ -289,6 +289,7 @@ select {
 }
 
 .uploading-image {
+    width:100%;
 }
 /* .submitRow {
   text-align: left;
