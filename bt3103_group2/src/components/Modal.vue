@@ -44,7 +44,7 @@
             </span>
           </span>
 
-          <span id="imgContainer" class="modal-body">
+          <span id="imgContainer" class="modal-body" v-if="this.showPic">
             <!-- <p>{{ post.imagePath}} </p> -->
             <img :src= "url" alt="Preview" id="modalImg"/>
           </span>
@@ -102,8 +102,9 @@ const db = getFirestore(firebaseApp);
       return {
         userID :"",
         url: '',
-        path:''
+        path:'',
         // previewImage: null,
+        showPic:false
         };
     },
     props:{
@@ -132,6 +133,7 @@ const db = getFirestore(firebaseApp);
         getDownloadURL(starsRef)
         .then((url) => {
           this.url = url
+          this.showPic=true
         })
       }, 500);
       },
@@ -140,6 +142,7 @@ const db = getFirestore(firebaseApp);
         console.log(this.user.email)
         console.log(this.post.email)
         this.url=''
+        this.showPic=false
         },
       addDeal: async function(purpose){
         var a = this.post.postID
