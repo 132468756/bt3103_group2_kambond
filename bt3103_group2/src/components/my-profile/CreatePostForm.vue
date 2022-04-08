@@ -88,7 +88,7 @@
 
     <!-- <div className="submitRow"> -->
     <div className="row">
-      <button className="submit" @click="createPost()">Create Post</button>
+      <button className="submit" @click="createPost()">Create</button>
     </div>
   </form>
 </template>
@@ -300,11 +300,11 @@ select {
   text-align: center;
   background-color: orange;
   border: 0;
-  margin-left: 30%;
+  margin-left: 34%;
   margin-top: 20px;
   color: aliceblue;
-  border-radius: 20px;
-  width: 9vw;
+  border-radius: 10px;
+  width: 7vw;
   height: 3vh;
   cursor: pointer;
   font-size: 15px;

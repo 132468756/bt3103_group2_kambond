@@ -9,8 +9,8 @@
   </div>
 
     <div id="postView">
-      <Modal
-        v-show="isModalVisible" ref="modal"
+      <Modal ref="modal"
+        v-show="isModalVisible"
         @close="closeModal" :post = "modalData"/>
       <div className = "postList" v-for= "post in posts" :key = "post.id">
         <button 
@@ -158,7 +158,7 @@ export default {
     this.$refs.modal.getURL()
     console.log("isopen")
     },
-    
+
   closeModal() {
         this.isModalVisible = false;
   },

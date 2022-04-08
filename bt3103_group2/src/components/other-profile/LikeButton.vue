@@ -3,11 +3,11 @@
 </template>
 
 <script>
-// import { getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import firebaseApp from "@/firebase.js";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
-// const auth = getAuth();
+const auth = getAuth();
 
 export default {
   name: "Like",
@@ -17,19 +17,23 @@ export default {
   emits: ["updateAfterLike"],
   methods: {
     async like(self) {
-      let user = await getDoc(doc(db, "Users", self.user));
-      let nolikes = user.data().likes;
-      console.log(user);
-      console.log("B4 Self likes = " + nolikes);
-      updateDoc(doc(db, "Users", self.user), {
-        likes: nolikes + 1,
-      });
-      // console.log("Number"+user_info.data().likes);
-      // let number = await user_info.data().likes+1;
-      console.log("After Self likes = ");
-      let newuser = await getDoc(doc(db, "Users", self.user));
-      console.log(newuser.data().likes);
-      this.$emit("updateAfterLike", newuser.data().likes);
+      if (self.user != auth.currentUser.email) {
+        let user = await getDoc(doc(db, "Users", self.user));
+        let nolikes = user.data().likes;
+        console.log(user);
+        console.log("B4 Self likes = " + nolikes);
+        updateDoc(doc(db, "Users", self.user), {
+          likes: nolikes + 1,
+        });
+        // console.log("Number"+user_info.data().likes);
+        // let number = await user_info.data().likes+1;
+        console.log("After Self likes = ");
+        let newuser = await getDoc(doc(db, "Users", self.user));
+        console.log(newuser.data().likes);
+        this.$emit("updateAfterLike", newuser.data().likes);
+      } else {
+        alert("Cannot like yourself ah!");
+      }
     },
   },
 };
