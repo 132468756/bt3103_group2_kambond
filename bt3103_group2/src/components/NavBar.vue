@@ -31,7 +31,7 @@ export default {
 }
 
 #navImg {
-  height: 13vh;
+  height: 12vh;
   width: 9vw;
   position:absolute;
   left: 1vw;
