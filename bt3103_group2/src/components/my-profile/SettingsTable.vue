@@ -30,6 +30,7 @@
             <td class="rightCol" v-if="this.contactStatus == 'static'"><changeBtn @click="changeContact()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeContact" @click="confirmChangeContact()">Confirm Change</button></td>
         </tr>
+
     </table>
 </template>
 
@@ -44,7 +45,7 @@ const db = getFirestore(firebaseApp)
 export default {
     names:"SettingsTable",
     components:{
-        changeBtn
+        changeBtn,
     },
     // No database connection testing code
     data(){

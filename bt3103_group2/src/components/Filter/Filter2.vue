@@ -6,7 +6,7 @@ export default {
       checkedLocation: [],
       allSelected: false,
       optionlist: [
-        {id: "PGP/PGPR"},
+        {id: "PGP / PGPR"},
         {id: "Utown"},
         {id: "RVRC"},
         {id: "Temasek Hall"},
