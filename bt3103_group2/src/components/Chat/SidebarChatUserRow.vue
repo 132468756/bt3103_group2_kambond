@@ -1,7 +1,12 @@
 <template>
   <div class="sidebarChat" @click="updateChatView()">
     <md-avatar>
-      <img id="chatimg" src="@/assets/profilephoto.jpeg" />
+      <div class="profilePicDiv" v-if="this.showIcon">
+        <img :src= "url" alt="Preview" id="IconImg"/>
+      </div>
+      <div v-else class="profilePicDiv">
+        <img src="@/assets/profile.png" id="profilePic">
+      </div>
     </md-avatar>
     <div class="sidebarChat__info">
       <h2 id="name">{{ otherName }}</h2>
@@ -15,6 +20,7 @@
 import firebaseApp from "../../firebase.js";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+//import { getStorage, ref, getDownloadURL } from "firebase/storage";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
 export default {
@@ -28,6 +34,7 @@ export default {
       lastmessage: "",
       emitRoom: "",
       lasttime:"",
+
     };
   },
   methods: {

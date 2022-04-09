@@ -127,7 +127,7 @@ export default {
           deals: [],
           requests: [],
           chatrooms:[],
-          photoURL:"some photos"
+          ProfileiconURL: '',
         };
 
         let userExits = false;

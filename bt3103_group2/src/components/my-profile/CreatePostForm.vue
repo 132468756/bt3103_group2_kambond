@@ -93,6 +93,7 @@
 </template>
 
 <script>
+//lalala
 import firebaseApp from "../../firebase.js";
 import { ref, getStorage, uploadBytes} from "firebase/storage";
 import { arrayUnion, getFirestore } from "firebase/firestore";
@@ -298,7 +299,7 @@ select {
 .submit {
   /* position: absolute; */
   text-align: center;
-  background-color: orange;
+  background-color: red;
   border: 0;
   margin-left: 34%;
   margin-top: 20px;

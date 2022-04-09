@@ -1,6 +1,29 @@
 <template>
     <!-- This is a sample of the user info table to be shown in the setting page -->
     <table id="SettingTable" border=1 frame=void rules=rows>
+        <div class="profilePicDiv" v-if="this.showIcon">
+            <img :src= "url" alt="Preview" id="IconImg"/>
+        </div>
+        <div v-else class="profilePicDiv">
+            <img src="@/assets/profile.png" id="IconImg">
+        </div>
+       <div class = "chooseicon">
+        <input
+        type="file"
+        accept="image/*"
+        id="icon"
+        @change="onIconChange"
+        />
+      <img
+        :src="previewicon"
+        alt="Preview"
+        v-if="previewIcon"
+        class="uploading-image"
+        />
+        <div v-if="this.iconStatus != 'static'"><button class = "changeSettingBtn" id = "confirmChangeIcon" @click ="confirmChangeIcon()">Confirm Change</button></div> 
+        <div v-if="this.iconStatus != 'static'"><button class = "cancelSettingBtn" id = "cancelChangeIcon" @click ="cancelChangeIcon()"> Cancel</button></div>
+        </div>
+
         <tr class="settingRow">
             <td class="leftCol">User Name</td>
             <td id="usernameContent" class="midCol" @keydown.esc="abortChangeUsername">{{username}}</td>
@@ -30,7 +53,7 @@
             <td class="rightCol" v-if="this.contactStatus == 'static'"><changeBtn @click="changeContact()"/></td>
             <td v-else><button class="changeSettingBtn" id="confirmChangeContact" @click="confirmChangeContact()">Confirm Change</button></td>
         </tr>
-
+ 
     </table>
 </template>
 
@@ -39,9 +62,12 @@ import changeBtn from "./ChangeSettingButton.vue"
 import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
+import { ref, getStorage, uploadBytes, getDownloadURL} from "firebase/storage"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
-const db = getFirestore(firebaseApp)
+const db = getFirestore(firebaseApp);
+const storage = getStorage();
 // const auth = getAuth()
+
 export default {
     names:"SettingsTable",
     components:{
@@ -59,7 +85,17 @@ export default {
             bioStatus:"static",
             contactNumber:'',
             contactStatus:"static",
-            userID:''
+            userID:'',
+            profileiconURL:'',
+            previewicon: null,
+            icon: null,
+            iconStatus : "static",
+            iconpath: '',
+            iconURL: '',
+            showIcon: false,
+            path: '',
+            url: ' ',
+
         }
     },
     mounted(){
@@ -82,9 +118,50 @@ export default {
             self.telegram = user_info.data().telegramHandle
             self.bio = user_info.data().bio
             self.contactNumber = user_info.data().contactNumber
+            self.profileiconURL = user_info.data().profileiconURL
         }
+
+        async function getURL(self){
+            setTimeout(() => {
+            console.log(self.profileiconURL)
+            self.path = self.userID
+            console.log("getURL triggered")
+            console.log(self.path)
+            // Get URL for the image inside the storage
+            const storage = getStorage();
+            const starsRef = ref(storage, 'icons/'+ self.path);
+            // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+            getDownloadURL(starsRef)
+            .then((url) => {
+            self.url = url
+            self.showIcon=true
+            })
+            }, 500);
+        }
+
+        getURL(this)
     },
     methods:{
+        onIconChange(i) {
+        // const reader = new FileReader();
+        let file = i.target.files[0]; // get the supplied file
+        this.icon = file;
+        this.previewicon = URL.createObjectURL(file);
+        this.iconStatus = "changing";
+        },
+
+        async uploadImage(userID) {
+        if (this.icon) {
+        // var myPostID = this.post.postID
+        // var myImgName = myPostID.replace(/./g, "-")
+            const path = "icons/"+userID;
+            const fileRef = ref(storage, path)
+        console.log(fileRef)
+        await uploadBytes(fileRef, this.icon)
+        .then(() => {console.log("Icon uploaded successfully to Firebase. Path" + path)})
+            }
+        },
+
         changeUsername: function(){
             document.getElementById("usernameContent").innerHTML="<input type='text' id='newUsername' ref='newUsername'>"
             this.usernameStatus="changing"
@@ -115,6 +192,20 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
+        confirmChangeIcon: async function() {
+        try {
+          const path = await this.uploadImage(this.userID);
+          console.log("creating path", path)
+          const docRef = await updateDoc(doc(db, "Users", this.userID), {
+              profileiconURL: this.userID
+          })
+          console.log(docRef)
+          this.displayUserInfo(this.userID)
+        }
+        catch(error) {
+            console.log("Failed updating icon")
+        }
+        },
         changeTelegram: function(){
             document.getElementById("telegramContent").innerHTML="<input type='text' id='newTelegram'>"
             this.telegramStatus="changing"
@@ -144,7 +235,7 @@ export default {
                     console.log("Failed updating telegram handle")
                 }
             } else {
-                alert("Invalid Password Format! \nPlease remember the @ in front of your handle.")
+                alert("Invalid Password Format! Please remember the @ in front of your handle.")
             }
         },
         changeBio: function(){
@@ -259,4 +350,22 @@ export default {
         margin: 0px;
         text-align:center;
     }
+    .profilePicDiv {
+    text-align: center;
+    }
+
+    #profilePic {
+    width: 100px;
+    height: 100px;
+
+    }
+
+    #IconImg {
+    border-radius: 50%; 
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+
+    }
+
 </style>

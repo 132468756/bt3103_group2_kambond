@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Homepage from "../views/Avatar.vue";
+import Homepage from "../views/Homepage.vue";
 import Borrow from "../views/Borrow.vue";
 import Lend from "../views/Lend.vue";
 import Login from "../components/Login.vue";
