@@ -20,10 +20,13 @@
         </button>
       </div> <!-- class postList --> 
     </div> <!-- class postList -->
+    
   </div> <!-- class home -->
+  <Contact />
 </template>
 
 <script>
+import Contact from "@/components/Home/Contact.vue"
 import SearchField from "../components/Home/SearchField.vue";
 import NavBar from "../components/NavBar.vue";
 import Modal from "@/components/Modal.vue";
@@ -49,6 +52,7 @@ export default {
     SearchField,
     Modal,
     Post,
+    Contact
   },
 
   data() {
@@ -190,4 +194,5 @@ export default {
 #postView::-webkit-scrollbar {
   display: none;
 }
+
 </style>

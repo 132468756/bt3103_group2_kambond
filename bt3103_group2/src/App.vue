@@ -1,7 +1,7 @@
 <template>
 <div class="app">
   <router-view />
-  <Contact/>
+  <!-- <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>  -->
 </div> 
 </template>
 
@@ -9,8 +9,6 @@
 
 export default {
   name: "App",
-  components: {
-  },
 };
 </script>
 
@@ -33,6 +31,6 @@ export default {
   background-size:cover;
   background-attachment: fixed;
 
-  height: 870px;
+  height: 950px;
 }
 </style>

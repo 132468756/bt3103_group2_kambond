@@ -1,42 +1,28 @@
 <template>
   <div class="chat">
     <div class="chat__header">
-      <md-avatar class="md-large">
-        <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
-      </md-avatar>
+      <md-avatar class="md-large"> </md-avatar>
       <div class="chat__headerInfo">
         <h3>{{ this.friend }}</h3>
       </div>
 
-      <div class="chat__headerRight">
-        <!-- <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>attach_file</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-        </md-button> -->
-      </div>
+      <div class="chat__headerRight"></div>
     </div>
     <div id="content">
       <div class="chat__body" v-if="fetched">
         <div v-for="chat in previouschats" :key="chat.id">
           <p :class="`chat__message ${isMe(chat) && 'chat__reciever'}`">
-            {{ chat.message }}  <br/>  
+            {{ chat.message }} 
           </p>
-          <small id="time">{{chat.time}}</small>
+          <small id="time">{{ chat.time }}</small>
         </div>
       </div>
     </div>
     <div class="chat__footer">
-      <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
         <input type="text" id="inputMsg" autocomplete="off" />
         <button type="submit" id="submitBtn">Send</button>
       </form>
-      <!-- <md-icon>mic</md-icon> -->
     </div>
   </div>
 </template>
@@ -48,7 +34,6 @@ import {
   doc,
   updateDoc,
   arrayUnion,
-  //collection,
   getDoc,
   Timestamp,
 } from "firebase/firestore";
@@ -69,23 +54,28 @@ export default {
       timer: "",
     };
   },
+
   created() {
-    //this.getPreviousChats();
     this.timer = setInterval(this.getPreviousChats, 5000);
-    // this.scrollToEnd();
   },
+
   methods: {
     async onSubmit() {
       const msg = document.getElementById("inputMsg").value;
-      if(msg != '' && msg != null){
+      if (msg != "" && msg != null) {
         console.log("msg on submit", msg);
-        const mychat = { user: auth.currentUser.email, 
-        message: msg,
-        time:Timestamp.now().toDate().toLocaleDateString() +" " + Timestamp.now().toDate().toLocaleTimeString(),
-        timestamp:Timestamp.now()};
+        const mychat = {
+          user: auth.currentUser.email,
+          message: msg,
+          time:
+            Timestamp.now().toDate().toLocaleDateString() +
+            " " +
+            Timestamp.now().toDate().toLocaleTimeString(),
+          timestamp: Timestamp.now(),
+        };
         await updateDoc(doc(db, "Chats", this.room), {
           chats: arrayUnion(mychat),
-          timestamp:Timestamp.now(),
+          timestamp: Timestamp.now(),
         });
 
         document.getElementById("inputMsg").value = "";
@@ -95,23 +85,19 @@ export default {
     },
 
     isMe(chat) {
-      //console.log(chat.user);
       return chat.user == auth.currentUser.email;
     },
 
     async getPreviousChats() {
       let docRef = await getDoc(doc(db, "Chats", this.room));
       let previous = docRef.data().chats;
-      //console.log(this.previouschats.length);
       this.previouschats.splice(0);
-      //console.log(this.previouschats.length);
       if (previous.length != 0) {
         previous.forEach((doc) => {
           if (!this.previouschats.includes(doc)) {
             this.previouschats.push(doc);
           }
         });
-        //console.log("chats", this.previouschats);
       }
       self.fetched = true;
     },
@@ -123,20 +109,17 @@ export default {
       } else {
         this.friend = docRef.data().user1;
       }
-      //console.log(this.friend);
     },
   },
+
   mounted() {
-    //console.log("Chatview", this.room);
     async function getPreviousChats(roomId, self) {
       let docRef = await getDoc(doc(db, "Chats", roomId));
       let previous = docRef.data().chats;
-      //console.log(previous.length);
       if (previous.length != 0) {
         previous.forEach((doc) => {
           self.previouschats.push(doc);
         });
-        //console.log("chats", self.previouschats);
       }
       self.fetched = true;
     }
@@ -152,22 +135,18 @@ export default {
       }
       const docNow = await getDoc(doc(db, "Users", friendName));
       self.friend = docNow.data().username;
-      //console.log(self.friend);
     }
     listFriends(this);
   },
 
-  updated(){
-    const theElement = document.getElementById('content');
+  updated() {
+    const theElement = document.getElementById("content");
 
     const scrollToBottom = (node) => {
-      console.log("to bottom triggered")
       node.scrollTop = node.scrollHeight;
-      console.log(node.scrollHeight)
-      console.log(node.scrollTop)
-    }
+    };
     scrollToBottom(theElement);
-  }
+  },
 };
 </script>
 
@@ -205,6 +184,7 @@ export default {
   justify-content: space-between;
   min-width: 100px;
 }
+
 #content {
   flex: 1;
   background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
@@ -217,17 +197,6 @@ export default {
 #content::-webkit-scrollbar {
   display: none;
 }
-/* .chat__body {
-  flex: 1;
-  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
-    repeat center;
-  padding: 30px;
-  overflow-y: scroll;
-}
-.chat__body::-webkit-scrollbar {
-  display: none;
-  bottom: 0;
-} */
 
 .chat__message {
   position: relative;
@@ -235,14 +204,17 @@ export default {
   padding: 10px;
   background-color: white;
   border-radius: 10px;
+  height: auto;
   width: fit-content;
   margin-bottom: 30px;
+  word-break: break-all;
 }
+
 #time {
   position: relative;
-  font-size: 8px;
+  font-size: 9px;
   font-family: Arial, Helvetica, sans-serif;
-  color:darkgray;
+  color: darkgray;
   margin-bottom: 30px;
 }
 .chat__name {
@@ -259,7 +231,7 @@ export default {
 
 .chat__reciever {
   margin-left: auto;
-  background-color: #95EC69;
+  background-color: #95ec69;
 }
 
 .chat__footer {
@@ -301,7 +273,7 @@ export default {
   width: 80px;
   border-radius: 10px;
   border: transparent;
-  background-color: #07C160;
+  background-color: #07c160;
   text-align: center;
   margin-left: 3%;
   color: white;
@@ -314,6 +286,4 @@ export default {
 #submitBtn:active {
   background-color: #7bb67d;
 }
-
-
 </style>

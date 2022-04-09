@@ -23,6 +23,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 //import { getStorage, ref, getDownloadURL } from "firebase/storage";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
+
 export default {
   name: "SidebarChatUserRow",
   props: ["room"],
@@ -33,33 +34,23 @@ export default {
       otherName: "",
       lastmessage: "",
       emitRoom: "",
-      lasttime:"",
-
+      lasttime: "",
     };
   },
+
   methods: {
     updateChatView() {
-      //console.log("emit",this.room)
       this.emitRoom = this.room;
       this.$emit("update", this.emitRoom);
-      // this.time()
     },
 
-    async updateInfo(room){
+    async updateInfo(room) {
       let chat = await getDoc(doc(db, "Chats", room));
       const chatcontent = chat.data().chats;
       if (chatcontent.length != 0) {
         this.lastmessage = chatcontent[chatcontent.length - 1].message;
       }
-      // console.log(this.lastmessage)
     },
-
-    // time(){
-    //   setInterval(() => {
-    //     // console.log("from interval",this.emitRoom)
-    //     this.updateInfo(this.emitRoom)
-    //   }, 2500)
-    // }
   },
 
   mounted() {
@@ -71,14 +62,13 @@ export default {
         self.chatroom = chat.data().user1;
       }
       const chatcontent = chat.data().chats;
-      //console.log(chatcontent[chatcontent.length-1]);
       if (chatcontent.length != 0) {
         self.lastmessage = chatcontent[chatcontent.length - 1].message;
+        self.lastmessage = self.lastmessage.substring(0,30)
         self.lasttime = chatcontent[chatcontent.length - 1].time;
       }
       let user = await getDoc(doc(db, "Users", self.chatroom));
       self.otherName = user.data().username;
-      //self.otherEmail = user.data().email;
     }
     getChatRoom(this);
   },
@@ -120,12 +110,17 @@ export default {
   place-items: center;
 }
 
-#message, #time {
+#message,
+#time{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10px;
-  color:darkgray;
+  color: darkgray;
+}
+p {
+  display: flex;
+
 }
 h2 {
-      display:flex;
+  display: flex;
 }
 </style>

@@ -41,7 +41,7 @@ export default {
             let ind = 1
             let records = user.data().posts
             // console.log(user.data())
-            console.log(records)
+            
             let reverseOrder = records.length
             
             records.forEach(async (record) => {
@@ -62,9 +62,15 @@ export default {
                 var modalBtn = document.createElement("button")
                 modalBtn.className = "modalBtn"
                 modalBtn.id = postInfo.data().postID
+                let docRef = await getDoc(doc(db, "Users", postInfo.data().user));
+                let uName = docRef.data().username
                 modalBtn.innerHTML = postInfo.data().title
+                postInfo.data()["userName"] = uName
+                let userNameData = {}
+                userNameData = postInfo.data()
+                userNameData.userName = uName
                 modalBtn.onclick = function(){
-                    self.showModal(postInfo.data())
+                    self.showModal(userNameData)
                     }
                 cell2.appendChild(modalBtn)
                 cell3.innerHTML = postInfo.data().location
@@ -72,7 +78,9 @@ export default {
                 cell5.innerHTML = postInfo.data().status
 
                 reverseOrder -= 1
+                console.log(userNameData)
             })
+            
         }
         let tb = document.getElementById("OtherPosts")
         while(tb.rows.length > 1){
