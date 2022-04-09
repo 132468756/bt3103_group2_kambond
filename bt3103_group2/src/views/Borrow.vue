@@ -158,14 +158,7 @@ export default {
     this.$refs.modal.getURL()
     console.log("isopen")
     },
-  showpost() {
 
-    this.filteredPosts = this.posts.filter(post => this.selectedcategory.includes(post.category)).filter(post => post.status === "Want to lend").filter(post => this.selectedlocation.includes(post.location))
-
-    
-    this.originalshow = false;
-    this.showdata = true; 
-    },
   closeModal() {
         this.isModalVisible = false;
   },
