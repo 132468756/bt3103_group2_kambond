@@ -17,8 +17,7 @@
 </template>
 
 <script>
-
-export default{};
+export default {};
 </script>
 <style>
 .firstnavis {
@@ -35,7 +34,7 @@ export default{};
 }
 .firstnavis a.hover {
   background-color: white;
-  color:blue;
+  color: blue;
 }
 .firstnavis a.secondnavis {
   background-color: black;

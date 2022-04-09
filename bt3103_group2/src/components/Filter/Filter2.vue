@@ -1,3 +1,26 @@
+<template>
+  <div id="checked">Checked names: {{ checkedLocation }}</div>
+  <div class="whole">
+    <div id="name">
+      <h3>Location</h3>
+    </div>
+    <div id="checkboxes">
+      <input type="checkbox" @change="selectAll" v-model="allSelected" />Select
+      All
+      <class v-for="option of optionlist" :key="option.id">
+        <label
+          ><input
+            type="checkbox"
+            v-model="checkedLocation"
+            :value="option.id"
+            @change="updateCheckall()"
+          />{{ option.id }}</label
+        >
+      </class>
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
   name: "filter2",
@@ -6,62 +29,46 @@ export default {
       checkedLocation: [],
       allSelected: false,
       optionlist: [
-        {id: "PGP/PGPR"},
-        {id: "Utown"},
-        {id: "RVRC"},
-        {id: "Temasek Hall"},
-        {id: "Shears Hall"},
-        {id: "KEVII Hall"},
-        {id: "Eusoff Hall"},
-        {id: "Raffles Hall"},
-        {id: "Kent Ridge Hall"},
-        {id: "Others"},
+        { id: "PGP/PGPR" },
+        { id: "Utown" },
+        { id: "RVRC" },
+        { id: "Temasek Hall" },
+        { id: "Shears Hall" },
+        { id: "KEVII Hall" },
+        { id: "Eusoff Hall" },
+        { id: "Raffles Hall" },
+        { id: "Kent Ridge Hall" },
+        { id: "Others" },
       ],
-
     };
   },
   methods: {
-  async selectAll() {
-    if(this.allSelected) {
-      const checkedNames = this.optionlist.map((option)=> (option.id));
-      this.checkedLocation = checkedNames;
-    }
-    else {
-      this.checkedLocation = [];
-    }
-  },
+    async selectAll() {
+      if (this.allSelected) {
+        const checkedNames = this.optionlist.map((option) => option.id);
+        this.checkedLocation = checkedNames;
+      } else {
+        this.checkedLocation = [];
+      }
+    },
 
-  updateCheckall: function(){
-    if(this.optionlist.length == this.checkedLocation.length){
-        this.allSelected= true;
-    }else{
+    updateCheckall: function () {
+      if (this.optionlist.length == this.checkedLocation.length) {
+        this.allSelected = true;
+      } else {
         this.allSelected = false;
-    }
-  },
-
+      }
+    },
   },
   watch: {
     checkedLocation() {
-      this.$emit('change', this.checkedLocation)
-    }
+      this.$emit("change", this.checkedLocation);
+    },
   },
 };
 </script>
 
-<template>
-  <div id="checked">Checked names: {{ checkedLocation }}</div>
-   <div class="whole">
-    <div id="name">
-      <h3>Location</h3>
-    </div>
-  <div id = "checkboxes">
-  <input type="checkbox" @change="selectAll" v-model= "allSelected">Select All
-  <class v-for = "option of optionlist" :key = "option.id">
-          <label><input type = "checkbox" v-model = "checkedLocation" :value = "option.id" @change="updateCheckall()" />{{option.id}}</label>
-      </class>
-    </div>
-  </div>
-</template>
+
 
 <style scoped>
 #checkboxes input {
@@ -96,7 +103,7 @@ export default {
 #checked {
   background-color: rgba(241, 238, 255, 0.582);
   border: transparent;
-  height:0px;
-  color:transparent;
+  height: 0px;
+  color: transparent;
 }
 </style>

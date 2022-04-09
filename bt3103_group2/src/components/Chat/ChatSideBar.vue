@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__header">
-      <p id="headerinfo"> Welcome to KamBond!</p>
+      <p id="headerinfo">Welcome to KamBond!</p>
     </div>
-    
+
     <div class="sidebar__chat">
       <div v-for="room in rooms" :key="room.id">
         <SidebarChatUserRow :room="room" @update="update($event)" />
@@ -25,32 +25,35 @@ import {
 import { getAuth } from "firebase/auth";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
+
 export default {
   name: "ChatSideBar",
   components: { SidebarChatUserRow },
-  prop:["onUpdate"],
-  emits:['emitRoom'],
+  prop: ["onUpdate"],
+  emits: ["emitRoom"],
+
   data() {
     return {
-      rooms:[],
-      emitRoom:"",
-    }
+      rooms: [],
+      emitRoom: "",
+    };
   },
+
   methods: {
     async update(text) {
-      //console.log("inSideBar",text);
       this.emitRoom = text;
       this.onUpdate = text;
-      //console.log("sidebarupdate",this.onUpdate)
-      this.$emit('update',this.emitRoom);
+      this.$emit("update", this.emitRoom);
     },
   },
+  
   mounted() {
     async function getRooms(self) {
-      const docNow = await getDocs(query(collection(db, "Chats"),orderBy("timestamp","desc")));
-      console.log(docNow)
+      const docNow = await getDocs(
+        query(collection(db, "Chats"), orderBy("timestamp", "desc"))
+      );
+      console.log(docNow);
       docNow.forEach((doc) => {
-        // console.log(doc.data().user2 == String(auth.currentUser.displayName));
         if (
           (doc.data().user1 == String(auth.currentUser.email)) |
           (doc.data().user2 == String(auth.currentUser.email))
@@ -58,11 +61,9 @@ export default {
           self.rooms.push(doc.data().chatRoomName);
         }
       });
-      //console.log("rooms", self.rooms);
     }
     getRooms(this);
-  },  
-  
+  },
 };
 </script>
 
@@ -127,12 +128,12 @@ export default {
   height: 30px;
   border-radius: 20px;
   /* border: transparent; */
-  border:transparent;
+  border: transparent;
   background-color: transparent;
-  font-size: 20px
+  font-size: 20px;
 }
 
-#newChatInput:focus{
+#newChatInput:focus {
   outline: none;
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div v-if="fetched" class="app">
     <div class="app__body">
-      <ChatSideBar @update="update($event)" ref="sideBar"/>
+      <ChatSideBar id="chatsidebar" @update="update($event)" ref="sideBar"/>
       <ChatView v-if="showChats" :room="emitRoom" :key="refresh"/>
     </div>
   </div>
@@ -71,5 +71,9 @@ export default {
   width: 70vw;
   box-shadow: -1px 4px 20px -6px rgba(111, 153, 226, 0.75);
   border-radius: 20px;
+}
+
+#chatsidebar {
+  width:20%
 }
 </style>

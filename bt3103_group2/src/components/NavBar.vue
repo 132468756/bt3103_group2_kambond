@@ -32,7 +32,7 @@ export default {
 
 #navImg {
   height: 7vh;
-  width: 7vw;
+  width: 6vw;
   position:absolute;
   left: 1vw;
   top: 1vh;
