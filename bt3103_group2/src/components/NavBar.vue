@@ -31,10 +31,10 @@ export default {
 }
 
 #navImg {
-  height: 12vh;
-  width: 9vw;
+  height: 7vh;
+  width: 7vw;
   position:absolute;
   left: 1vw;
-  top: 2vh;
+  top: 1vh;
 }
 </style>

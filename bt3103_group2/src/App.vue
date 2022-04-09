@@ -1,6 +1,7 @@
 <template>
 <div class="app">
   <router-view />
+  <!-- <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>  -->
   <Contact/>
 </div> 
 </template>
