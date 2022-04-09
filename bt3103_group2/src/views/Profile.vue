@@ -12,8 +12,9 @@
             <backBtn class="Btn" id="backBtn"/>
         </div>
     </div>
-
-    <otherUserProfileTable id="otherUserTable" :userid="this.id" />
+    <div id="otherUserTableContainer">
+      <otherUserProfileTable id="otherUserTable" :userid="this.id" />
+    </div>
 </div>
 </template>
 
@@ -186,5 +187,14 @@ export default {
 /* #otherUserInfo, #otherUserBtns{
   float: left;
 } */
+#otherUserTableContainer {
+  overflow-y: scroll;
+  width: 100%;
+  height: 385px;
+  text-align: center;
+}
 
+#otherUserTableContainer::-webkit-scrollbar {
+  display: none;
+}
 </style>
