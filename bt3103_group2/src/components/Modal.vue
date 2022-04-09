@@ -142,12 +142,8 @@ const db = getFirestore(firebaseApp);
         this.$emit('close');
         console.log(this.user.email)
         console.log(this.post.email)
-<<<<<<< HEAD
-        this.url = ""
-=======
         this.url=''
         this.showPic=false
->>>>>>> bb0819943712979702b2436738537d68ed29dc03
         },
       addDeal: async function(purpose){
         var a = this.post.postID
