@@ -2,23 +2,12 @@
   <div class="chat">
     <div class="chat__header">
       <md-avatar class="md-large">
-        <!-- https://avatars.githubusercontent.com/u/32813584?s=60&v=4 -->
       </md-avatar>
       <div class="chat__headerInfo">
         <h3>{{ this.friend }}</h3>
       </div>
 
-      <div class="chat__headerRight">
-        <!-- <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>attach_file</md-icon>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-        </md-button> -->
-      </div>
+      <div class="chat__headerRight"></div>
     </div>
     <div id="content">
       <div class="chat__body" v-if="fetched">
@@ -31,12 +20,10 @@
       </div>
     </div>
     <div class="chat__footer">
-      <!-- <md-icon>insert_emoticon</md-icon> -->
       <form v-on:submit.prevent="onSubmit">
         <input type="text" id="inputMsg" autocomplete="off" />
         <button type="submit" id="submitBtn">Send</button>
       </form>
-      <!-- <md-icon>mic</md-icon> -->
     </div>
   </div>
 </template>
@@ -217,17 +204,6 @@ export default {
 #content::-webkit-scrollbar {
   display: none;
 }
-/* .chat__body {
-  flex: 1;
-  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")
-    repeat center;
-  padding: 30px;
-  overflow-y: scroll;
-}
-.chat__body::-webkit-scrollbar {
-  display: none;
-  bottom: 0;
-} */
 
 .chat__message {
   position: relative;
