@@ -50,18 +50,8 @@ export default {
 }
 
 .login {
-  /* The image used */
-  /* background-image: url("~@/assets/login-bg.jpg"); */
-
-  /* Control the height of the image */
-  /* height: 880px; */
-
-  /* Center and scale the image nicely */
-  /* background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative; */
   text-align: center;
+  height: 870px;
 }
 
 #notice {

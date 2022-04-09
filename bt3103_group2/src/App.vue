@@ -34,6 +34,5 @@ export default {
   background-size:cover;
   background-attachment: fixed;
 
-  height: 870px;
 }
 </style>
