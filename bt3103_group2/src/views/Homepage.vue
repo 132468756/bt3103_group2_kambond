@@ -133,7 +133,6 @@ export default {
           deals: [],
           requests: [],
           chatrooms:[],
-          ProfileiconURL: '',
         };
 
         let userExits = false;

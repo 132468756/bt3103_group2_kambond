@@ -54,14 +54,10 @@ export default {
             likes:0,
             email:'',
             userID: '',
-            profileiconURL:'',
             previewicon: null,
             icon: null,
             iconStatus : "static",
-            iconpath: '',
-            iconURL: '',
             showIcon: false,
-            path: '',
             url: ' ',
         }
     },
@@ -73,6 +69,7 @@ export default {
                 this.user = user;
                 this.userID = this.user.email;
                 display(this, this.userID)
+                getURL(this)
             }else{
                 display(this, "10086")
             }
@@ -84,20 +81,18 @@ export default {
             self.bio = user.data().bio
             self.creditPoint = user.data().creditPoint
             self.likes = user.data().likes
-            self.profileiconURL = user.data().profileiconURL
-            console.log(self.likes)
+            self.email=user.data().email
+            console.log(self.profileiconURL)
         }
         display(this)
 
         async function getURL(self){
             setTimeout(() => {
-            console.log(self.profileiconURL)
-            self.path = self.userID
+            console.log(self.email)
             console.log("getURL triggered")
-            console.log(self.path)
             // Get URL for the image inside the storage
             const storage = getStorage();
-            const starsRef = ref(storage, 'icons/'+ self.path);
+            const starsRef = ref(storage, 'icons/'+ self.email);
             // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
             getDownloadURL(starsRef)
             .then((url) => {
@@ -106,16 +101,6 @@ export default {
             })
             }, 500);
         }
-
-        getURL(this)
-
-        //function close() {
-        //this.$emit('close');
-        //console.log(this.userID)
-        //console.log(this.userID)
-        //this.url=''
-        //this.showIcon=false
-        //}
     },
     methods: {
         onIconChange(i) {
