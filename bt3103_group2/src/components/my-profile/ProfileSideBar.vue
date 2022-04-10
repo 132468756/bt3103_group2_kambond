@@ -252,7 +252,7 @@ export default {
 
 <style>
 #sideBar {
-    height: 100%;
+    height: 93%;
     width: 15vw;
     background-color: rgba(255, 255, 255, 0.8);
     float: left;
@@ -353,6 +353,10 @@ export default {
 #chats {
     width: 90%;
     margin-left: 2.5%;
+}
+
+#overall {
+    height: 800px;
 }
 
 </style>

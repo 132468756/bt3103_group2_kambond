@@ -7,27 +7,24 @@
     <Filter2 @change = "newFilter2"/>
 
   </div>
-    <div id="postView">
-      <Modal ref="modal"
-        v-show="isModalVisible"
-        @close="closeModal" :post = "modalData"/>
-      <div className = "postList" v-for= "post in posts" :key = "post.id">
-        <button 
-          type="button"
-          id = "postModal"
-          @click="showModal(post)"
-        >
-        <Post 
-          className = "posts"
-          :owner = "post.userName"
-          :title = "post.title"
-          :status = "post.status"
-        />
-        </button>
-      </div>
+  <div id="postView">
+    <Modal ref="modal"
+      v-show="isModalVisible"
+      @close="closeModal" :post = "modalData"/>
+    <div className = "postList" v-for= "post in posts" :key = "post.id">
+      <button 
+        type="button"
+        id = "postModal"
+        @click="showModal(post)"
+      >
+      <Post 
+        className = "posts"
+        :owner = "post.userName"
+        :title = "post.title"
+        :status = "post.status"
+      />
+      </button>
     </div>
-  <div>
-    
   </div>
 </div>
 </template>

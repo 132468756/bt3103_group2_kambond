@@ -80,7 +80,7 @@ export default {
 
         document.getElementById("inputMsg").value = "";
         this.getPreviousChats();
-        this.timer = setInterval(this.getPreviousChats, 5000);
+        // this.timer = setInterval(this.getPreviousChats, 5000);
       }
     },
 

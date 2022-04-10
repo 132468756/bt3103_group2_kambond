@@ -58,6 +58,7 @@ export default {
                 var cell5 = row.insertCell(4)
 
                 cell1.innerHTML = reverseOrder
+                reverseOrder -= 1
                 // Create button for post modal
                 var modalBtn = document.createElement("button")
                 modalBtn.className = "modalBtn"
@@ -71,13 +72,13 @@ export default {
                 userNameData.userName = uName
                 modalBtn.onclick = function(){
                     self.showModal(userNameData)
-                    }
+                }
                 cell2.appendChild(modalBtn)
                 cell3.innerHTML = postInfo.data().location
                 cell4.innerHTML = postInfo.data().postDate
                 cell5.innerHTML = postInfo.data().status
-
-                reverseOrder -= 1
+                
+                console.log(reverseOrder)
                 console.log(userNameData)
             })
             

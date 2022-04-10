@@ -165,4 +165,8 @@ p {
 h2 {
   display: flex;
 }
+#profilePic {
+  height: 50px;
+  width: 50px;
+}
 </style>
