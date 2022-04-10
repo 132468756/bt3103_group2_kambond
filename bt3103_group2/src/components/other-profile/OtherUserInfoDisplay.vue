@@ -1,7 +1,10 @@
 <template>
     <div id="userInfo">
-        <div class="profilePicDiv">
-            <img src="@/assets/profilephoto.jpeg" id="profilePic">
+        <div class="profilePicDiv" v-if="this.showIcon">
+            <img :src= "url" alt="Preview" id="IconImg"/>
+        </div>
+        <div v-else class="profilePicDiv">
+            <img src="@/assets/profile.png" id="profilePic">
         </div>
         <h2 id="username">{{username}}</h2>
         <div class="userInfoDetail">
@@ -15,6 +18,7 @@
 <script>
 import { getDoc, doc, getFirestore } from '@firebase/firestore'
 import firebaseApp from '../../firebase'
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const db = getFirestore(firebaseApp)
 
@@ -25,7 +29,11 @@ export default {
             bio:'',
             creditPoint:'',
             likes:'',
-            email:''
+            email:'',
+            profileiconURL: '',
+            path: '',
+            url: ' ',
+            showIcon: false
         }
     },
 
@@ -49,8 +57,27 @@ export default {
             self.bio = user.data().bio
             self.creditPoint = user.data().creditPoint
             self.likes = user.data().likes
+            self.profileiconURL = user.data().profileiconURL
             console.log("in meth Self likes = ")
             console.log(self.likes)
+        },
+        
+        async getURL(self){
+            setTimeout(() => {
+            console.log(self.profileiconURL)
+            self.path = self.user
+            console.log("getURL triggered")
+            console.log(self.path)
+            // Get URL for the image inside the storage
+            const storage = getStorage();
+            const starsRef = ref(storage, 'icons/'+ self.path);
+            // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+            getDownloadURL(starsRef)
+            .then((url) => {
+            self.url = url
+            self.showIcon=true
+            })
+            }, 500);
         },
 
         emitInterface() {
@@ -72,7 +99,14 @@ export default {
         //     self.creditPoint = user_info.data().creditPoint
         // }
 
+
         this.update(this)
+
+
+        this.display(this)
+
+        
+        this.getURL(this)
 
         // async function display(self){
         //     let user = await getDoc(doc(db, "Users", self.user))
@@ -83,7 +117,6 @@ export default {
         //     console.log("mounted Self likes = ")
         //     console.log(self.likes)
         // }
-        this.display(this)
     }
 
 }
@@ -114,4 +147,15 @@ export default {
     width: 100px;
     height: 100px;
     }
+
+    #IconImg {
+    border-radius: 50%; 
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+
+    }
+
+
 </style>

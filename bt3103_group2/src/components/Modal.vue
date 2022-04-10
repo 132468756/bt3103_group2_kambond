@@ -53,7 +53,7 @@
         <footer class="modal-footer">
           <div name="footer">
             <div class="profilePicDiv" v-if="this.showIcon">
-              <img :src= "url" alt="Preview" id="IconImg"/>
+              <img :src= "url2" alt="Preview" id="IconImg"/>
             </div>
             <div v-else class="profilePicDiv">
               <img src="@/assets/profile.png" id="profilePic">
@@ -109,8 +109,11 @@ const db = getFirestore(firebaseApp);
       return {
         userID:"",
         url: '',
-        path:'',
-        profileiconURL: '',
+        url2: '',
+        path: '',
+        showPic: false,
+        path2:'',
+        //profileiconURL: '',
         // previewImage: null,
         showIcon:false,
         postuserID: "",
@@ -124,38 +127,59 @@ const db = getFirestore(firebaseApp);
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          this.userID = this.user.email
+          this.userID = this.user.email;
         }
       });
 
-      async function getURL(self){
-            setTimeout(() => {
-            console.log(self.profileiconURL)
-            self.path = self.userID
-            console.log("getURL triggered")
-            console.log(self.path)
-            // Get URL for the image inside the storage
-            const storage = getStorage();
-            const starsRef = ref(storage, 'icons/'+ self.path);
-            // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
-            getDownloadURL(starsRef)
-            .then((url) => {
-            self.url = url
-            self.showIcon=true
-            })
-          }, 500);
-      }
-
-        getURL(this)
+     this.getURL()
+     this.getURL2()
     },
 
     methods: {
+      async getURL(){
+      setTimeout(() => {
+        console.log(this.post.imagePath)
+        this.path = this.post.postID
+        console.log("getURL triggered")
+        console.log(this.path)
+        // Get URL for the image inside the storage
+        const storage = getStorage();
+        const starsRef = ref(storage, 'posts/'+ this.path);
+        // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+        getDownloadURL(starsRef)
+        .then((url) => {
+          this.url = url
+          this.showPic=true
+        })
+      }, 500);
+      },
+      async getURL2(){
+      setTimeout(() => {
+        console.log(this.post.usericonURL)
+        this.path2 = this.post.user
+        console.log("getURL2 triggered")
+        console.log(this.path2)
+        // Get URL for the image inside the storage
+        const storage2 = getStorage();
+        const starsRef2 = ref(storage2, 'icons/'+ this.path2);
+        // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+        getDownloadURL(starsRef2)
+        .then((url) => {
+          this.url2 = url
+          this.showIcon=true
+        })
+      }, 500);
+      },
+
+
       close() {
         this.$emit('close');
         console.log(this.user.email)
         console.log(this.post.email)
         this.url=''
         this.showPic=false
+        this.url2 = ''
+        this.showIcon = false
         },
       addDeal: async function(purpose){
         var a = this.post.postID
@@ -401,5 +425,23 @@ const db = getFirestore(firebaseApp);
   text-align: center;
   display: flex;
   flex-direction: row;
+}
+
+.profilePicDiv {
+  text-align: center;
+}
+
+#profilePic {
+  width: 100px;
+  height: 100px;
+
+}
+
+#IconImg {
+  border-radius: 50%; 
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+
 }
 </style>
