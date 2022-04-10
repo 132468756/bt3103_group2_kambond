@@ -148,7 +148,7 @@ export default {
           const docNow = await setDoc(doc(db, "Users", self.user), data);
           console.log(docNow);
           self.$router.push({name: 'sideBar', query: {q:"showSettings"}});
-          alert("PLease update your personal info in Settings before proceeding.")
+          alert("Please update your personal information in Settings before proceeding.")
         }
         // } catch (error) {
         //   console.error("Error adding document:", error);

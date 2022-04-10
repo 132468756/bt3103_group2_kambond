@@ -4,7 +4,7 @@
     <div style="text-align: center" id="loginComponent">
       <br><br>
       <h1 id="login-title">LOG IN</h1>
-      <div id="notice">Start your journey with Kambond!</div>
+      <div id="notice">Start your journey with KamBond!</div>
       <div id="firebaseui-auth-container"></div>
     </div>
   </div>
@@ -64,7 +64,7 @@ export default {
 
 #loginComponent {
   width: 30%;
-  height: 550px;
+  height: 520px;
   border-radius: 25px;
   margin-left: 35%;
 
@@ -72,5 +72,11 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
+
+  overflow-y: scroll;
+}
+
+#loginComponent::-webkit-scrollbar {
+  display: none;
 }
 </style>

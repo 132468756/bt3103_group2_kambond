@@ -144,7 +144,7 @@ export default {
     
         async function deleteRequest(record, self){
             var userID = auth.currentUser.email
-            if(confirm("You are going to delete " + record)){
+            if(confirm("You are going to delete this request.")){
                 // Delete the record from the user table
                 const docRef = doc(db, "Users", userID)
                 await updateDoc(docRef, {

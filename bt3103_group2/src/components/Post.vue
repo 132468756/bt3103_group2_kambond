@@ -10,7 +10,7 @@
     <div id = "category"> {{category}}</div>
     <hr />
       <div id="owner">
-        <div id = "user">Owner: {{ owner }}</div>
+        <div id = "user">Poster: {{ owner }}</div>
       </div>
   </form>
   
