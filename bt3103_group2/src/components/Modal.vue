@@ -57,7 +57,7 @@
             </div>
             <div v-else class="profilePicDiv">
               <img src="@/assets/profile.png" id="profilePic">
-             </div>
+            </div>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
               <router-link to="/myprofile" v-if="post.user == this.userID">{{post.userName}} </router-link>
             <router-link :to = "'/profile/' + post.user " :id = post.user v-else>
