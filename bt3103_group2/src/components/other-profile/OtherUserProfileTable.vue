@@ -109,6 +109,8 @@ export default {
             this.isModalVisible = true;
             this.modalData = data;
             this.$refs.modal.getURL()
+            this.$refs.modal.open()
+            this.$refs.modal.getURL2()
             console.log("isopen")
         }
     }

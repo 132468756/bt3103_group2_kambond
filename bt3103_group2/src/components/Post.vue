@@ -9,11 +9,9 @@
     <div id = "description"> {{ description }} </div>
     <div id = "category"> {{category}}</div>
     <hr />
-    <div id="owner">
-      <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "profilePicture"/>
-      <div id = "user">{{ owner }}</div>
-    </div>
-    
+      <div id="owner">
+        <div id = "user">Owner: {{ owner }}</div>
+      </div>
   </form>
   
 </template>
@@ -65,13 +63,15 @@ export default {
 #owner {
   display: inline-flex;
   justify-content:left;
-  align-items:center;
+  align-items:left;
   margin-top: 2%;
+  width: 100%;
+  margin-left: 0.9vw;
 }
 
 #user{
   margin-left: 3%;
-  font-size:1.6vw;
+  font-size: 1.4vw;
 }
 
 #post {

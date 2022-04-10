@@ -52,13 +52,9 @@
 
         <footer class="modal-footer">
           <div name="footer">
-            <div class="profilePicDiv" v-if="this.showIcon">
-              <img :src= "url2" alt="Preview" id="IconImg"/>
+            <div class="profilePicDiv">
+              <img :src= "url2"  id="IconImg"/>
             </div>
-            <div v-else class="profilePicDiv">
-              <img src="@/assets/profile.png" id="profilePic">
-            </div>
-            <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
               <router-link to="/myprofile" v-if="post.user == this.userID">{{post.userName}} </router-link>
             <router-link :to = "'/profile/' + post.user " :id = post.user v-else>
               {{post.userName}}
@@ -109,13 +105,10 @@ const db = getFirestore(firebaseApp);
       return {
         userID:"",
         url: '',
-        url2: '',
+        url2: 'https://firebasestorage.googleapis.com/v0/b/kambond-2515f.appspot.com/o/icons%2Fprofile.png?alt=media&token=c79bf3ba-7dae-40d0-b4c2-f80952ef0495',
         path: '',
         showPic: false,
         path2:'',
-        //profileiconURL: '',
-        // previewImage: null,
-        showIcon:false,
         postuserID: "",
         };
     },
@@ -130,9 +123,6 @@ const db = getFirestore(firebaseApp);
           this.userID = this.user.email;
         }
       });
-
-    this.getURL()
-    this.getURL2()
     },
 
     methods: {
@@ -166,7 +156,6 @@ const db = getFirestore(firebaseApp);
           getDownloadURL(starsRef2)
           .then((url) => {
             this.url2 = url
-            this.showIcon=true
           })
         }, 500);
       },
@@ -176,11 +165,15 @@ const db = getFirestore(firebaseApp);
         this.$emit('close');
         console.log(this.user.email)
         console.log(this.post.email)
-        this.url=''
+      },
+
+      open(){
         this.showPic=false
-        this.url2 = ''
-        this.showIcon = false
-        },
+        this.url=''
+        this.url2 = 'https://firebasestorage.googleapis.com/v0/b/kambond-2515f.appspot.com/o/icons%2Fprofile.png?alt=media&token=c79bf3ba-7dae-40d0-b4c2-f80952ef0495'
+      },
+
+
       addDeal: async function(purpose){
         var a = this.post.postID
         if (purpose == "Borrowing"){
@@ -300,7 +293,7 @@ const db = getFirestore(firebaseApp);
     display: flex;
     flex-direction: column;
     width: 80%;
-    height:80%;
+    height:90%;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
   .modal-header{
@@ -363,7 +356,6 @@ const db = getFirestore(firebaseApp);
   }
   #buttons{
     margin-top:2%;
-    margin-left:4vw;
   }
   .borrowButton{
     color: white;
@@ -425,6 +417,10 @@ const db = getFirestore(firebaseApp);
   text-align: center;
   display: flex;
   flex-direction: row;
+}
+
+.modal::-webkit-scrollbar {
+  display: none;
 }
 
 .profilePicDiv {

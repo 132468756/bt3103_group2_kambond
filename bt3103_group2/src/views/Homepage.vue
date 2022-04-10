@@ -100,6 +100,8 @@ export default {
       this.modalData = data;
       console.log("isopen");
       this.$refs.modal.getURL()
+      this.$refs.modal.open()
+      this.$refs.modal.getURL2()
     },
 
     closeModal() {

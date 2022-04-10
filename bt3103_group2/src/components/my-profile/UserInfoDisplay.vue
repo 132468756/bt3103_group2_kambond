@@ -10,19 +10,23 @@
             <input
             type="file"
             accept="image/*"
-            id="user.icon"
+            id="icon"
             @change="onIconChange"
             />
-            
+            <label for="icon"><button id="changeIconImg" @click="changeIcon()">Upload Image</button></label>
             <img
-                :src= "previewicon"
+                :src="previewicon"
                 alt="Preview"
-                v-if= "previewIcon"
+                v-if="previewIcon"
                 class="uploading-image"
                 />
-            <div v-if="this.iconStatus != 'static'"><button class = "changeSettingBtn" id = "confirmChangeIcon" @click ="confirmChangeIcon()">Confirm Change</button></div> 
+            <div id="changeIconBtnContainer">
+                <div v-if="this.iconStatus != 'static'"><button class = "changeSettingBtn" id = "confirmChangeIcon" @click ="confirmChangeIcon()">Confirm Change</button></div> 
+                <div v-if="this.iconStatus != 'static'"><button  class = "changeSettingBtn" id = "cancelChangeIcon" @click ="cancelChangeIcon()"> Cancel</button></div>
+            </div>
         </div>
-        <tr>
+
+
         <h2 id="username">{{username}}</h2>
         <div class="userInfoDetail">
             <h4 id="Kambond">{{bio}}</h4>
@@ -123,18 +127,15 @@ export default {
         },
 
         confirmChangeIcon: async function() {
-        try {
             const path = await this.uploadImage(this.userID);
             console.log("creating path", path)
             const docRef = await updateDoc(doc(db, "Users", this.userID), {
                 profileiconURL: this.userID
             })
-            console.log(docRef)
-            this.displayUserInfo(this.userID)
-        }
-        catch(error) {
-            console.log("Failed updating icon")
-        }
+            setTimeout(() => {
+                console.log(docRef)
+                location.reload()
+            }, 500)
         },
 
         async uploadImage(userID) {
@@ -148,6 +149,17 @@ export default {
         .then(() => {console.log("Icon uploaded successfully to Firebase. Path" + path)})
             }
         },
+
+        changeIcon(){
+            document.getElementById("icon").click();
+            document.getElementById("changeIconBtnContainer").style.display="flex"
+            document.getElementById("changeIconImg").style.display="none"
+        },
+
+        cancelChangeIcon(){
+            document.getElementById("changeIconImg").style.display="inline"
+            document.getElementById("changeIconBtnContainer").style.display="none"
+        }
     }
 
 }
@@ -177,20 +189,13 @@ export default {
     #profilePic {
     width: 100px;
     height: 100px;
-
     }
-
     #IconImg {
     border-radius: 50%; 
     overflow: hidden;
     width: 100px;
     height: 100px;
     }
-
-    #icon {
-        display: none;
-    }
-
     #changeIconImg {
         background-color: rgb(230, 230, 230);
         border: transparent;
@@ -200,17 +205,36 @@ export default {
         width: auto;
         height: 4%;
     }
-
     #changeIconImg:hover {
         transition: 0.3s;
         background-color: rgba(199, 199, 199);
     }
-
     #changeIconImg:active {
         background-color: rgb(107, 107, 107);
     }
 
-    .uploading-image {
-    width:100%;
-}
+    #icon {
+        display: none;
+    }
+
+    #changeIconBtnContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #confirmChangeIcon {
+        width: 12vw;
+        background-color: rgb(230, 230, 230);
+        color: black;
+        margin: 10px;
+    }
+
+    #cancelChangeIcon {
+        width: 12vw;
+        background-color: rgb(230, 230, 230);
+        color: black;
+        margin: 10px;
+    }
+
 </style>
