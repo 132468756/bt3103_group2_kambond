@@ -120,7 +120,7 @@ export default {
       },
       previewImage: null,
       image: null,
-      userURL: "",
+      userURL: " ",
     };
   },
   mounted() {
@@ -137,7 +137,6 @@ export default {
       // const reader = new FileReader();
       let file = e.target.files[0]; // get the supplied file
       this.image = file;
-      this.previewImage = URL.createObjectURL(file);
     },
 
     // uploading file in storage
@@ -180,7 +179,6 @@ export default {
       var f = document.getElementById("post.location").value;
       var email = auth.currentUser.email;
       var status = b;
-      var postuser = auth.currentUser.profileiconURL;
       if (b == "Borrowing") {
         status = "Want to borrow";
       } else {
@@ -226,7 +224,7 @@ export default {
             postID: postID,
             postDate: timeFormatted,
             imagePath:postID,
-            usericonURL: postuser,
+            usericonURL: email,
           });
           console.log(docRef);
         } catch (error) {
