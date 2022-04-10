@@ -35,6 +35,6 @@ export default {
   width: 110px;
   position:absolute;
   left: 1vw;
-  top: 2vh;
+  top: 1vh;
 }
 </style>

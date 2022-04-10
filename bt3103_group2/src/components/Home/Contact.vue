@@ -7,9 +7,6 @@
 
 export default {
 name: "Contact",
-components:{
-
-}
 }
 </script>
 
@@ -17,6 +14,5 @@ components:{
 
 #ContactUs {
   text-align: center;
-  background-color: rgba(240, 248, 255, 0.75);
 }
 </style>

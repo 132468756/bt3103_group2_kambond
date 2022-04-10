@@ -9,7 +9,7 @@ import MyRequest from "../views/MyRequests.vue";
 import MyDeal from "../views/MyDeals.vue";
 import MyProfile from "../components/my-profile/ProfileSideBar.vue";
 // import MyProfile from "../views/MyProfile.vue";
-import Settings from "../views/Settings";
+import Settings from "../views/Settings.vue";
 import Chats from "../views/Chats.vue";
 // import Chats from "../components/Chat/chat_alternative.vue";
 import Profile from "../views/Profile.vue";

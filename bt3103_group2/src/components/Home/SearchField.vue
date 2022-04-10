@@ -1,10 +1,10 @@
 <template>
   <div class="search-area">
     <h1 id="search-title">KamBond</h1>
-    <br><br>
+    <br /><br />
     <div id="searchBar">
       <div id="searchBarContainer">
-        <img src="../../assets/search.png" id="searchImg">
+        <img src="../../assets/search.png" id="searchImg" />
         <input
           type="text"
           id="inputbox"
@@ -13,9 +13,6 @@
           Placeholder="Enter to Search in KamBond"
           @keydown.enter="newSearch"
         />
-        <!-- <button id="searchbutton" type="button" v-on:click="newSearch()">
-          Search
-        </button> -->
       </div>
     </div>
   </div>
@@ -27,17 +24,16 @@ export default {
   components: {},
   // Emits to pass data from child to parent
   // Register what is emitting
-  emits:["search"],
+  emits: ["search"],
   data() {
     return {
       searchText: "",
     };
   },
   methods: {
-    newSearch(){
-      // this.$emit(the event which runs on parent, data to pass)
-      this.$emit('search', this.searchText);
-      console.log('emitting ', this.searchText)
+    newSearch() {
+      this.$emit("search", this.searchText);
+      console.log("emitting ", this.searchText);
     },
   },
 };
@@ -45,7 +41,7 @@ export default {
 
 <style>
 .search-area {
-  position:sticky;
+  position: sticky;
   margin-top: 6%;
 }
 
@@ -88,9 +84,9 @@ export default {
   width: 40vw;
   height: 40px;
   border-radius: 50px;
-  border: transparent; 
+  border: transparent;
   background-color: rgba(255, 255, 255, 0.959);
-  font-size: 16px
+  font-size: 16px;
 }
 
 #inputbox:focus {
@@ -103,21 +99,4 @@ export default {
   -webkit-transition-delay: 9999s;
   transition-delay: 9999s;
 }
-
-/* #searchbutton {
-  margin: auto;
-  border: 1px solid black;
-  background-color: rgb(25, 64, 80);
-  color: black;
-  height: 45px;
-  width: 80px;
-  border-radius: 50px;
-  border: transparent;
-  color:white
-}
-
-#searchbutton:hover {
-  font-weight: bold;
-  outline: none;
-} */
 </style>

@@ -39,12 +39,13 @@ import firebaseApp from '../../firebase.js'
 import {getFirestore} from "firebase/firestore"
 import{getDoc, doc, updateDoc} from "firebase/firestore"
 import {getAuth, onAuthStateChanged} from "firebase/auth"
-const db = getFirestore(firebaseApp)
+const db = getFirestore(firebaseApp);
 // const auth = getAuth()
+
 export default {
     names:"SettingsTable",
     components:{
-        changeBtn
+        changeBtn,
     },
     // No database connection testing code
     data(){
@@ -58,7 +59,7 @@ export default {
             bioStatus:"static",
             contactNumber:'',
             contactStatus:"static",
-            userID:''
+            userID:'',
         }
     },
     mounted(){
@@ -81,6 +82,7 @@ export default {
             self.telegram = user_info.data().telegramHandle
             self.bio = user_info.data().bio
             self.contactNumber = user_info.data().contactNumber
+            self.profileiconURL = user_info.data().profileiconURL
         }
     },
     methods:{
@@ -114,6 +116,20 @@ export default {
                 alert("Username Cannot Be Empty!")
             }
         },
+        confirmChangeIcon: async function() {
+        try {
+            const path = await this.uploadImage(this.userID);
+            console.log("creating path", path)
+            const docRef = await updateDoc(doc(db, "Users", this.userID), {
+                profileiconURL: this.userID
+            })
+            console.log(docRef)
+            this.displayUserInfo(this.userID)
+        }
+        catch(error) {
+            console.log("Failed updating icon")
+        }
+        },
         changeTelegram: function(){
             document.getElementById("telegramContent").innerHTML="<input type='text' id='newTelegram'>"
             this.telegramStatus="changing"
@@ -143,7 +159,7 @@ export default {
                     console.log("Failed updating telegram handle")
                 }
             } else {
-                alert("Invalid Password Format! \nPlease remember the @ in front of your handle.")
+                alert("Invalid Password Format! Please remember the @ in front of your handle.")
             }
         },
         changeBio: function(){

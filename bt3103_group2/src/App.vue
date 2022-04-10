@@ -1,17 +1,14 @@
 <template>
 <div class="app">
   <router-view />
-  <Contact/>
+  <!-- <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>  -->
 </div> 
 </template>
 
 <script>
-import Contact from "./components/Home/Contact.vue"
+
 export default {
   name: "App",
-  components: {
-    Contact
-  },
 };
 </script>
 
@@ -34,5 +31,6 @@ export default {
   background-size:cover;
   background-attachment: fixed;
 
+  height: 950px;
 }
 </style>

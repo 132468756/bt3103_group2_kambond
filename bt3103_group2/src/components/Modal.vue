@@ -52,7 +52,12 @@
 
         <footer class="modal-footer">
           <div name="footer">
-            <img src="@/assets/profilephoto.jpeg" alt="cannotfind" id = "picprofile"/>
+            <div class="profilePicDiv" v-if="this.showIcon">
+              <img :src= "url" alt="Preview" id="IconImg"/>
+            </div>
+            <div v-else class="profilePicDiv">
+              <img src="@/assets/profile.png" id="profilePic">
+             </div>
             <!-- <router-link :to= "{name:'Profile', params:{id: post.user}}"> -->
               <router-link to="/myprofile" v-if="post.user == this.userID">{{post.userName}} </router-link>
             <router-link :to = "'/profile/' + post.user " :id = post.user v-else>
@@ -89,6 +94,7 @@
 </template>
 
 <script>
+//heiheihei
 import firebaseApp from "../firebase.js";
 import { getFirestore } from "firebase/firestore";
 // import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -101,11 +107,13 @@ const db = getFirestore(firebaseApp);
     name: 'Modal',
     data() {
       return {
-        userID :"",
+        userID:"",
         url: '',
         path:'',
+        profileiconURL: '',
         // previewImage: null,
-        showPic:false
+        showIcon:false,
+        postuserID: "",
         };
     },
     props:{
@@ -119,25 +127,29 @@ const db = getFirestore(firebaseApp);
           this.userID = this.user.email
         }
       });
+
+      async function getURL(self){
+            setTimeout(() => {
+            console.log(self.profileiconURL)
+            self.path = self.userID
+            console.log("getURL triggered")
+            console.log(self.path)
+            // Get URL for the image inside the storage
+            const storage = getStorage();
+            const starsRef = ref(storage, 'icons/'+ self.path);
+            // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+            getDownloadURL(starsRef)
+            .then((url) => {
+            self.url = url
+            self.showIcon=true
+            })
+          }, 500);
+      }
+
+        getURL(this)
     },
+
     methods: {
-      async getURL(){
-      setTimeout(() => {
-        console.log(this.post.imagePath)
-        this.path = this.post.postID
-        console.log("getURL triggered")
-        console.log(this.path)
-        // Get URL for the image inside the storage
-        const storage = getStorage();
-        const starsRef = ref(storage, 'posts/'+ this.path);
-        // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
-        getDownloadURL(starsRef)
-        .then((url) => {
-          this.url = url
-          this.showPic=true
-        })
-      }, 500);
-      },
       close() {
         this.$emit('close');
         console.log(this.user.email)
