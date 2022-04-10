@@ -10,19 +10,19 @@
             <input
             type="file"
             accept="image/*"
-            id="icon"
+            id="user.icon"
             @change="onIconChange"
             />
-            <label for="icon"><button id="changeIconImg">Upload Image</button></label>
+            
             <img
-                :src="previewicon"
+                :src= "previewicon"
                 alt="Preview"
-                v-if="previewIcon"
+                v-if= "previewIcon"
                 class="uploading-image"
                 />
             <div v-if="this.iconStatus != 'static'"><button class = "changeSettingBtn" id = "confirmChangeIcon" @click ="confirmChangeIcon()">Confirm Change</button></div> 
-            <div v-if="this.iconStatus != 'static'"><button class = "cancelSettingBtn" id = "cancelChangeIcon" @click ="cancelChangeIcon()"> Cancel</button></div>
         </div>
+        <tr>
         <h2 id="username">{{username}}</h2>
         <div class="userInfoDetail">
             <h4 id="Kambond">{{bio}}</h4>
@@ -34,7 +34,7 @@
 
 <script>
 import {getAuth, onAuthStateChanged} from "firebase/auth"
-import { getDoc, doc, getFirestore } from '@firebase/firestore'
+import { getDoc, doc, getFirestore,updateDoc} from '@firebase/firestore'
 import firebaseApp from '../../firebase'
 import { ref, getStorage, uploadBytes, getDownloadURL} from "firebase/storage"
 
@@ -49,6 +49,7 @@ export default {
             creditPoint:0,
             likes:0,
             email:'',
+            userID: '',
             profileiconURL:'',
             previewicon: null,
             icon: null,
@@ -121,11 +122,26 @@ export default {
         this.iconStatus = "changing";
         },
 
+        confirmChangeIcon: async function() {
+        try {
+            const path = await this.uploadImage(this.userID);
+            console.log("creating path", path)
+            const docRef = await updateDoc(doc(db, "Users", this.userID), {
+                profileiconURL: this.userID
+            })
+            console.log(docRef)
+            this.displayUserInfo(this.userID)
+        }
+        catch(error) {
+            console.log("Failed updating icon")
+        }
+        },
+
         async uploadImage(userID) {
         if (this.icon) {
         // var myPostID = this.post.postID
         // var myImgName = myPostID.replace(/./g, "-")
-            const path = "icons/"+userID;
+            const path = "icons/"+ userID;
             const fileRef = ref(storage, path)
         console.log(fileRef)
         await uploadBytes(fileRef, this.icon)
@@ -193,4 +209,8 @@ export default {
     #changeIconImg:active {
         background-color: rgb(107, 107, 107);
     }
+
+    .uploading-image {
+    width:100%;
+}
 </style>
