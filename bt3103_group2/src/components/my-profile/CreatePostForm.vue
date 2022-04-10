@@ -2,14 +2,13 @@
 <template>
   <form @submit.prevent="onSubmit" method="post" id="createpostform">
     <div className="row">
-      <label className="postlabel"> Title (max 20 chars) </label>
+      <label className="postlabel"> Title </label>
       <input
         type="title"
         required
         v-model="post.title"
         id="post.title"
         autocomplete="off"
-        maxlength="20"
       />
     </div>
 
@@ -100,6 +99,7 @@ import { ref, getStorage, uploadBytes} from "firebase/storage";
 import { arrayUnion, getFirestore } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 // import { useState } from "@/composables/state";
 const db = getFirestore(firebaseApp);
 const auth = getAuth();
@@ -116,9 +116,11 @@ export default {
         category: "",
         location: "",
         imageURL: "",
+        usericonURL: "",
       },
       previewImage: null,
       image: null,
+      userURL: "",
     };
   },
   mounted() {
@@ -126,6 +128,7 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
+        this.userURL = user.profileiconURL;
       }
     });
   },
@@ -177,6 +180,7 @@ export default {
       var f = document.getElementById("post.location").value;
       var email = auth.currentUser.email;
       var status = b;
+      var postuser = auth.currentUser.profileiconURL;
       if (b == "Borrowing") {
         status = "Want to borrow";
       } else {
@@ -221,6 +225,8 @@ export default {
             user: email,
             postID: postID,
             postDate: timeFormatted,
+            imagePath:postID,
+            usericonURL: postuser,
           });
           console.log(docRef);
         } catch (error) {
