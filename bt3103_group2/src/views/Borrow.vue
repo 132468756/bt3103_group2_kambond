@@ -152,17 +152,17 @@ export default {
     },
   
 
-  showModal(data) {
-    this.isModalVisible = true;
-    this.modalData = data;
-    this.$refs.modal.getURL()
-    this.$refs.modal.getURL2()
-    console.log("isopen")
-    },
+    showModal(data) {
+      this.isModalVisible = true;
+      this.modalData = data;
+      this.$refs.modal.getURL()
+      this.$refs.modal.getURL2()
+      console.log("isopen")
+      },
 
-  closeModal() {
-        this.isModalVisible = false;
-  },
+    closeModal() {
+      this.isModalVisible = false;
+    },
   },
 };
 </script>

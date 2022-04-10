@@ -146,7 +146,7 @@ export default {
             if(ok){
                 this.telegram = newTelegram
                 document.getElementById("telegramContent").innerHTML=this.telegram
-                this.passwordStatus="static"
+                this.telegramStatus="static"
                 try{
                     const docRef = await updateDoc(doc(db, "Users",this.userID), {
                         telegramHandle: newTelegram
@@ -159,7 +159,7 @@ export default {
                     console.log("Failed updating telegram handle")
                 }
             } else {
-                alert("Invalid Password Format! Please remember the @ in front of your handle.")
+                alert("Invalid Telegram Handle! Please remember the @ in front of your handle.")
             }
         },
         changeBio: function(){

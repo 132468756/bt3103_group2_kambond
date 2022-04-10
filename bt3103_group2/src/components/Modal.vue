@@ -131,44 +131,44 @@ const db = getFirestore(firebaseApp);
         }
       });
 
-     this.getURL()
-     this.getURL2()
+    this.getURL()
+    this.getURL2()
     },
 
     methods: {
       async getURL(){
-      setTimeout(() => {
-        console.log(this.post.imagePath)
-        this.path = this.post.postID
-        console.log("getURL triggered")
-        console.log(this.path)
-        // Get URL for the image inside the storage
-        const storage = getStorage();
-        const starsRef = ref(storage, 'posts/'+ this.path);
-        // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
-        getDownloadURL(starsRef)
-        .then((url) => {
-          this.url = url
-          this.showPic=true
-        })
-      }, 500);
+        setTimeout(() => {
+          console.log(this.post.imagePath)
+          this.path = this.post.postID
+          console.log("getURL triggered")
+          console.log(this.path)
+          // Get URL for the image inside the storage
+          const storage = getStorage();
+          const starsRef = ref(storage, 'posts/'+ this.path);
+          // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+          getDownloadURL(starsRef)
+          .then((url) => {
+            this.url = url
+            this.showPic=true
+          })
+        }, 500);
       },
       async getURL2(){
-      setTimeout(() => {
-        console.log(this.post.usericonURL)
-        this.path2 = this.post.user
-        console.log("getURL2 triggered")
-        console.log(this.path2)
-        // Get URL for the image inside the storage
-        const storage2 = getStorage();
-        const starsRef2 = ref(storage2, 'icons/'+ this.path2);
-        // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
-        getDownloadURL(starsRef2)
-        .then((url) => {
-          this.url2 = url
-          this.showIcon=true
-        })
-      }, 500);
+        setTimeout(() => {
+          console.log(this.post.usericonURL)
+          this.path2 = this.post.user
+          console.log("getURL2 triggered")
+          console.log(this.path2)
+          // Get URL for the image inside the storage
+          const storage2 = getStorage();
+          const starsRef2 = ref(storage2, 'icons/'+ this.path2);
+          // const starsRef = ref(storage, 'posts/lrqian2000@gmail.comlalala1649237027381');
+          getDownloadURL(starsRef2)
+          .then((url) => {
+            this.url2 = url
+            this.showIcon=true
+          })
+        }, 500);
       },
 
 
