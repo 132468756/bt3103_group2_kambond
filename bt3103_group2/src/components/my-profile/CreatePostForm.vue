@@ -202,17 +202,6 @@ export default {
         try {
           const path = await this.uploadImage(postID);
           console.log("creating path", path)
-          // const imgURL = String(this.previewImage);
-          // this.uploadImage(); 
-          // const path = 'posts/'+ postID;
-        //   const imgURL = getDownloadURL(ref(storage, path))
-        //   .then((url) => {
-        //   console.log("url = "+url);
-        //   console.log("path = "+path);
-        // })
-        // .catch((error) => {
-        // console.error("Error downloading image:", error);
-        // });
           const docRef = setDoc(doc(db, "Posts", postID), {
             title: a,
             purpose: b,
